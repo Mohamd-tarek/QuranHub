@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using ServerApp.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace ServerApp
 {
@@ -24,11 +27,34 @@ namespace ServerApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddDbContext<IdentityDataContext>(options => 
+                 options.UseSqlServer(Configuration["ConnectionStrings:Identity"]));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                 .AddEntityFrameworkStores<IdentityDataContext>();
+            
+
             services.AddControllersWithViews();
+            services.AddRazorPages();
+
+            services.AddDistributedSqlServerCache(options => {
+                options.ConnectionString = connectionString;
+                options.SchemaName = "dbo";
+                options.TableName = "SessionData";
+            });
+
+            services.AddSession(options =>{
+                options.Cookie.Name = "QuranAnalysis.Session";
+                options.IdleTimeout = System.TimeSpan.FromHours(48);
+                options.Cookie.HttpOnly = false;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
@@ -42,16 +68,22 @@ namespace ServerApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name : "angular_fallback",
+                    pattern :"{target:regex(read|search|analysis|statistics)}",
+                    defaults : new {controller = "Home" , action = "Index"});
             });
 
             app.UseSpa(spa =>
@@ -68,6 +100,9 @@ namespace ServerApp
                     spa.UseAngularCliServer("start");
                 }
             });
+            SeedData.SeedDatabase(services.GetRequiredService<DataContext>());
+            IdentitySeedData.SeedDatabase(services).Wait();
+            
         }
     }
 }

@@ -1,0 +1,24 @@
+<div class="container">
+  <div *ngIf="dataLoaded; else nodata">
+    <div class="row  justify-content-end m-2" >
+      <select class="form-select " aria-label="Default select example" [(ngModel)]="curSelection" >
+        <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
+      </select> 
+    </div>
+    <div class="row align-items-start">
+      <div class="col border border-primary m-2 p-2">
+        <translation [curSelection]="curSelection"></translation>
+      </div>
+      <div class="col border border-primary m-2  p-2 " >
+        <tafseer [curSelection]="curSelection"></tafseer>
+      </div>
+      <div class="col border border-primary m-2  p-2 ">
+        <quran [curSelection]="curSelection"></quran>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #nodata>
+    <h4 class="m-2">Loading Data...</h4>
+  </ng-template> 
+</div>

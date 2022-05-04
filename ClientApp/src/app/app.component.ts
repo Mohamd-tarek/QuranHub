@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Quran } from './models/quran/quran';
+import { Repository } from './models/repository';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'QuranAnalysis';
+  constructor(private repo: Repository) { }
+
+  get quran(): Quran[] {
+    return this.repo.quran;
+  }
 }

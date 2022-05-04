@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\ClientApp\\src",
+    "\\ClientApp\\src\\app",
+    "\\ServerApp",
+    "\\ServerApp\\Properties"
+  ],
+  "SelectedNode": "\\ServerApp\\ServerApp.csproj",
+  "PreviewInSolutionExplorer": false
+}

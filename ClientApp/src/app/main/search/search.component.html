@@ -1,0 +1,31 @@
+<div *ngIf="dataLoaded; else nodata">
+  <div class="border border-dark rounded p-2 m-2">
+    <input id="word" type="checkbox" [formControl]="searchForWord">
+    <label for="word" class="m-2"> search for words </label>
+  </div>
+  <div class="border border-dark rounded p-2 m-2">
+    <label for="word" class="form-label">Word : </label>
+    <input id="word" type="text" class="form-control" [formControl]="word">
+  </div>
+  
+  <div class="border border-dark rounded p-2 m-2 text-end">
+    <p>total result : {{result.length}}</p>
+    <div *ngFor="let aya of result" class="border border-primary p-2 m-2">
+      <div *ngIf="!searchForWord.value; else wordBlock">
+        <p class="text-decoration-underline" >({{aya.sura}} - {{suras[aya.sura - 1].name}}) - {{aya.aya}}</p>
+        <p >{{aya.text}}</p>
+      </div>
+      <ng-template #wordBlock>
+        <div>
+          <p >{{aya[0]}}</p>
+          <p >{{aya[1]}}</p>
+        </div>
+      </ng-template>
+      
+    </div>
+  </div>
+</div>
+
+<ng-template #nodata>
+  <h4 class="m-2">Loading Data...</h4>
+</ng-template>

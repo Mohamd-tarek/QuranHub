@@ -136,6 +136,8 @@ export class Repository {
   }
  
   storeSessionData<T>(dataType : string, data: T){
+             console.log("from repo");
+             console.log(data);
              return this.http.post(this.sessionURL + dataType, data).subscribe(response=> {});
   }
   

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using ServerApp.Models;
+using Microsoft.Extensions.Logging;
 
 namespace ServerApp.Controllers
 {
@@ -9,7 +10,13 @@ namespace ServerApp.Controllers
      [ApiController]
     public class SessionValuesController : Controller
     {
-        
+
+       private readonly ILogger<SessionValuesController> logger;
+       
+       public SessionValuesController(ILogger<SessionValuesController> _logger){
+             logger = _logger;
+        }
+
         [HttpGet("state")]
         public IActionResult GetState(){
             return Ok(HttpContext.Session.GetString("state"));
@@ -18,6 +25,7 @@ namespace ServerApp.Controllers
         [HttpPost("state")]
         public void StoreState([FromBody] State state){
             var jsonData = JsonConvert.SerializeObject(state);
+            logger.LogDebug(jsonData);
             HttpContext.Session.SetString("state", jsonData);
         }
     }

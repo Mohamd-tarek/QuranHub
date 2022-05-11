@@ -11,7 +11,4 @@ export class AppComponent {
   title = 'QuranAnalysis';
   constructor(private repo: Repository) { }
 
-  get quran(): Quran[] {
-    return this.repo.quran;
-  }
 }

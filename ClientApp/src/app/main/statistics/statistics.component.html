@@ -1,4 +1,4 @@
-<div *ngIf="dataLoaded; else nodata">
+<div *ngIf="dataLoaded; else nodata" class="container">
     <container [data]="getElements()" [col]="6"></container>
     <pagination [numOfLinks]="numOfLinks" (selectPageEvent)="onPageChange($event)"></pagination>
 </div>

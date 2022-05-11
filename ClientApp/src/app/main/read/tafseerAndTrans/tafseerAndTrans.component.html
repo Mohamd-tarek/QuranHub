@@ -1,0 +1,27 @@
+  <div *ngIf="dataLoaded; else nodata">
+      <div class="row  justify-content-end m-2" >
+        <select class="form-select " aria-label="Default select example" [(ngModel)]="curSura" >
+          <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
+        </select> 
+      </div>
+      <div class="row  justify-content-end m-2" >
+        <select class="form-select " aria-label="Default select example" [(ngModel)]="curAya" >
+          <option  *ngFor="let aya of ayas" value={{aya}} > {{aya}}</option>
+        </select> 
+      </div>
+      <div class="row align-items-start  m-2 p-2" >
+        <aya [curSura]="curSura" [curAya]="curAya"></aya>
+      </div>
+      <div class="row align-items-start  m-2 p-2" >
+        <tafseer [curSura]="curSura" [curAya]="curAya"></tafseer>
+      </div>
+      <div class="row align-items-start  m-2 p-2">
+          <translation [curSura]="curSura" [curAya]="curAya" ></translation>
+      </div>    
+  </div>
+
+
+  <ng-template #nodata>
+    <h4 class="m-2">Loading Data...</h4>
+  </ng-template> 
+

@@ -1,5 +1,5 @@
-<div class="container m-2 " >
-    <div *ngFor="let row of getElement()" class = "row" >
-        <div *ngFor="let cell of row"  [ngClass]="'col-' + (12 / col) + ' border  border-dark text-center'" >{{cell[0]}} : {{cell[1]}} </div>
+    <div class="m-2">
+        <div *ngFor="let row of getElement()" class = "row" >
+            <div *ngFor="let cell of row"  [ngClass]="'col-' + (12 / col) + ' border  border-dark text-center'" >{{cell[0]}} : {{cell[1]}} </div>
+        </div>
     </div>
-</div>

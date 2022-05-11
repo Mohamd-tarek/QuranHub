@@ -48,8 +48,5 @@ export class SearchComponent {
     else{
         this.result = word.length > 1 ? this.repo.quranClean.filter(q => q.text.includes(word)) : [];                                              
     }
-    console.log(this.result);
-    console.log(this.repo.suras);
-
   }
 }

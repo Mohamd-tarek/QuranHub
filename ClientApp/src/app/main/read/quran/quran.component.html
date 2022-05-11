@@ -1,5 +1,22 @@
-<p class="text-end">
-    <span  *ngFor="let aya of sura" class="text-end" >{{aya.text}}
-        <span class="text-primary" > ({{aya.aya}}) </span>
-    </span>
-</p>
+    <div *ngIf="dataLoaded; else nodata">
+      <div class="row  justify-content-end m-2" >
+        <select class="form-select " aria-label="Default select example" [(ngModel)]="curSura" >
+          <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
+        </select> 
+      </div>
+      <div class="row align-items-start m-2">
+        <div class="col">
+            <p class="text-end p-2" style="overflow : auto; height: 74vh ; background-color: aliceblue;">
+                <span  *ngFor="let aya of sura" class="text-end" >{{aya.text}}
+                    <span class="text-primary" > ({{aya.aya}}) </span>
+                </span>
+            </p>
+        </div>
+      </div>
+    </div>
+  
+    <ng-template #nodata>
+      <h4 class="m-2">Loading Data...</h4>
+    </ng-template> 
+  
+  

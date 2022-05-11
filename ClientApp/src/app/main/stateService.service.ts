@@ -19,14 +19,22 @@ export class StateSevice{
   get currentSura() : number {
     return this.state.currentSura;
   }
-  set currentSura(selection : number)  {
-     this.state.currentSura = selection;
+  set currentSura(value : number)  {
+     this.state.currentSura = value;
      this.update();
   }
+
+  get currentAya() : number {
+    return this.state.currentAya;
+  }
+  set currentAya(value : number)  {
+     this.state.currentAya = value;
+     this.update();
+  }
+
   get currentSearch() : string {
     return this.state.currentSearch;
   }
-
   set currentSearch(value : string) {
      this.state.currentSearch = value;
      this.update();
@@ -35,15 +43,14 @@ export class StateSevice{
   get searchForWord() : boolean {
     return this.state.searchForWord;
   }
-
   set searchForWord(value : boolean)  {
      this.state.searchForWord = value;
      this.update();
   }
+
   get currentStatisticsPage() : number {
     return this.state.currentStatisticsPage;
   }
-
   set currentStatisticsPage(value : number)  {
      this.state.currentStatisticsPage = value;
      this.update();

@@ -13,6 +13,8 @@ import { SearchComponent } from "./search/search.component";
 import { StatisticsComponent } from "./statistics/statistics.component";
 import { ContainerComponent } from "./statistics/container/container.component";
 import { PaginationComponent } from "./statistics/pagination/pagination.component";
+import { NoteComponent } from "./note/note.component";
+import { NoteTextComponent } from "./note/noteText/noteText.component";
 import { AnalysisComponent } from "./analysis/analysis.component";
 import { StateSevice } from "./stateService.service";
 
@@ -22,7 +24,7 @@ import { StateSevice } from "./stateService.service";
   imports: [RouterModule, FormsModule, CommonModule, ReactiveFormsModule],
   declarations: [ReadComponent, QuranComponent,TafseerAndTransComponent, TafseerComponent, 
                 TranslationComponent,AyaComponent, SearchComponent, StatisticsComponent,
-                 ContainerComponent, PaginationComponent, AnalysisComponent],
+                 ContainerComponent, PaginationComponent, AnalysisComponent, NoteComponent, NoteTextComponent],
   providers: [StateSevice],
   exports: [ReadComponent]
 })

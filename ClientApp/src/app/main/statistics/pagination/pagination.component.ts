@@ -1,14 +1,15 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { StateSevice } from '../../stateService.service';
+import { State } from 'src/app/models/state';
 
 @Component({
   selector: "pagination",
   templateUrl: "pagination.component.html"
 })
 export class PaginationComponent {
+    state : State;
     start : number= 1;
     elementsPerPage : number = 11;
-    curPage  : number;
     startElement: number = this.start;
     endElement: number = this.start + 10;
   
@@ -16,8 +17,8 @@ export class PaginationComponent {
     @Input() numOfLinks! : number;
     @Output() selectPageEvent = new EventEmitter<number>();
     
-    constructor(private state : StateSevice){
-      this.curPage = this.state.currentStatisticsPage;
+    constructor(private stateService : StateSevice){
+      this.state = this.stateService.getValue();
     }
   
     selectPage (event: any) {
@@ -28,20 +29,20 @@ export class PaginationComponent {
       if(nxt > this.endElement)
         {
         
-          this.curPage = nxt;
+          this.state.currentStatisticsPage = nxt;
           this.startElement = nxt;
           this.endElement = Math.min(this.numOfLinks + 1 , nxt + 10) ;
         }
         else if(nxt < this.startElement)
         {
           
-            this.curPage = nxt;
+            this.state.currentStatisticsPage = nxt;
             this.startElement = nxt - 10;
             this.endElement = nxt;
         }
         else
         {
-          this.curPage  = nxt;
+          this.state.currentStatisticsPage  = nxt;
         }
       this.selectPageEvent.emit(nxt);
       

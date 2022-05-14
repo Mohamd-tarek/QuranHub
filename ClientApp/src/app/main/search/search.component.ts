@@ -3,6 +3,7 @@ import { Repository } from "../../models/repository";
 import { FormControl } from '@angular/forms';
 import { Sura } from 'src/app/models/meta/sura';
 import { StateSevice } from '../stateService.service';
+import { State } from 'src/app/models/state';
 
 @Component({
   selector: "search",
@@ -10,6 +11,7 @@ import { StateSevice } from '../stateService.service';
 })
 export class SearchComponent {
 
+  state : State;
   result : any[] = []; 
   searchForWord = new FormControl(false);
   word = new FormControl('');
@@ -19,23 +21,28 @@ export class SearchComponent {
   get suras() : Sura[]{
     return this.repo.suras;
   }
-  constructor(private repo: Repository, private state : StateSevice) {
+  constructor(private repo: Repository, private stateService : StateSevice) {
     this.repo.quranClean;
     this.repo.trie;
     this.repo.suras;
     this.dataLoaded = this.repo.quranClean.length > 0 && this.repo.suras.length > 0;
+    this.state = this.stateService.getValue();
 
     this.searchForWord.setValue(this.state.searchForWord);
     this.word.setValue(this.state.currentSearch);
     this.setResult(this.state.currentSearch);
 
     this.searchForWord.valueChanges.subscribe(()=> { 
-      this.state.searchForWord = this.searchForWord.value;
+      
+      this.state.searchForWord == this.searchForWord.value;
+      this.stateService.next(this.state);
       this.setResult(this.word.value);
    }); 
 
     this.word.valueChanges.subscribe(()=> { 
-       this.state.currentSearch = this.word.value;
+    
+      this.state.currentSearch = this.word.value;
+      this.stateService.next(this.state);
        this.setResult(this.word.value);
     });    
   }

@@ -11,6 +11,7 @@ namespace ServerApp.Models
         public DbSet<Tafseer> Tafseer { get; set; }
         public DbSet<Translation> Translation { get; set; }
         public DbSet<QuranClean> QuranClean { get; set; }
+        public DbSet<Note> Note { get; set; }
 
         // meta-data
         public DbSet<Sura> Suras { get; set; }

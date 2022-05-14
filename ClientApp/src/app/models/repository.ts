@@ -12,6 +12,8 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Trie } from "./trie";
 import { Observable } from "rxjs";
+import { Note } from "./quran/note";
+import { catchError } from "rxjs/operators";
 
 
 
@@ -135,10 +137,16 @@ export class Repository {
   
   }
  
+  getNote(aya : Quran) :Observable<Note> {
+     return this.http.get<Note>(this.apiURL + "Note" + '/' + aya.index);
+   }
+
+  insertNote(note : Note)  {
+    return this.http.post(this.apiURL + "Note" + '/' + note.index, note).subscribe(response=> {});
+  }
+
   storeSessionData<T>(dataType : string, data: T){
-             console.log("from repo");
-             console.log(data);
-             return this.http.post(this.sessionURL + dataType, data).subscribe(response=> {});
+             return this.http.post(this.sessionURL + dataType,data).subscribe(response=> {});
   }
   
   getSessionData<T>(dataType : string) : Observable<T>{

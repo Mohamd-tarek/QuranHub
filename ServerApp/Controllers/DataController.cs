@@ -48,6 +48,25 @@ namespace ServerApp.Controllers
         {
             return context.QuranClean.OrderBy(d=> d.Index);
         }
+
+        [Route("Note")]
+        [HttpGet("{index}")]
+        public Note GetNote(int index)
+        {
+            return context.Note.Where(d=> d.Index == index).First();
+        }
+
+        [HttpPost]
+        public IActionResult CreateProduct([FromBody] Note note) {
+            if (ModelState.IsValid) {
+                context.Add(note);
+                context.SaveChanges();
+                return Ok(note.Id);
+            } else {
+                return BadRequest(ModelState);
+            }
+        }
+
         // meta data
         [Route("Hizbs")]
         [HttpGet]

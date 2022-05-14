@@ -1,63 +1,31 @@
 import { Repository } from "../models/repository";
 import { State } from "../models/state";
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable()
-export class StateSevice{
- 
-  state : State =  new State();
-  constructor(private repo : Repository){
-       repo.getSessionData<State>("state").subscribe(data =>
-        {
-            if(data != null)
-            {
-              this.state = data;
-            }
-        } );
-  }
 
-  get currentSura() : number {
-    return this.state.currentSura;
-  }
-  set currentSura(value : number)  {
-     this.state.currentSura = value;
-     this.update();
-  }
+export class StateSevice extends BehaviorSubject<State>  {
+   constructor(private repo : Repository){
+    super( new State());
+    
+     repo.getSessionData<State>("state").subscribe(data =>
+      {
+          if(data != null)
+          {
+            super.next(data);
+            
+          }
+      } );
+   }
 
-  get currentAya() : number {
-    return this.state.currentAya;
-  }
-  set currentAya(value : number)  {
-     this.state.currentAya = value;
-     this.update();
-  }
+   next(state : State){
+       this.update(state);
+       super.next(state);
 
-  get currentSearch() : string {
-    return this.state.currentSearch;
-  }
-  set currentSearch(value : string) {
-     this.state.currentSearch = value;
-     this.update();
-  }
+   }
 
-  get searchForWord() : boolean {
-    return this.state.searchForWord;
+   update(state : State){
+    this.repo.storeSessionData("state", state);
   }
-  set searchForWord(value : boolean)  {
-     this.state.searchForWord = value;
-     this.update();
-  }
-
-  get currentStatisticsPage() : number {
-    return this.state.currentStatisticsPage;
-  }
-  set currentStatisticsPage(value : number)  {
-     this.state.currentStatisticsPage = value;
-     this.update();
-  }
-
-  update(){
-    this.repo.storeSessionData("state", this.state);
-  }
-
 }

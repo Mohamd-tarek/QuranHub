@@ -2,21 +2,22 @@ import { Component } from '@angular/core';
 import { Sura } from '../../../models/meta/sura';
 import { Repository } from "../../../models/repository";
 import { StateSevice } from '../../stateService.service';
+import { State } from 'src/app/models/state';
 
 @Component({
   selector: "tafseerAndTrans",
   templateUrl: "tafseerAndTrans.component.html"
 })
 export class TafseerAndTransComponent {
-  _curSura : number = 1;
-  _curAya : number = 1;
+ 
+  state : State;
   dataLoaded :boolean;
-  constructor(private repo: Repository, private state : StateSevice ) {
-    this.curSura = this.state.currentSura;
-    this.curAya = this.state.currentAya;
+  constructor(private repo: Repository, private stateService : StateSevice ) {
+  
     this.repo.translation;
     this.repo.tafseer;
     this.repo.suras;
+    this.state = stateService.getValue();
 
 
     this.dataLoaded = this.repo.tafseer.length > 1 && 
@@ -24,21 +25,22 @@ export class TafseerAndTransComponent {
   }
 
   get curSura(): number {
-   return this._curSura;
+   return this.state.currentTafseerAndTranSura;
   }
 
   set curSura(value : number) {
-     this.state.currentSura = value;
-     this._curSura = value;
+     this.state.currentTafseerAndTranSura = value;
+     this.stateService.next(this.state);
    }
 
    get curAya(): number {
-    return this._curAya;
+    return this.state.currentTafseerAndTranAya;
    }
  
    set curAya(value : number) {
-      this.state.currentAya = value;
-      this._curAya = value;
+      this.state.currentTafseerAndTranAya = value;
+      this.stateService.next(this.state);
+      
     }
 
   get suras(): Sura[] {

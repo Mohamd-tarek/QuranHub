@@ -142,7 +142,9 @@ export class Repository {
    }
 
   insertNote(note : Note)  {
-    return this.http.post(this.apiURL + "Note" + '/' + note.index, note).subscribe(response=> {});
+    return this.http.post(this.apiURL + "Note", note).subscribe(response=> {
+      console.log(response);
+    });
   }
 
   storeSessionData<T>(dataType : string, data: T){

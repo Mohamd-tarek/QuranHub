@@ -17,11 +17,13 @@ import { NoteComponent } from "./note/note.component";
 import { NoteTextComponent } from "./note/noteText/noteText.component";
 import { AnalysisComponent } from "./analysis/analysis.component";
 import { StateSevice } from "./stateService.service";
+import { DragulaModule } from 'ng2-dragula'
+
 
 
 
 @NgModule({
-  imports: [RouterModule, FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, FormsModule, CommonModule, ReactiveFormsModule, DragulaModule],
   declarations: [ReadComponent, QuranComponent,TafseerAndTransComponent, TafseerComponent, 
                 TranslationComponent,AyaComponent, SearchComponent, StatisticsComponent,
                  ContainerComponent, PaginationComponent, AnalysisComponent, NoteComponent, NoteTextComponent],

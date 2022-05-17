@@ -6,6 +6,7 @@ import { ModelModule } from "./models/model.module";
 import { MainModule } from "./main/main.module";
 import { NavbarComponent } from "./navbar.component";
 import { AuthModule } from './auth/auth.module';
+import { DragulaModule } from 'ng2-dragula'
 
 
 @NgModule({
@@ -13,7 +14,7 @@ import { AuthModule } from './auth/auth.module';
     AppComponent, NavbarComponent
   ],
   imports: [
-    BrowserModule, AppRoutingModule, ModelModule, MainModule, AuthModule  
+    BrowserModule, AppRoutingModule, ModelModule, MainModule, AuthModule, DragulaModule.forRoot()  
   ],
   providers: [],
   bootstrap: [AppComponent]

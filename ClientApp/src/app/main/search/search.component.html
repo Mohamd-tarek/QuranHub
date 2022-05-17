@@ -10,19 +10,22 @@
   
   <div class="border border-dark rounded p-2 m-2 text-end">
     <p>total result : {{result.length}}</p>
-    <div *ngFor="let aya of result" class="border border-primary p-2 m-2">
-      <div *ngIf="!searchForWord.value; else wordBlock">
-        <p class="text-decoration-underline" >({{aya.sura}} - {{suras[aya.sura - 1].name}}) - {{aya.aya}}</p>
-        <p >{{aya.text}}</p>
-      </div>
-      <ng-template #wordBlock>
-        <div>
-          <p >{{aya[0]}}</p>
-          <p >{{aya[1]}}</p>
+  <div [dragula]="'DRAGULA_FACTS'">
+      <div *ngFor="let aya of result; let i = index" class="border border-primary p-2 m-2"
+         [class.border-primary]="i % 2 === 0"
+         [class.border-dark]="i % 2 === 1" >
+        <div *ngIf="!searchForWord.value; else wordBlock">
+          <p class="text-decoration-underline" >({{aya.sura}} - {{suras[aya.sura - 1].name}}) - {{aya.aya}}</p>
+          <p >{{aya.text}}</p>
         </div>
-      </ng-template>
-      
-    </div>
+        <ng-template #wordBlock>
+          <div>
+            <p >{{aya[0]}}</p>
+            <p >{{aya[1]}}</p>
+          </div>
+        </ng-template>   
+      </div>
+   </div>   
   </div>
 </div>
 

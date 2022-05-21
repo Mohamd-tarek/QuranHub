@@ -36,5 +36,17 @@ export class QuranComponent {
   get suras(){
     return this.repo.suras;
   }
+  
+  next(){
+    if(this.curSura < 115){
+          this.curSura++;
+    }
+  }
+
+  prev(){
+    if(this.curSura > 1 ){
+          this.curSura--;
+    }
+  }
 
 }

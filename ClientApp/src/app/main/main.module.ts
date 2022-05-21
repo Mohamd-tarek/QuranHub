@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from '@angular/common';
+import { HomeComponent } from "./home/home.component";
 import { ReadComponent } from "./read/read.component";
 import { QuranComponent } from "./read/quran/quran.component";
 import { TafseerAndTransComponent } from "./read/tafseerAndTrans/tafseerAndTrans.component";
@@ -24,7 +25,7 @@ import { DragulaModule } from 'ng2-dragula'
 
 @NgModule({
   imports: [RouterModule, FormsModule, CommonModule, ReactiveFormsModule, DragulaModule],
-  declarations: [ReadComponent, QuranComponent,TafseerAndTransComponent, TafseerComponent, 
+  declarations: [HomeComponent, ReadComponent, QuranComponent,TafseerAndTransComponent, TafseerComponent, 
                 TranslationComponent,AyaComponent, SearchComponent, StatisticsComponent,
                  ContainerComponent, PaginationComponent, AnalysisComponent, NoteComponent, NoteTextComponent],
   providers: [StateSevice],

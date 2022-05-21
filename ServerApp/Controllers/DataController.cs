@@ -14,10 +14,11 @@ namespace ServerApp.Controllers
     public class DataController : Controller
     {
         private DataContext context;
+        private ILogger<HomeController> logger;
 
-        public DataController(ILogger<HomeController> logger, DataContext ctx)
+        public DataController(ILogger<HomeController> _logger, DataContext ctx)
         {
-           
+            logger = _logger;  
             context = ctx;
         }
 
@@ -47,24 +48,6 @@ namespace ServerApp.Controllers
         public IEnumerable<QuranClean> GetQuranClean()
         {
             return context.QuranClean.OrderBy(d=> d.Index);
-        }
-
-        [Route("Note")]
-        [HttpGet("{index}")]
-        public Note GetNote(int index)
-        {
-            return context.Note.Where(d=> d.Index == index).First();
-        }
-
-        [HttpPost]
-        public IActionResult CreateProduct([FromBody] Note note) {
-            if (ModelState.IsValid) {
-                context.Add(note);
-                context.SaveChanges();
-                return Ok(note.Id);
-            } else {
-                return BadRequest(ModelState);
-            }
         }
 
         // meta data

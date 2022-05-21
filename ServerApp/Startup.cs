@@ -13,6 +13,7 @@ using ServerApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
+
 namespace ServerApp
 {
     public class Startup
@@ -20,6 +21,7 @@ namespace ServerApp
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -73,7 +75,7 @@ namespace ServerApp
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            
+                      
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -85,7 +87,7 @@ namespace ServerApp
                     pattern :"{target:regex(read|search|statistics|notes|analysis|login|logout)}",
                     defaults : new {controller = "Home" , action = "Index"});
             });
-
+            app.UseMiddleware<DebugMiddleWare>(); 
             app.UseSpa(spa =>
             {
                 string strategy = Configuration.GetValue<string>("DevTools:ConnectionStrategy");

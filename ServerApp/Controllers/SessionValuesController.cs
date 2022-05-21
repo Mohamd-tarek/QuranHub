@@ -25,7 +25,6 @@ namespace ServerApp.Controllers
         [HttpPost("state")]
         public void StoreState([FromBody] State state){
             var jsonData = JsonConvert.SerializeObject(state);
-            logger.LogDebug(jsonData);
             HttpContext.Session.SetString("state", jsonData);
         }
     }

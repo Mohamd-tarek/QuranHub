@@ -13,7 +13,6 @@ import { HttpClient } from "@angular/common/http";
 import { Trie } from "./trie";
 import { Observable } from "rxjs";
 import { Note } from "./quran/note";
-import { catchError } from "rxjs/operators";
 
 
 
@@ -23,7 +22,8 @@ import { catchError } from "rxjs/operators";
 })
 
 export class Repository {
-  apiURL: string = "https://localhost:5001/api/Data/";
+  apiURL: string = "https://localhost:5001/api/";
+  apiDataURL: string = "https://localhost:5001/api/Data/";
   sessionURL: string = "https://localhost:5001/api/Session/";
   private _quran: Quran[] = [];
   private _tafseer: Tafseer[] = [];
@@ -39,11 +39,21 @@ export class Repository {
   private _words = new Map<string, number>();
   private _letters = new Map<string, number>();
   private _trie = new Trie();
+
+
+  constructor(private http: HttpClient) {
+    this.http.get<Quran[]>(this.apiDataURL + "QuranClean")
+      .subscribe(q =>{ this._quranClean = q;
+                      this.countWords();
+                      this.countLetters();
+                    });
+  }  
   
+   
   get quran(): Quran[] {
     if(this._quran.length === 0)
     {
-       this.http.get<Quran[]>(this.apiURL + "Quran").subscribe(q => this._quran = q);   
+       this.http.get<Quran[]>(this.apiDataURL + "Quran").subscribe(q => this._quran = q);   
     }
     return this._quran;
 
@@ -52,7 +62,7 @@ export class Repository {
   get tafseer(): Tafseer[] {
     if(this._tafseer.length === 0)
     {
-      this.http.get<Tafseer[]>(this.apiURL + "Tafseer").subscribe(t => this._tafseer = t);
+      this.http.get<Tafseer[]>(this.apiDataURL + "Tafseer").subscribe(t => this._tafseer = t);
     }
     return this._tafseer;
   } 
@@ -60,7 +70,7 @@ export class Repository {
   get translation(): Translation[] {
     if(this._translation.length === 0)
     {
-      this.http.get<Translation[]>(this.apiURL + "Translation").subscribe(t => this._translation = t);
+      this.http.get<Translation[]>(this.apiDataURL + "Translation").subscribe(t => this._translation = t);
     }
     return this._translation;
 
@@ -72,49 +82,49 @@ export class Repository {
 
   get hizbs(): Hizb[] {
     if(this._hizbs.length === 0){
-      this.http.get<Hizb[]>(this.apiURL + "Hizbs").subscribe(h => this._hizbs = h);
+      this.http.get<Hizb[]>(this.apiDataURL + "Hizbs").subscribe(h => this._hizbs = h);
     }
     return this._hizbs;
   }
 
   get juzs(): Juz[] {
     if(this._juzs.length === 0){
-      this.http.get<Juz[]>(this.apiURL + "Juzs").subscribe(j => this._juzs = j);
+      this.http.get<Juz[]>(this.apiDataURL + "Juzs").subscribe(j => this._juzs = j);
     }
     return this._juzs;
   }
 
   get manzils(): Manzil[] {
     if(this._manzils.length === 0){
-      this.http.get<Manzil[]>(this.apiURL + "Manzils").subscribe(m => this._manzils = m);
+      this.http.get<Manzil[]>(this.apiDataURL + "Manzils").subscribe(m => this._manzils = m);
     }
     return this._manzils;
   }
 
   get pages(): Page[] {
     if(this._pages.length === 0){
-      this.http.get<Page[]>(this.apiURL + "Pages").subscribe(p => this._pages = p);
+      this.http.get<Page[]>(this.apiDataURL + "Pages").subscribe(p => this._pages = p);
     }
     return this._pages;
   }
 
   get rukus(): Ruku[] {
     if(this._rukus.length === 0){
-      this.http.get<Ruku[]>(this.apiURL + "Rukus").subscribe(r => this._rukus = r);
+      this.http.get<Ruku[]>(this.apiDataURL + "Rukus").subscribe(r => this._rukus = r);
     }
     return this._rukus;
   }
 
   get sajdas(): Sajda[] {
     if(this._sajdas.length === 0){
-      this.http.get<Sajda[]>(this.apiURL + "Sajdas").subscribe(s => this._sajdas = s);
+      this.http.get<Sajda[]>(this.apiDataURL + "Sajdas").subscribe(s => this._sajdas = s);
     }
     return this._sajdas;
   }
 
   get suras(): Sura[] {
     if(this._suras.length === 0){
-      this.http.get<Sura[]>(this.apiURL + "Suras").subscribe(s => this._suras = s);
+      this.http.get<Sura[]>(this.apiDataURL + "Suras").subscribe(s => this._suras = s);
     }
     return this._suras;
   }
@@ -131,19 +141,15 @@ export class Repository {
     return this._trie;
   }
 
-  constructor(private http: HttpClient) {
-    
-      this.http.get<Quran[]>(this.apiURL + "QuranClean").subscribe(q =>{ this._quranClean = q; this.countWords(); this.countLetters();});
   
-  }
  
   getNote(aya : Quran) :Observable<Note> {
      return this.http.get<Note>(this.apiURL + "Note" + '/' + aya.index);
    }
 
   insertNote(note : Note)  {
+    note.id = 0;
     return this.http.post(this.apiURL + "Note", note).subscribe(response=> {
-      console.log(response);
     });
   }
 

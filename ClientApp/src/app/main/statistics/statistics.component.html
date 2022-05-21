@@ -1,9 +1,8 @@
-<div *ngIf="dataLoaded; else nodata" class="container">
-    <container [data]="getElements()" [col]="6"></container>
-    <pagination [numOfLinks]="numOfLinks" (selectPageEvent)="onPageChange($event)"></pagination>
-</div>
+    <div *ngIf="dataLoaded; else nodata" >
+        <container [data]="getElements()" [col]="6"></container>
+        <pagination [numOfLinks]="numOfLinks" (selectPageEvent)="onPageChange($event)"></pagination>
+    </div>
 
-<ng-template #nodata>
-    <h4 class="m-2">Loading Data...</h4>
-  </ng-template>
-  
+    <ng-template #nodata>
+        <h4 class="m-2">Loading Data...</h4>
+    </ng-template>  

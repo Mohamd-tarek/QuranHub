@@ -45,4 +45,25 @@ export class NoteComponent {
     }
     return ayas;
   }
+
+  next(){
+    if(this.curAya < this.ayas.length){
+          this.curAya++;
+    }
+    else if(this.curSura < 115){
+      this.curSura++;
+      this.curAya = 1;
+    }
+  }
+
+  prev(){
+    if(this.curAya > 1 ){
+          this.curAya--;
+    }
+    else if(this.curSura > 1){
+      this.curSura--;
+      this.curAya = 1;
+    }
+  }
+
 }

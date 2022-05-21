@@ -12,7 +12,7 @@ export class TafseerAndTransComponent {
  
   state : State;
   dataLoaded :boolean;
-  constructor(private repo: Repository, private stateService : StateSevice ) {
+   constructor(private repo: Repository, private stateService : StateSevice ) {
   
     this.repo.translation;
     this.repo.tafseer;
@@ -20,8 +20,9 @@ export class TafseerAndTransComponent {
     this.state = stateService.getValue();
 
 
-    this.dataLoaded = this.repo.tafseer.length > 1 && 
-                      this.repo.translation.length > 1
+    this.dataLoaded = this.repo.suras.length > 1 &&
+                      this.repo.tafseer.length > 1 &&
+                      this.repo.translation.length > 1;
   }
 
   get curSura(): number {
@@ -54,4 +55,24 @@ export class TafseerAndTransComponent {
     }
     return ayas;
   }
+
+  next(){
+      if(this.curAya < this.ayas.length){
+            this.curAya++;
+      }
+      else if(this.curSura < 115){
+        this.curSura++;
+        this.curAya = 1;
+      }
+  }
+
+  prev(){
+    if(this.curAya > 1 ){
+          this.curAya--;
+    }
+    else if(this.curSura > 1){
+      this.curSura--;
+      this.curAya = 1;
+    }
+}
 }

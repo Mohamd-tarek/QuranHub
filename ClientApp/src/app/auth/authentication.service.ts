@@ -3,36 +3,42 @@ import { Repository } from "../models/repository";
 import { Observable, of } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import { Router } from "@angular/router";
+import { StateService } from "../stateService.service";
+import { State } from "../models/state";
 
 @Injectable()
 export class AuthenticationService{
  
   
-  constructor(private repo : Repository, private router : Router){ }
-  
-  authenticated: boolean = false;
+  constructor(private repo : Repository, private stateService: StateService,  private router : Router){
+    this.state = stateService.getValue();
+   }
+  state : State;
   name!: string;
   password: string = "";
   callbackURL: string = "/";
 
   login(): Observable<boolean>{
-    this.authenticated = false;
+    this.state.authenticated = false;
     return this.repo.login(this.name, this.password).pipe(
         map(response => {
           if(response){
-            this.authenticated = true;
+            this.state.authenticated = true;
             this.password = "";
             this.router.navigateByUrl(this.callbackURL);
           }
-          return this.authenticated;
+          this.stateService.next(this.state);
+          return this.state.authenticated;
         }),
         catchError(e => {
-          this.authenticated = false;
+          this.state.authenticated = false;
+          this.stateService.next(this.state);
           return of(false);
         }));
   }
   logout(){
-    this.authenticated = false;
+    this.state.authenticated = false;
+    this.stateService.next(this.state);
     this.repo.logout();
     this.router.navigateByUrl("/");
   }

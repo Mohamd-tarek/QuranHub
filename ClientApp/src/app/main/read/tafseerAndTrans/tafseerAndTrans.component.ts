@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Sura } from '../../../models/meta/sura';
 import { Repository } from "../../../models/repository";
-import { StateSevice } from '../../stateService.service';
+import { StateService } from '../../../stateService.service';
 import { State } from 'src/app/models/state';
 
 @Component({
@@ -12,7 +12,7 @@ export class TafseerAndTransComponent {
  
   state : State;
   dataLoaded :boolean;
-   constructor(private repo: Repository, private stateService : StateSevice ) {
+   constructor(private repo: Repository, private stateService : StateService ) {
   
     this.repo.translation;
     this.repo.tafseer;

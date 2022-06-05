@@ -17,7 +17,6 @@ import { PaginationComponent } from "./statistics/pagination/pagination.componen
 import { NoteComponent } from "./note/note.component";
 import { NoteTextComponent } from "./note/noteText/noteText.component";
 import { AnalysisComponent } from "./analysis/analysis.component";
-import { StateSevice } from "./stateService.service";
 import { DragulaModule } from 'ng2-dragula'
 
 
@@ -28,7 +27,7 @@ import { DragulaModule } from 'ng2-dragula'
   declarations: [HomeComponent, ReadComponent, QuranComponent,TafseerAndTransComponent, TafseerComponent, 
                 TranslationComponent,AyaComponent, SearchComponent, StatisticsComponent,
                  ContainerComponent, PaginationComponent, AnalysisComponent, NoteComponent, NoteTextComponent],
-  providers: [StateSevice],
+  providers: [],
   exports: [ReadComponent]
 })
 

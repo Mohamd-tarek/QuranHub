@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { State } from 'src/app/models/state';
 import { Repository } from "../../models/repository";
-import { StateSevice } from '../stateService.service';
+import { StateService } from '../../stateService.service';
+import { FormControl } from '@angular/forms';
+import { skipWhile } from 'rxjs/operators';
 
 @Component({
   selector: "statistics",
@@ -9,16 +11,33 @@ import { StateSevice } from '../stateService.service';
 })
 export class StatisticsComponent {
 
-  state : State;
-  data : [] = [];
-  dataCount : number = 0;
-  itemsPerPage : number = 120;
-  numOfLinks :number = 0 ; 
-  dataLoaded : boolean;
+  state: State;
+  showLetters: FormControl;
+  data: [] = [];
+  dataCount: number = 0;
+  itemsPerPage: number = 120;
+  numOfLinks: number = 0 ; 
+  dataLoaded: boolean;
 
-  constructor(private repo: Repository, private stateService : StateSevice) {
+  constructor(private repo: Repository, private stateService : StateService) {
     this.state = this.stateService.getValue();
-    this.data = this.mapToArray(repo.words);
+    this.showLetters = new FormControl(this.state.showLetters);
+
+    this.stateService.pipe(skipWhile(newState => newState.currentStatisticsPage != this.state.currentStatisticsPage))
+    .subscribe(state =>{
+      this.state = state;});
+
+    this.showLetters.valueChanges.subscribe(()=>{
+      this.state.showLetters = this.showLetters.value;
+      this.state.currentStatisticsPage = 1;
+      this.stateService.next(this.state);
+      this.data = this.mapToArray( this.showLetters.value ?  this.repo.letters : this.repo.words);
+      this.dataCount = this.data.length;
+      this.numOfLinks = Math.trunc(this.dataCount  / this.itemsPerPage);
+
+    })
+
+    this.data = this.mapToArray( this.showLetters.value ?  this.repo.letters : this.repo.words);
     this.dataCount = this.data.length;
     this.numOfLinks = Math.trunc(this.dataCount  / this.itemsPerPage);
     this.dataLoaded = this.data.length > 0 ;
@@ -56,12 +75,6 @@ export class StatisticsComponent {
      }
 
     return pageOfData;
-  }
-
-  onPageChange(page : number)
-  {
-    this.state.currentStatisticsPage = page;
-    this.stateService.next(this.state);
   }
  
 }

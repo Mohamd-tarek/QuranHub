@@ -1,11 +1,11 @@
-import { Repository } from "../models/repository";
-import { State } from "../models/state";
+import { Repository } from "./models/repository";
+import { State } from "./models/state";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
 @Injectable()
 
-export class StateSevice extends BehaviorSubject<State>  {
+export class StateService extends BehaviorSubject<State>  {
    constructor(private repo : Repository){
     super( new State());
     
@@ -22,7 +22,7 @@ export class StateSevice extends BehaviorSubject<State>  {
    next(state : State){
        this.update(state);
        super.next(state);
-
+ 
    }
 
    update(state : State){

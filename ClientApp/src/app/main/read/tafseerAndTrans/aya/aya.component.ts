@@ -3,7 +3,7 @@ import { Repository } from "../../../../models/repository";
 import { Quran } from '../../../../models/quran/quran';
 import { State } from 'src/app/models/state';
 import { skipWhile } from 'rxjs/operators';
-import { StateSevice } from 'src/app/main/stateService.service';
+import { StateService } from 'src/app/stateService.service';
 
 @Component({
   selector: "aya",
@@ -14,7 +14,7 @@ export class AyaComponent {
   state : State;
   aya: Quran;
   
-  constructor(private repo: Repository,private stateService : StateSevice) { 
+  constructor(private repo: Repository,private stateService : StateService) { 
     this.state = this.stateService.getValue();
     this.aya = this.repo.quran.filter(q => q.sura == this.state.currentTafseerAndTranSura)[this.state.currentTafseerAndTranAya - 1];
 

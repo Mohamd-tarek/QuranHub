@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Repository } from "../../../models/repository";
 import { Quran } from "../../../models/quran/quran";
-import { StateSevice } from '../../stateService.service';
+import { StateService } from '../../../stateService.service';
 import { skipWhile } from 'rxjs/operators';
 import { State } from 'src/app/models/state';
 @Component({
@@ -22,7 +22,7 @@ export class QuranComponent {
     
   }
 
-  constructor(private repo: Repository, private stateService: StateSevice) {  
+  constructor(private repo: Repository, private stateService: StateService) {  
     this.repo.quran;
     this.state = this.stateService.getValue();
      this.stateService.pipe(skipWhile(newState => newState.currentQuranSura != this.curSura))

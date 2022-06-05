@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Repository } from "../../../../models/repository";
 import { Tafseer } from '../../../../models/quran/tafseer';
 import { State } from 'src/app/models/state';
-import { StateSevice } from 'src/app/main/stateService.service';
+import { StateService } from 'src/app/stateService.service';
 import { skipWhile } from 'rxjs/operators';
 
 @Component({
@@ -13,7 +13,7 @@ export class TafseerComponent {
   state : State;
   aya: Tafseer;
   
-  constructor(private repo: Repository,private stateService : StateSevice) { 
+  constructor(private repo: Repository,private stateService : StateService) { 
     this.state = this.stateService.getValue();
     this.aya = this.repo.tafseer.filter(q => q.sura == this.state.currentTafseerAndTranSura)[this.state.currentTafseerAndTranAya - 1];
 

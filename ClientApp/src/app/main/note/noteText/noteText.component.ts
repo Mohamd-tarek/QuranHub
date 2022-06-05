@@ -3,7 +3,7 @@ import { Repository } from "../../../models/repository";
 import { Note } from 'src/app/models/quran/note';
 import { Quran } from 'src/app/models/quran/quran';
 import { State } from 'src/app/models/state';
-import { StateSevice } from '../../stateService.service';
+import { StateService } from '../../../stateService.service';
 import { skipWhile } from 'rxjs/operators';
 
 
@@ -19,7 +19,7 @@ export class NoteTextComponent {
   dataLoaded: boolean = false; 
 
 
-  constructor(private repo: Repository, private stateService : StateSevice) {
+  constructor(private repo: Repository, private stateService : StateService) {
     this.state = this.stateService.getValue();
     this.aya = this.repo.quran.filter(q => q.sura == this.state.currentNoteSura)[this.state.currentNoteAya - 1];
 

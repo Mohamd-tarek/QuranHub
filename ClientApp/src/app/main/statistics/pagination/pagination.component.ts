@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { StateSevice } from '../../stateService.service';
+import { StateService } from '../../../stateService.service';
 import { State } from 'src/app/models/state';
 
 @Component({
@@ -15,9 +15,8 @@ export class PaginationComponent {
   
     @Input() total! : number;
     @Input() numOfLinks! : number;
-    @Output() selectPageEvent = new EventEmitter<number>();
     
-    constructor(private stateService : StateSevice){
+    constructor(private stateService : StateService){
       this.state = this.stateService.getValue();
     }
   
@@ -44,7 +43,8 @@ export class PaginationComponent {
         {
           this.state.currentStatisticsPage  = nxt;
         }
-      this.selectPageEvent.emit(nxt);
+
+      this.stateService.next(this.state);
       
     }
 

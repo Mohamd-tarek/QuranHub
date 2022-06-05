@@ -4,20 +4,27 @@
           <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
         </select> 
       </div>
-      <div class="row  justify-content-end m-2" >
-        <select class="form-select " aria-label="Default select example" [(ngModel)]="curAya" >
+      <div class="row justify-content-end m-2" >
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="curAya" >
           <option  *ngFor="let aya of ayas" value={{aya}} > {{aya}}</option>
         </select> 
       </div>
-      <div class="row align-items-start  m-2 p-2" >
+      <div class="row  align-items-start p-2" >
         <aya ></aya>
       </div>
-      <div class="row align-items-start  m-2 p-2" >
+      <div class="row align-items-start p-2" >
         <tafseer ></tafseer>
       </div>
-      <div class="row align-items-start  m-2 p-2">
+      <div class="row align-items-start p-2">
           <translation ></translation>
-      </div>    
+      </div>
+      <div class="row">
+        <span class="m-auto w-auto">
+          <i class="fa-solid fa-circle-chevron-left m-2" (click)="prev()" style="cursor: pointer;"></i>
+          <i class="pe-auto fa-solid fa-circle-chevron-right m-2" (click)="next()" style="cursor: pointer;"></i>
+        </span>
+      </div>  
+      
   </div>
 
 

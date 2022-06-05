@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Repository } from "../../../../models/repository";
 import { Translation } from "../../../../models/quran/translation";
-import { StateSevice } from 'src/app/main/stateService.service';
+import { StateService } from 'src/app/stateService.service';
 import { State } from 'src/app/models/state';
 import { skipWhile } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ export class TranslationComponent {
   state : State;
   aya: Translation;
   
-  constructor(private repo: Repository,private stateService : StateSevice) { 
+  constructor(private repo: Repository,private stateService : StateService) { 
     this.state = this.stateService.getValue();
     this.aya = this.repo.translation.filter(q => q.sura == this.state.currentTafseerAndTranSura)[this.state.currentTafseerAndTranAya - 1];
 

@@ -86,3 +86,4 @@ D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\bin\Debug\net5.0\M
 D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
 D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
 D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
+D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\bin\Debug\net5.0\libman.json

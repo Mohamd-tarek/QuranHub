@@ -4,15 +4,21 @@
           <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
         </select> 
       </div>
-      <div class="row align-items-start m-2">
-        <div class="col">
-            <p class="text-end p-2" style="overflow : auto; height: 74vh ; background-color: aliceblue;">
+      <div class="row align-items-start mt-2">
+        <div class="col m-2">
+            <p class="text-end rounded p-2" style="overflow : auto; height: 69vh ; background-color: aliceblue;">
                 <span  *ngFor="let aya of sura" class="text-end" >{{aya.text}}
                     <span class="text-primary" > ({{aya.aya}}) </span>
                 </span>
             </p>
         </div>
       </div>
+      <div class="row">
+        <span class="m-auto w-auto">
+          <i class="pe-auto fa-solid fa-circle-chevron-left m-2" (click)="prev()" style="cursor: pointer;"></i>
+          <i class="pe-auto fa-solid fa-circle-chevron-right m-2" (click)="next()" style="cursor: pointer;"></i>
+        </span>
+      </div> 
     </div>
   
     <ng-template #nodata>

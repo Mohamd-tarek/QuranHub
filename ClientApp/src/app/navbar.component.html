@@ -19,13 +19,13 @@
           </li>
         </ul>
       </div>
-      <button *ngIf ="authService.authenticated"class="btn btn-sm btn-warning"
+      <button *ngIf ="state.authenticated"class="btn btn-sm btn-primary"
       (click)="authService.logout()">
         Log Out
       </button>
 
-      <button *ngIf ="!authService.authenticated" 
-      class="btn btn-sm btn-warning"
+      <button *ngIf ="!state.authenticated" 
+      class="btn btn-sm btn-primary"
       routerLink="/login"
       >
         Login

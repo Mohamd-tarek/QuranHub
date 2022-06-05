@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Repository } from "../../models/repository";
 import { FormControl } from '@angular/forms';
 import { Sura } from 'src/app/models/meta/sura';
-import { StateSevice } from '../stateService.service';
+import { StateService } from '../../stateService.service';
 import { State } from 'src/app/models/state';
 
 @Component({
@@ -13,23 +13,23 @@ export class SearchComponent {
 
   state : State;
   result : any[] = []; 
-  searchForWord = new FormControl(false);
-  word = new FormControl('');
+  searchForWord: FormControl;
+  word: FormControl;
   dataLoaded : boolean;
 
 
   get suras() : Sura[]{
     return this.repo.suras;
   }
-  constructor(private repo: Repository, private stateService : StateSevice) {
+  constructor(private repo: Repository, private stateService : StateService) {
     this.repo.quranClean;
     this.repo.trie;
     this.repo.suras;
     this.dataLoaded = this.repo.quranClean.length > 0 && this.repo.suras.length > 0;
     this.state = this.stateService.getValue();
 
-    this.searchForWord.setValue(this.state.searchForWord);
-    this.word.setValue(this.state.currentSearch);
+    this.searchForWord = new FormControl(this.state.searchForWord);
+    this.word = new FormControl(this.state.currentSearch);
     this.setResult(this.state.currentSearch);
 
     this.searchForWord.valueChanges.subscribe(()=> { 

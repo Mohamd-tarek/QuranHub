@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from '@angular/common';
+import { HomeComponent } from "./home/home.component";
 import { ReadComponent } from "./read/read.component";
 import { QuranComponent } from "./read/quran/quran.component";
 import { TafseerAndTransComponent } from "./read/tafseerAndTrans/tafseerAndTrans.component";
@@ -16,16 +17,17 @@ import { PaginationComponent } from "./statistics/pagination/pagination.componen
 import { NoteComponent } from "./note/note.component";
 import { NoteTextComponent } from "./note/noteText/noteText.component";
 import { AnalysisComponent } from "./analysis/analysis.component";
-import { StateSevice } from "./stateService.service";
+import { DragulaModule } from 'ng2-dragula'
+
 
 
 
 @NgModule({
-  imports: [RouterModule, FormsModule, CommonModule, ReactiveFormsModule],
-  declarations: [ReadComponent, QuranComponent,TafseerAndTransComponent, TafseerComponent, 
+  imports: [RouterModule, FormsModule, CommonModule, ReactiveFormsModule, DragulaModule],
+  declarations: [HomeComponent, ReadComponent, QuranComponent,TafseerAndTransComponent, TafseerComponent, 
                 TranslationComponent,AyaComponent, SearchComponent, StatisticsComponent,
                  ContainerComponent, PaginationComponent, AnalysisComponent, NoteComponent, NoteTextComponent],
-  providers: [StateSevice],
+  providers: [],
   exports: [ReadComponent]
 })
 

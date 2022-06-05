@@ -1,0 +1,35 @@
+[33mcommit 12f9b1b0f5a137078179c12bd811be3dded039aa[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m)[m
+Author: Mohamed-tarek <mohamed.tarekziad@yahoo.com>
+Date:   Sat May 21 18:36:00 2022 +0200
+
+    adding navigation buttons
+
+[33mcommit efbc14c8a54996986f91964c1fe2edd071285510[m
+Author: Mohamed-tarek <mohamed.tarekziad@yahoo.com>
+Date:   Tue May 17 15:30:22 2022 +0200
+
+    add drag & drop feature to search component
+
+[33mcommit dd3c89b60d418025f5d04f30eed964946c09d658[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Mohamed-tarek <mohamed.tarekziad@yahoo.com>
+Date:   Sat May 14 19:40:41 2022 +0200
+
+    edit state & add note component
+
+[33mcommit b52d5d9f374b85e2730f0785dd405f4de9dc3905[m
+Author: Mohamed-tarek <mohamed.tarekziad@yahoo.com>
+Date:   Wed May 11 11:55:54 2022 +0200
+
+    edit read component UI
+
+[33mcommit 5130b3ae222517acea217412f05b563e9701e134[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: Mohamed-tarek <mohamed.tarekziad@yahoo.com>
+Date:   Wed May 4 10:54:58 2022 +0200
+
+    second commit
+
+[33mcommit 4816ef06fd163479527fc0b9c89f2eac8f902a88[m
+Author: Mohamed-tarek <mohamed.tarekziad@yahoo.com>
+Date:   Wed May 4 10:00:00 2022 +0200
+
+    first commit

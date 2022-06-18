@@ -10,8 +10,8 @@ import { State } from 'src/app/models/state';
 })
 export class QuranComponent {
   
-  dataLoaded : boolean;
-  sura: Quran[] = [];
+  dataLoaded : boolean = false;
+  sura!: Quran[];
   state : State;
   
   get curSura(): number { return this.state.currentQuranSura; }
@@ -22,19 +22,30 @@ export class QuranComponent {
     
   }
 
-  constructor(private repo: Repository, private stateService: StateService) {  
-    this.repo.quran;
+  constructor(private repo: Repository, private stateService: StateService) { 
+
     this.state = this.stateService.getValue();
-     this.stateService.pipe(skipWhile(newState => newState.currentQuranSura != this.curSura))
+    this.stateService.pipe(skipWhile(newState => this.checkLocalStateChange(newState)))
                .subscribe(state =>{
-                 this.sura = this.repo.quran.filter(q => q.sura == this.curSura)});
+                 this.state = state;
+                 this.updateSura();
+                });
 
-    this.dataLoaded = this.repo.quran.length > 1 ;
+    this.repo.suras.subscribe(data => {
+      this.dataLoaded = data.length > 1 ;
+    });
 
+  }
+ 
+  checkLocalStateChange(newState: State) : boolean{
+    return newState.currentQuranSura != this.curSura   }
+  
+  updateSura(){
+    this.repo.quran.subscribe(q => this.sura = q.filter(q => q.sura == this.curSura) )
   }
 
   get suras(){
-    return this.repo.suras;
+    return this.repo.suras.getValue();
   }
   
   next(){

@@ -17,7 +17,7 @@ export class StatisticsComponent {
   dataCount: number = 0;
   itemsPerPage: number = 120;
   numOfLinks: number = 0 ; 
-  dataLoaded: boolean;
+  dataLoaded: boolean = false;
 
   constructor(private repo: Repository, private stateService : StateService) {
     this.state = this.stateService.getValue();
@@ -28,37 +28,37 @@ export class StatisticsComponent {
       this.state = state;});
 
     this.showLetters.valueChanges.subscribe(()=>{
+      this.updateState();
+      this.updateData();
+    })
+
+    this.updateData();
+    this.dataLoaded = this.data.length > 0 ;
+  }
+
+  updateState(){
       this.state.showLetters = this.showLetters.value;
       this.state.currentStatisticsPage = 1;
       this.stateService.next(this.state);
-      this.data = this.mapToArray( this.showLetters.value ?  this.repo.letters : this.repo.words);
-      this.dataCount = this.data.length;
-      this.numOfLinks = Math.trunc(this.dataCount  / this.itemsPerPage);
-
-    })
-
-    this.data = this.mapToArray( this.showLetters.value ?  this.repo.letters : this.repo.words);
-    this.dataCount = this.data.length;
-    this.numOfLinks = Math.trunc(this.dataCount  / this.itemsPerPage);
-    this.dataLoaded = this.data.length > 0 ;
-
-    
   }
 
-  mapToArray (mapObject : Map<string, number>): any
+  updateData(){
+      this.data = this.convertMapToArray( this.showLetters.value ?  this.repo.letters : this.repo.words);
+      this.dataCount = this.data.length;
+      this.numOfLinks = Math.trunc(this.dataCount  / this.itemsPerPage);
+  }
+
+  convertMapToArray (mapObject : Map<string, number>): any
   {
-      let result: any= [];
+      let resultArray: any= [];
 
       for (let entry of mapObject.entries()) {
         let mapKey = entry[0];
         let mapValue = entry[1];
-        result.push([mapKey, mapValue]);
+        resultArray.push([mapKey, mapValue]);
       }
-     result =  result.sort((a: any[], b: any[])=> { 
-       let comp = (c: any, d: any)=> {c-d}
-         return comp(a[1], b[1]);
-      });
-    return result;
+
+    return resultArray;
   }
 
   getElements():any {

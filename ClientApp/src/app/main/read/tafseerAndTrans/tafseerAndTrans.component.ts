@@ -11,18 +11,15 @@ import { State } from 'src/app/models/state';
 export class TafseerAndTransComponent {
  
   state : State;
-  dataLoaded :boolean;
+  dataLoaded :boolean = false;
    constructor(private repo: Repository, private stateService : StateService ) {
   
-    this.repo.translation;
-    this.repo.tafseer;
-    this.repo.suras;
     this.state = stateService.getValue();
+    
 
-
-    this.dataLoaded = this.repo.suras.length > 1 &&
-                      this.repo.tafseer.length > 1 &&
-                      this.repo.translation.length > 1;
+    this.repo.suras.subscribe(data => {
+      this.dataLoaded = data.length > 1 ;
+    });
   }
 
   get curSura(): number {
@@ -45,12 +42,12 @@ export class TafseerAndTransComponent {
     }
 
   get suras(): Sura[] {
-    return this.repo.suras;
+    return this.repo.suras.getValue();
   }
 
   get ayas(): number[] {
     let ayas = [];
-    for(let i = 1; i <= this.repo.suras[this.curSura - 1].ayas; ++i){
+    for(let i = 1; i <= this.suras[this.curSura - 1].ayas; ++i){
       ayas.push(i);
     }
     return ayas;

@@ -15,17 +15,15 @@ export class SearchComponent {
   result : any[] = []; 
   searchForWord: FormControl;
   word: FormControl;
-  dataLoaded : boolean;
+  dataLoaded : boolean = false;
 
 
   get suras() : Sura[]{
-    return this.repo.suras;
+    return this.repo.suras.getValue();
   }
   constructor(private repo: Repository, private stateService : StateService) {
-    this.repo.quranClean;
-    this.repo.trie;
-    this.repo.suras;
-    this.dataLoaded = this.repo.quranClean.length > 0 && this.repo.suras.length > 0;
+    
+    this.repo.quranClean.subscribe(data => this.dataLoaded = data.length > 1);
     this.state = this.stateService.getValue();
 
     this.searchForWord = new FormControl(this.state.searchForWord);
@@ -34,7 +32,7 @@ export class SearchComponent {
 
     this.searchForWord.valueChanges.subscribe(()=> { 
       
-      this.state.searchForWord == this.searchForWord.value;
+      this.state.searchForWord = this.searchForWord.value;
       this.stateService.next(this.state);
       this.setResult(this.word.value);
    }); 
@@ -53,7 +51,13 @@ export class SearchComponent {
       this.result = word.length > 1 ? this.repo.trie.find(word) : [];
     }
     else{
-        this.result = word.length > 1 ? this.repo.quranClean.filter(q => q.text.includes(word)) : [];                                              
+        if(word.length > 1){
+          this.repo.quranClean.subscribe(data=>this.result = data.filter(q => q.text.includes(word)));                                              
+        }
+        else
+        {
+          this.result = [];
+        }
     }
   }
 }

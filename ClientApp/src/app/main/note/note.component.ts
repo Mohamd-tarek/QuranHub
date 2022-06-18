@@ -13,7 +13,6 @@ export class NoteComponent {
   
   constructor(private repo: Repository, private stateService : StateService ) {
     this.state = this.stateService.getValue();
-    this.repo.suras;    
   }
 
   get curSura(): number {
@@ -35,12 +34,12 @@ export class NoteComponent {
     }
 
   get suras(): Sura[] {
-    return this.repo.suras;
+    return this.repo.suras.getValue();
   }
 
   get ayas(): number[] {
     let ayas = [];
-    for(let i = 1; i <= this.repo.suras[this.curSura - 1].ayas; ++i){
+    for(let i = 1; i <= this.suras[this.curSura - 1].ayas; ++i){
       ayas.push(i);
     }
     return ayas;

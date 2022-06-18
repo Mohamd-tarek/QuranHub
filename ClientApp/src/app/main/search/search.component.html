@@ -16,7 +16,7 @@
     
     <div class="border rounded border-dark  p-2 m-2 text-end">
       <p>total result : {{result.length}}</p>
-    <div [dragula]="'DRAGULA_ITEMS'">
+      <div [dragula]="'DRAGULA_ITEMS'">
         <div *ngFor="let aya of result; let odd = odd" class="border rounded border-dark p-2 m-2"
            [class.bg-primary]="odd"
            [class.text-white]="odd"

@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'QuranAnalysis'`, () => {
+  it(`should have as title 'QuranHub'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('QuranAnalysis');
+    expect(app.title).toEqual('QuranHub');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('QuranAnalysis app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('QuranHub app is running!');
   });
 });

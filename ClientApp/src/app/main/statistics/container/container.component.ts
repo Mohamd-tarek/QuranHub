@@ -8,7 +8,7 @@ export class ContainerComponent {
   @Input() col! : number;
   @Input() data! : [];
 
-  getElement() : any[]{
+  getElements() : any[]{
         let content = [];
         let size = this.data.length;
         let curRow = 0;
@@ -22,11 +22,11 @@ export class ContainerComponent {
           curCol  = (curCol + 1) % this.col;
 
           if(curCol === 0 || index + 1 === size)
-              {
+          {
                   curRow++;
                   content.push(current);
                   current = [];
-              }
+          }
 
           index = curRow * this.col + curCol;
         }

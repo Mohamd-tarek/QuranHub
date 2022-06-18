@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Quran } from './models/quran/quran';
 import { Repository } from './models/repository';
 
 @Component({
@@ -8,7 +7,7 @@ import { Repository } from './models/repository';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'QuranAnalysis';
+  title = 'QuranHub';
   constructor(private repo: Repository) { }
 
 }

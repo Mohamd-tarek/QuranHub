@@ -12,16 +12,16 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using ServerApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-
-
+ 
+  
 namespace ServerApp
 {
     public class Startup
-    {
+    { 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            
+
         }
 
         public IConfiguration Configuration { get; }
@@ -29,17 +29,33 @@ namespace ServerApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddDbContext<IdentityDataContext>(options => 
+            services.AddDbContext<IdentityDataContext>(options =>
                  options.UseSqlServer(Configuration["ConnectionStrings:Identity"]));
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                 .AddEntityFrameworkStores<IdentityDataContext>();
-            
 
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                 .AddEntityFrameworkStores<IdentityDataContext>()
+                 .AddDefaultTokenProviders();
+            
+            // services.AddAuthentication()
+            //    .AddFacebook(opts => {
+            //        opts.AppId = Configuration["Facebook:AppId"];
+            //        opts.AppSecret = Configuration["Facebook:AppSecret"];
+            //    })
+            //    .AddGoogle(opts => {
+            //        opts.AppId = Configuration["Google:ClientId"];
+            //        opts.AppSecret = Configuration["Google:ClientSecret"];
+            //    })
+            //    .AddTwitter(opts => {
+            //        opts.AppId = Configuration["Twitter:ApiKey"];
+            //        opts.AppSecret = Configuration["Twitter:ApiSecret"];
+            //    });
+            
 
             services.AddDistributedSqlServerCache(options => {
                 options.ConnectionString = connectionString;
@@ -48,7 +64,7 @@ namespace ServerApp
             });
 
             services.AddSession(options =>{
-                options.Cookie.Name = "QuranAnalysis.Session";
+                options.Cookie.Name = "QuranHub.Session";
                 options.IdleTimeout = System.TimeSpan.FromHours(48);
                 options.Cookie.HttpOnly = false;
                 options.Cookie.IsEssential = true;
@@ -75,12 +91,14 @@ namespace ServerApp
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-                      
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapRazorPages();
 
                 endpoints.MapControllerRoute(
                     name : "angular_fallback",
@@ -104,7 +122,7 @@ namespace ServerApp
             });
             SeedData.SeedDatabase(services.GetRequiredService<DataContext>());
             IdentitySeedData.SeedDatabase(services).Wait();
-            
+
         }
     }
 }

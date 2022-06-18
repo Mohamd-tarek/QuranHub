@@ -3,7 +3,7 @@
       <li class="page-item" key="previous">
         <button class="page-link"
         (click) = "selectPage($event)" 
-        [value]="state.currentStatisticsPage - 1 > 1 ? state.currentStatisticsPage - 1 : 1"
+        [value]="state.currentStatisticsPage - 1"
         >Previous</button>
       </li>
       <li *ngFor="let link of getLinks()" [ngClass]="'page-item ' + (state.currentStatisticsPage == link ? 'active' : '')" >

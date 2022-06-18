@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark ">
     <div class="container-fluid">
-      <a class="navbar-brand text-white" href="#">Quran Analysis</a>
+      <a class="navbar-brand text-white" href="#">Quran Hub</a>
       <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse"
               data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                aria-label="Toggle navigation">
@@ -19,6 +19,9 @@
           </li>
         </ul>
       </div>
+      <a *ngIf ="state.authenticated" href="/identity/index" class="btn btn-sm btn-primary m-2" >
+         Manage Account
+      </a>
       <button *ngIf ="state.authenticated"class="btn btn-sm btn-primary"
       (click)="authService.logout()">
         Log Out

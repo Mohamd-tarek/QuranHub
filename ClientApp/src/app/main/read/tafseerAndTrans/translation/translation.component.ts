@@ -13,17 +13,36 @@ import { skipWhile } from 'rxjs/operators';
 export class TranslationComponent {
  
   state : State;
-  aya: Translation;
+  aya!: Translation;
   
   constructor(private repo: Repository,private stateService : StateService) { 
     this.state = this.stateService.getValue();
-    this.aya = this.repo.translation.filter(q => q.sura == this.state.currentTafseerAndTranSura)[this.state.currentTafseerAndTranAya - 1];
+    this.updateCurrentAya();
 
-    stateService.pipe(skipWhile(newState => newState.currentTafseerAndTranAya != this.state.currentTafseerAndTranAya || newState.currentTafseerAndTranSura != this.state.currentTafseerAndTranSura))
+    stateService.pipe(skipWhile((newState :State) => this.checkLocalStateChange(newState)))
     .subscribe(newState => {
       this.state = newState;
-      this.aya = this.repo.translation.filter(q => q.sura == this.state.currentTafseerAndTranSura)[this.state.currentTafseerAndTranAya - 1];
-    })
-    
+      this.updateCurrentAya();})
+  }
+
+  checkLocalStateChange(newState: State) : boolean{
+   return ( newState.currentTafseerAndTranAya  != this.currentAya() ||
+            newState.currentTafseerAndTranSura != this.currentSura());  }
+  
+  updateCurrentAya(): void{
+    this.repo.translation.subscribe(data =>this.aya = this.chooseAya(data));
+
+  }
+
+  chooseAya(data :Translation[]): Translation{
+       return data.filter(q => q.sura == this.currentSura())[this.currentAya() - 1]
+  }
+
+  currentSura(): number{
+    return this.state.currentTafseerAndTranSura;
+  }
+
+  currentAya(): number{
+    return this.state.currentTafseerAndTranAya;
   }
 }

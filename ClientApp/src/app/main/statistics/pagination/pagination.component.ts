@@ -9,11 +9,10 @@ import { State } from 'src/app/models/state';
 export class PaginationComponent {
     state : State;
     start : number= 1;
-    elementsPerPage : number = 11;
+    linksPerPage : number = 10;
     startElement: number = this.start;
-    endElement: number = this.start + 10;
+    endElement: number = this.start + this.linksPerPage;
   
-    @Input() total! : number;
     @Input() numOfLinks! : number;
     
     constructor(private stateService : StateService){
@@ -24,28 +23,30 @@ export class PaginationComponent {
       
       event.preventDefault();
       let nxt =  Number(event.target.getAttribute('value'));
+      nxt  = this.handleEdgeCases(nxt);
+      this.updateState(nxt);      
+    }
 
+    handleEdgeCases(nxt : number) : number{
+      nxt = nxt > this.numOfLinks ? this.numOfLinks + 1 : nxt;
+      nxt = nxt < 1 ? 1 : nxt;
+      
       if(nxt > this.endElement)
-        {
-        
-          this.state.currentStatisticsPage = nxt;
+        {    
           this.startElement = nxt;
-          this.endElement = Math.min(this.numOfLinks + 1 , nxt + 10) ;
+          this.endElement = Math.min(this.numOfLinks + 1 , nxt + this.linksPerPage) ;
         }
         else if(nxt < this.startElement)
         {
-          
-            this.state.currentStatisticsPage = nxt;
-            this.startElement = nxt - 10;
-            this.endElement = nxt;
+          this.startElement = nxt - this.linksPerPage;
+          this.endElement = nxt;
         }
-        else
-        {
-          this.state.currentStatisticsPage  = nxt;
-        }
+        return nxt;
+    }
 
+    updateState(nxt : number){
+      this.state.currentStatisticsPage = nxt;
       this.stateService.next(this.state);
-      
     }
 
     getLinks() :number[]
@@ -53,11 +54,9 @@ export class PaginationComponent {
       let links :number[] = [];
       for(let i = this.startElement ; i <= this.endElement; ++i)
       {
-        
         links.push(i);
       }
       return links;
-
     }
      
   }     

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AccountController : Controller
     {
        private UserManager<IdentityUser> userManager;
@@ -17,33 +19,7 @@ namespace ServerApp.Controllers
            signInManager = signInMgr;
         }
 
-        [HttpGet]
-        public IActionResult login(string returnUrl)
-        {
-            ViewBag.returnUrl = returnUrl;
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> login(LoginViewModel creds, string returnURL){
-            if(ModelState.IsValid){
-                if(await DoLogin(creds))
-                {
-                    return Redirect(returnURL ?? "/");
-                }else{
-                    ModelState.AddModelError("", "Invalid username or password");
-                }
-            }
-            return View(creds);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> logout(string returnURL){
-            await signInManager.SignOutAsync();
-            return Redirect(returnURL ?? "/");
-        }
-
-        [HttpPost("/api/account/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> login([FromBody] LoginViewModel creds){
             if(ModelState.IsValid && await DoLogin(creds)){
                return Ok("true");
@@ -51,7 +27,7 @@ namespace ServerApp.Controllers
             return BadRequest();
         }
 
-        [HttpPost("/api/account/logout")]
+        [HttpPost("logout")]
         public async Task<IActionResult> logout(){
             await signInManager.SignOutAsync();
             return Ok("true");

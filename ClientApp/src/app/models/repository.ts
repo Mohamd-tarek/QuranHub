@@ -27,6 +27,7 @@ export class Repository {
   apiURL: string = "https://localhost:5001/api/";
   apiDataURL: string = "https://localhost:5001/api/Data/";
   sessionURL: string = "https://localhost:5001/api/Session/";
+  authUrl : string = "https://localhost:5001/api/Account/";
 
   private _words = new Map<string, number>();
   private _letters = new Map<string, number>();
@@ -81,12 +82,12 @@ export class Repository {
   }
 
   login(name: string, password: string ) : Observable<boolean>{
-        return this.http.post<boolean>("/api/account/login", 
+        return this.http.post<boolean>(this.authUrl + "login", 
         {name: name, password: password});
   }
 
   logout() {
-    return this.http.post<boolean>("/api/account/logout", null).subscribe(response => {});
+    return this.http.post<boolean>( this.authUrl + "logout", null).subscribe(response => {});
 }
 
 private  countWords() {   

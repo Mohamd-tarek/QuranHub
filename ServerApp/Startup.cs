@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using ServerApp.Models;
+using ServerApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
  
@@ -38,9 +39,17 @@ namespace ServerApp
             services.AddDbContext<IdentityDataContext>(options =>
                  options.UseSqlServer(Configuration["ConnectionStrings:Identity"]));
 
+            services.AddScoped<ConsoleEmailSender>();
             services.AddIdentity<IdentityUser, IdentityRole>()
                  .AddEntityFrameworkStores<IdentityDataContext>()
                  .AddDefaultTokenProviders();
+
+            services.Configure<SecurityStampValidatorOptions>(opts => {
+                opts.ValidationInterval = System.TimeSpan.FromMinutes(1);
+            });
+            
+            services.AddScoped<TokenUrlEncoderService>();
+            services.AddScoped<IdentityEmailService>();
             
             // services.AddAuthentication()
             //    .AddFacebook(opts => {
@@ -48,14 +57,20 @@ namespace ServerApp
             //        opts.AppSecret = Configuration["Facebook:AppSecret"];
             //    })
             //    .AddGoogle(opts => {
-            //        opts.AppId = Configuration["Google:ClientId"];
-            //        opts.AppSecret = Configuration["Google:ClientSecret"];
+            //        opts.ClientId = Configuration["Google:ClientId"];
+            //        opts.ClientSecret = Configuration["Google:ClientSecret"];
             //    })
             //    .AddTwitter(opts => {
-            //        opts.AppId = Configuration["Twitter:ApiKey"];
-            //        opts.AppSecret = Configuration["Twitter:ApiSecret"];
+            //        opts.ConsumerKey = Configuration["Twitter:ApiKey"];
+            //        opts.ConsumerSecret = Configuration["Twitter:ApiSecret"];
+            //        opts.RetrieveUserDetails = true;
             //    });
             
+            services.ConfigureApplicationCookie(opts =>{
+                opts.LoginPath = "/Identity/SignIn";
+                opts.LogoutPath = "/Identity/SignOut";
+                opts.AccessDeniedPath = "/Identity/Forbidden";
+            }); 
 
             services.AddDistributedSqlServerCache(options => {
                 options.ConnectionString = connectionString;
@@ -122,7 +137,9 @@ namespace ServerApp
             });
             SeedData.SeedDatabase(services.GetRequiredService<DataContext>());
             IdentitySeedData.SeedDatabase(services).Wait();
+            app.SeedUserStoreForDashboard();
+
 
         }
-    }
+    } 
 }

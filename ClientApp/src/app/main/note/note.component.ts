@@ -1,37 +1,49 @@
 import { Component } from '@angular/core';
-import { State } from 'src/app/models/state';
 import { Sura } from '../../models/meta/sura';
 import { Repository } from "../../models/repository";
 import { StateService } from '../../stateService.service';
+import { skipWhile } from 'rxjs/operators';
 
 @Component({
   selector: "note",
   templateUrl: "note.component.html"
 })
 export class NoteComponent {
-  state : State;
+  currentNoteSura: number = 1;
+  currentNoteAya: number = 1;
   
   constructor(private repo: Repository, private stateService : StateService ) {
-    this.state = this.stateService.getValue();
+    stateService.pipe(skipWhile(newState => this.checkLocalStateChange(newState)))
+    .subscribe(newState => {
+         this.currentNoteSura = newState["currentNoteSura"];
+         this.currentNoteAya = newState["currentNoteAya"];
+      });
   }
 
+  checkLocalStateChange(newState: any) : boolean{
+    return ( newState["currentNoteSura"]  == this.currentNoteSura &&
+             newState["currentNoteAya"] == this.currentNoteAya);  }
+   
+
   get curSura(): number {
-   return this.state.currentNoteSura;
+   return this.currentNoteSura;
   }
 
   set curSura(value : number) {
-     this.state.currentNoteSura = value;
-     this.stateService.next(this.state);
+     this.currentNoteSura = value;
+     let state: any  = {"currentNoteSura": this.currentNoteSura}
+     this.stateService.next(state);
    }
 
    get curAya(): number {
-    return this.state.currentNoteAya;
+    return this.currentNoteAya;
    }
  
    set curAya(value : number) {
-      this.state.currentNoteAya = value;
-      this.stateService.next(this.state);
-    }
+      this.currentNoteAya = value;
+      let state: any = {"currentNoteAya": this.currentNoteAya}
+      this.stateService.next(state);   
+   }
 
   get suras(): Sura[] {
     return this.repo.suras.getValue();

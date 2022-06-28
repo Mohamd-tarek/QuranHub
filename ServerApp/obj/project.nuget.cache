@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "j7RkTsJpoHzYjsF0ziSDN1Md9mCv9i1jWFyJV5PLNRBkeBUIGiAK+RpErAXwOr6Iz0LKPnE3hS7tmIqDNMM0Xw==",
+  "dgSpecHash": "nKAwgLXoKrNR7aLZ3M/r275FA1XcKfmRojNB6++pyLS5edgPb9TwOzgP5/sgmAkxxHBCCo1q0cNJTRH9HOB1og==",
   "success": true,
   "projectFilePath": "D:\\Programming\\Angular\\Angular_Dotnet\\QuranAnalysis\\ServerApp\\ServerApp.csproj",
   "expectedPackageFiles": [
@@ -78,6 +78,7 @@
     "C:\\Users\\mohamed\\.nuget\\packages\\system.io\\4.3.0\\system.io.4.3.0.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\system.io.filesystem\\4.3.0\\system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
+    "C:\\Users\\mohamed\\.nuget\\packages\\system.json\\4.7.1\\system.json.4.7.1.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\system.net.nameresolution\\4.3.0\\system.net.nameresolution.4.3.0.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\system.net.primitives\\4.3.0\\system.net.primitives.4.3.0.nupkg.sha512",

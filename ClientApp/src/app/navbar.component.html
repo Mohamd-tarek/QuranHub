@@ -19,15 +19,15 @@
           </li>
         </ul>
       </div>
-      <a *ngIf ="state.authenticated" href="/identity/index" class="btn btn-sm btn-primary m-2" >
+      <a *ngIf ="authenticated" href="/identity/index" class="btn btn-sm btn-primary m-2" >
          Manage Account
       </a>
-      <button *ngIf ="state.authenticated"class="btn btn-sm btn-primary"
+      <button *ngIf ="authenticated"class="btn btn-sm btn-primary"
       (click)="authService.logout()">
         Log Out
       </button>
 
-      <button *ngIf ="!state.authenticated" 
+      <button *ngIf ="!authenticated" 
       class="btn btn-sm btn-primary"
       routerLink="/login"
       >

@@ -1,15 +1,15 @@
   <div *ngIf="dataLoaded; else nodata">
     <div class="border border-dark rounded p-2 m-2">
       <div>
-        <input id="word" type="checkbox" [formControl]="searchForWord">
-        <label for="word" class="m-2"> search for words </label>
+        <input id="searchForWord" type="checkbox" [formControl]="searchForWord">
+        <label for="searchForWord" class="m-2"> search for words </label>
       </div>
       <div class="row g-3 align-items-center">
         <div class="col-auto">
-          <label for="word" class="form-label">Word  </label>
+          <label for="currentSearch" class="form-label">Word  </label>
         </div>
         <div class="col-auto">
-          <input id="word" type="text" class="form-control" [formControl]="word">
+          <input id="currentSearch" type="text" class="form-control" [formControl]="currentSearch">
         </div>
       </div>
     </div>

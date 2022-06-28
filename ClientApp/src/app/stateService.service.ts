@@ -1,31 +1,55 @@
 import { Repository } from "./models/repository";
-import { State } from "./models/state";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
 @Injectable()
 
-export class StateService extends BehaviorSubject<State>  {
+export class StateService extends BehaviorSubject<any>  {
    constructor(private repo : Repository){
-    super( new State());
+
+    super( {
+      "authenticated" : false,
+      "overviewMode" : false,
+      "currentQuranSura" :1,
+      "currentTafseerAndTranSura":  1,
+      "currentTafseerAndTranAya": 1,
+      "currentNoteSura" : 1,
+      "currentNoteAya": 1,
+      "currentSearch": "",
+      "searchForWord" : false,
+      "showLetters" : false,
+      "currentStatisticsPage": 1
+     });
     
-     repo.getSessionData<State>("state").subscribe(data =>
+     repo.getSessionData<any>("state").subscribe(data =>
       {
           if(data != null)
-          {
-            super.next(data);
-            
+          { 
+             let state : any = this.getValue();
+
+            console.log(Object.keys(data));
+            for(let key of Object.keys(data) ){
+              
+                 state[key] = data[key];              
+            }
+            super.next(state);  
           }
       } );
    }
 
-   next(state : State){
-       this.update(state);
-       super.next(state);
+   next(state : any){
+      let curState: any = this.getValue(); 
+
+      for (let key  of Object.keys(state)){
+        curState[key] =  state[key];
+      }
+
+       this.update(curState);
+       super.next(curState);
  
    }
 
-   update(state : State){
+   update(state : any){ 
     this.repo.storeSessionData("state", state);
   }
 }

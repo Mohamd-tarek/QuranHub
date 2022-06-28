@@ -3,7 +3,7 @@ import { Repository } from "../../../models/repository";
 import { Quran } from "../../../models/quran/quran";
 import { StateService } from '../../../stateService.service';
 import { skipWhile } from 'rxjs/operators';
-import { State } from 'src/app/models/state';
+
 @Component({
   selector: "quran",
   templateUrl: "quran.component.html"
@@ -12,22 +12,21 @@ export class QuranComponent {
   
   dataLoaded : boolean = false;
   sura!: Quran[];
-  state : State;
+  currentQuranSura : number = 1;
   
-  get curSura(): number { return this.state.currentQuranSura; }
+  get curSura(): number { return this.currentQuranSura; }
 
   set curSura(value: number) {
-    this.state.currentQuranSura = value;
-    this.stateService.next(this.state);    
-    
+    this.currentQuranSura =  value;
+    let state: any  = {"currentQuranSura": this.currentQuranSura };
+    this.stateService.next(state);    
   }
 
   constructor(private repo: Repository, private stateService: StateService) { 
 
-    this.state = this.stateService.getValue();
-    this.stateService.pipe(skipWhile(newState => this.checkLocalStateChange(newState)))
-               .subscribe(state =>{
-                 this.state = state;
+    this.stateService.pipe(skipWhile(newState => newState["currentQuranSura"] == this.curSura))
+               .subscribe(newState =>{
+                 this.currentQuranSura = newState["currentQuranSura"];
                  this.updateSura();
                 });
 
@@ -37,9 +36,6 @@ export class QuranComponent {
 
   }
  
-  checkLocalStateChange(newState: State) : boolean{
-    return newState.currentQuranSura != this.curSura   }
-  
   updateSura(){
     this.repo.quran.subscribe(q => this.sura = q.filter(q => q.sura == this.curSura) )
   }

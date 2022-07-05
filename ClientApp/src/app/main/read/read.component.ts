@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { StateService } from '../../stateService.service';
 import { FormControl } from '@angular/forms';
-import { State } from 'src/app/models/state';
+import { skipWhile } from 'rxjs/operators';
 
 
 
@@ -10,15 +10,17 @@ import { State } from 'src/app/models/state';
   templateUrl: "read.component.html"
 })
 export class ReadComponent {
-  state :State;
-  overviewMode : FormControl; 
+  overviewMode : FormControl = new FormControl(false); 
   
   constructor(private stateService : StateService){
-    this.state = this.stateService.getValue();
-    this.overviewMode = new FormControl(this.state.overviewMode);
+    stateService.pipe(skipWhile(newState => this.overviewMode.value == newState["overviewMode"]))
+    .subscribe(newState => {
+         this.overviewMode.setValue(newState["overviewMode"], {emitEvent :false});
+      });
+
     this.overviewMode.valueChanges.subscribe(()=>{
-      this.state.overviewMode = this.overviewMode.value;
-      this.stateService.next(this.state);
+      let state: any = {"overviewMode": this.overviewMode.value}
+      this.stateService.next(state);
     })
   }
    

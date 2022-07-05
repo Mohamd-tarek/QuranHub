@@ -13,7 +13,7 @@
 
 <div *ngIf="edit">
     <textarea class="form-control p-2 rounded"  [(ngModel)]="note.text" ></textarea>
-    <button type="button" *ngIf="edit" class="btn btn-warning" (click)="saveNote()">
+    <button type="button" *ngIf="edit" class="btn btn-warning m-2" (click)="saveNote()">
         save
     </button>
 </div>

@@ -1,15 +1,26 @@
-﻿<ul class="navbar-nav ">
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{ 
+    string dashboardRole = Configuration["Dashboard:Role"] ?? "Dashboard";
+}
+
+<ul class="navbar-nav ">
     @if (User.Identity.IsAuthenticated) { 
-        <li class="nav-item">
-            <a  asp-page="/Identity/Index" class="nav-link active text-white" aria-current="page" > @User.Identity.Name</a>
-          </li>
-          <li class="nav-item">
-            <a  asp-area="Identity" asp-page="/Account/Logout"  class="nav-link active text-white" aria-current="page" > Logout</a>
-          </li>
+        @if (User.IsInRole(dashboardRole)) {
+            <li class="nav-item">
+              <a  asp-page="/Identity/Admin/Dashboard" class="nav-link active text-white" aria-current="page" > @User.Identity.Name</a>
+            </li>
+        }else{
+            <li class="nav-item">
+              <a  asp-page="/Identity/Index" class="nav-link active text-white" aria-current="page" > @User.Identity.Name</a>
+            </li>
+        }
+            <li class="nav-item">
+              <a   asp-page="/Identity/SignOut"  class="nav-link active text-white" aria-current="page" > Logout</a>
+            </li>
     } else {
-        <li class="nav-item">
-            <a  asp-area="Identity" asp-page="/Account/Login"   class="nav-link active text-white" aria-current="page" > Login/Register</a>
-          </li>
+            <li class="nav-item">
+                <a   asp-page="/Identity/SignIn"   class="nav-link active text-white" aria-current="page" > Sign In/Register</a>
+            </li>
     }
 </ul>
 

@@ -18,7 +18,35 @@
         asp-page="View">
     List Users
 </a>
+<a class="btn btn-@Model.theme w-100 m-2 @getClass("Create")" 
+        asp-page="Create">
+    Create Account
+</a>
+<a class="btn btn-@Model.theme w-100 m-2 @getClass("Delete")" 
+        asp-page="Delete">
+    Delete Account
+</a>
 <a class="btn btn-@Model.theme w-100 m-2 @getClass("Edit")" 
         asp-page="Edit">
     Edit Users
+</a>
+<a class="btn btn-@Model.theme w-100 m-2  @getClass("Passwords")" asp-page="Passwords" 
+        asp-route-id="">
+    Passwords
+</a>
+<a class="btn btn-@Model.theme w-100 m-2  @getClass("Lockouts")" asp-page="Lockouts" 
+        asp-route-id="">
+    Lockouts
+</a>
+<a class="btn btn-@Model.theme w-100 m-2  @getClass("Roles")" asp-page="Roles" 
+        asp-route-id="">
+    Edit Roles
+</a>
+<a class="btn btn-@Model.theme w-100 m-2  @getClass("Claims")" asp-page="Claims" 
+        asp-route-id="">
+    Claims
+</a>
+<a class="btn btn-@Model.theme w-100 m-2  @getClass("ClaimsPrincipal")" asp-page="ViewClaimsPrincipal" 
+        asp-route-id="">
+    View ClaimsPrincipal
 </a>

@@ -13,12 +13,16 @@
     <meta name="viewport" content="width=device-width" />
     <title>Quran Hub</title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
 </head>
 <body>
     @if (showHeader) {
         <nav class="navbar navbar-expand-lg navbar-light bg-dark ">
             <div class="container-fluid">
-                <a class="navbar-brand text-white" href="/">Quran Analysis @banner</a>
+                <a class="navbar-brand text-white" href="/">Quran Analysis  </a>
+                    <div class="text-white fs-3 w-100 text-center">
+                        @banner
+                    </div>
                 <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -49,5 +53,7 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/lib/qrcode/qrcode.min.js"></script>
+
 </html>
 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Sura } from '../../../models/meta/sura';
 import { Repository } from "../../../models/repository";
 import { StateService } from '../../../stateService.service';
-import { State } from 'src/app/models/state';
+import { skipWhile } from 'rxjs/operators';
 
 @Component({
   selector: "tafseerAndTrans",
@@ -10,34 +10,45 @@ import { State } from 'src/app/models/state';
 })
 export class TafseerAndTransComponent {
  
-  state : State;
+  currentTafseerAndTranSura :number = 1;
+  currentTafseerAndTranAya :number = 1; 
   dataLoaded :boolean = false;
    constructor(private repo: Repository, private stateService : StateService ) {
   
-    this.state = stateService.getValue();
-    
-
+    stateService.pipe(skipWhile(newState  => this.checkLocalStateChange(newState)))
+      .subscribe(newState => {
+        this.currentTafseerAndTranSura = newState["currentTafseerAndTranSura"];
+        this.currentTafseerAndTranAya = newState["currentTafseerAndTranAya"];
+        });
+  
     this.repo.suras.subscribe(data => {
       this.dataLoaded = data.length > 1 ;
     });
   }
 
+  checkLocalStateChange(newState: any) : boolean{
+    return ( newState["currentTafseerAndTranAya"]  == this.curAya &&
+             newState["currentTafseerAndTranSura"] == this.curSura);  }
+   
+
   get curSura(): number {
-   return this.state.currentTafseerAndTranSura;
+   return this.currentTafseerAndTranSura;
   }
 
   set curSura(value : number) {
-     this.state.currentTafseerAndTranSura = value;
-     this.stateService.next(this.state);
+     this.currentTafseerAndTranSura = value;
+     let state: any  = {"currentTafseerAndTranSura" : this.currentTafseerAndTranSura };
+     this.stateService.next(state);
    }
 
    get curAya(): number {
-    return this.state.currentTafseerAndTranAya;
+    return this.currentTafseerAndTranAya;
    }
  
    set curAya(value : number) {
-      this.state.currentTafseerAndTranAya = value;
-      this.stateService.next(this.state);
+      this.currentTafseerAndTranAya = value;
+      let state: any  = {"currentTafseerAndTranAya": this.currentTafseerAndTranAya}
+      this.stateService.next(state);
       
     }
 

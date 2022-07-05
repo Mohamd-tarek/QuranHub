@@ -21,6 +21,7 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.16" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="popper.js" Version="1.16.1" />
+    <PackageReference Include="System.Json" Version="4.7.1" />
   </ItemGroup>
 
 </Project>

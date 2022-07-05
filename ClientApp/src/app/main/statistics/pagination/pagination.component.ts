@@ -1,13 +1,14 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { StateService } from '../../../stateService.service';
-import { State } from 'src/app/models/state';
+import { skipWhile } from 'rxjs/operators';
+
 
 @Component({
   selector: "pagination",
   templateUrl: "pagination.component.html"
 })
 export class PaginationComponent {
-    state : State;
+    currentStatisticsPage: number = 1;
     start : number= 1;
     linksPerPage : number = 10;
     startElement: number = this.start;
@@ -16,7 +17,10 @@ export class PaginationComponent {
     @Input() numOfLinks! : number;
     
     constructor(private stateService : StateService){
-      this.state = this.stateService.getValue();
+      stateService.pipe(skipWhile(newState => this.currentStatisticsPage == newState["currentStatisticsPage"]))
+    .subscribe(newState => {
+         this.currentStatisticsPage = newState["currentStatisticsPage"];
+      });
     }
   
     selectPage (event: any) {
@@ -45,8 +49,9 @@ export class PaginationComponent {
     }
 
     updateState(nxt : number){
-      this.state.currentStatisticsPage = nxt;
-      this.stateService.next(this.state);
+      this.currentStatisticsPage = nxt;
+      let state: any = {"currentStatisticsPage": this.currentStatisticsPage}
+      this.stateService.next(state);
     }
 
     getLinks() :number[]

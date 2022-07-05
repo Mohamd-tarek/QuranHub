@@ -3,7 +3,8 @@ import { Repository } from "../../models/repository";
 import { FormControl } from '@angular/forms';
 import { Sura } from 'src/app/models/meta/sura';
 import { StateService } from '../../stateService.service';
-import { State } from 'src/app/models/state';
+import { skipWhile } from 'rxjs/operators';
+
 
 @Component({
   selector: "search",
@@ -11,10 +12,9 @@ import { State } from 'src/app/models/state';
 })
 export class SearchComponent {
 
-  state : State;
   result : any[] = []; 
-  searchForWord: FormControl;
-  word: FormControl;
+  searchForWord: FormControl = new FormControl();
+  currentSearch: FormControl = new FormControl();
   dataLoaded : boolean = false;
 
 
@@ -22,33 +22,41 @@ export class SearchComponent {
     return this.repo.suras.getValue();
   }
   constructor(private repo: Repository, private stateService : StateService) {
-    
+       
     this.repo.quranClean.subscribe(data => this.dataLoaded = data.length > 1);
-    this.state = this.stateService.getValue();
-
-    this.searchForWord = new FormControl(this.state.searchForWord);
-    this.word = new FormControl(this.state.currentSearch);
-    this.setResult(this.state.currentSearch);
+    stateService.pipe(skipWhile(newState  => this.checkLocalStateChange(newState)))
+    .subscribe(newState => {
+        this.setIntialState(newState);
+      });
 
     this.searchForWord.valueChanges.subscribe(()=> { 
-      
-      this.state.searchForWord = this.searchForWord.value;
-      this.stateService.next(this.state);
-      this.setResult(this.word.value);
-   }); 
+      let state: any = {"searchForWord": this.searchForWord.value}
+      this.stateService.next(state);
+      this.setResult(this.currentSearch.value);
+      }); 
 
-    this.word.valueChanges.subscribe(()=> { 
-    
-      this.state.currentSearch = this.word.value;
-      this.stateService.next(this.state);
-       this.setResult(this.word.value);
-    });    
+    this.currentSearch.valueChanges.subscribe(()=> { 
+      let state: any  = {"currentSearch": this.currentSearch.value}
+      this.stateService.next(state);
+      this.setResult(this.currentSearch.value);
+      });    
   }
 
-  setResult(word :string){
-    
+  checkLocalStateChange(newState: any) : boolean{
+    return ( newState["currentSearch"] == this.currentSearch.value &&
+             newState["searchForWord"] == this.searchForWord.value); 
+  }
+  
+  setIntialState(newState: any) : void{
+    this.currentSearch.setValue(newState["currentSearch"], {emitEvent :false});
+    this.searchForWord.setValue(newState["searchForWord"], {emitEvent :false});
+    this.setResult(this.currentSearch.value);
+  }
+   
+
+  setResult(word :string){ 
     if(this.searchForWord.value === true){
-      this.result = word.length > 1 ? this.repo.trie.find(word) : [];
+      this.repo.trie.subscribe(data => this.result = word.length > 1 ? data.find(word) : [])
     }
     else{
         if(word.length > 1){

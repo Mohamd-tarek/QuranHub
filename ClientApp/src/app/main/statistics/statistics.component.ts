@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { State } from 'src/app/models/state';
 import { Repository } from "../../models/repository";
 import { StateService } from '../../stateService.service';
 import { FormControl } from '@angular/forms';
@@ -11,8 +10,8 @@ import { skipWhile } from 'rxjs/operators';
 })
 export class StatisticsComponent {
 
-  state: State;
-  showLetters: FormControl;
+  currentStatisticsPage : number = 1;
+  showLetters: FormControl = new FormControl();
   data: [] = [];
   dataCount: number = 0;
   itemsPerPage: number = 120;
@@ -20,30 +19,38 @@ export class StatisticsComponent {
   dataLoaded: boolean = false;
 
   constructor(private repo: Repository, private stateService : StateService) {
-    this.state = this.stateService.getValue();
-    this.showLetters = new FormControl(this.state.showLetters);
 
-    this.stateService.pipe(skipWhile(newState => newState.currentStatisticsPage != this.state.currentStatisticsPage))
-    .subscribe(state =>{
-      this.state = state;});
+    this.stateService.pipe(skipWhile(newState => this.checkLocalStateChange(newState)))
+    .subscribe(newState =>{
+      this.showLetters.setValue(newState["showLetters"], {emitEvent :false});
+      this.currentStatisticsPage = newState["currentStatisticsPage"];
+      });
 
     this.showLetters.valueChanges.subscribe(()=>{
       this.updateState();
       this.updateData();
     })
 
-    this.updateData();
-    this.dataLoaded = this.data.length > 0 ;
+    this.repo.words.subscribe(data =>{
+      this.updateData();
+      this.dataLoaded = (data.size > 1)}
+     );
+      
   }
 
+  checkLocalStateChange(newState: any) : boolean{
+    return ( newState["showLetters"]  == this.showLetters.value &&
+             newState["currentStatisticsPage"] == this.currentStatisticsPage);  }
+   
+
   updateState(){
-      this.state.showLetters = this.showLetters.value;
-      this.state.currentStatisticsPage = 1;
-      this.stateService.next(this.state);
+      let state: any = {"showLetters": this.showLetters.value }
+      this.stateService.next(state);
   }
 
   updateData(){
-      this.data = this.convertMapToArray( this.showLetters.value ?  this.repo.letters : this.repo.words);
+      
+      this.data = this.convertMapToArray( this.showLetters.value ?  this.repo.letters.getValue() : this.repo.words.getValue());
       this.dataCount = this.data.length;
       this.numOfLinks = Math.trunc(this.dataCount  / this.itemsPerPage);
   }
@@ -64,8 +71,8 @@ export class StatisticsComponent {
   getElements():any {
     
       let pageOfData : any = [];
-      let startIndex = (this.state.currentStatisticsPage  - 1) * this.itemsPerPage ;
-      let endIndex = this.state.currentStatisticsPage  *  this.itemsPerPage;
+      let startIndex = this.showLetters.value ? 1 :  (this.currentStatisticsPage  - 1) * this.itemsPerPage ;
+      let endIndex = this.currentStatisticsPage  *  this.itemsPerPage;
       let size = this.dataCount;
 
      while( startIndex < size && startIndex < endIndex)

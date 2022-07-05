@@ -29,7 +29,7 @@ namespace ServerApp.Pages.Identity.Admin {
                 return RedirectToPage("Selectuser",
                     new {
                         Label = "View ClaimsPrincipal",
-                        Callback = "ClaimsPrincipal"
+                        Callback = "ViewClaimsPrincipal"
                     });
             }
             IdentityUser user = await UserManager.FindByIdAsync(Id);

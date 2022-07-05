@@ -31,8 +31,11 @@ export class StatisticsComponent {
       this.updateData();
     })
 
-    this.updateData();
-    this.dataLoaded = this.data.length > 0 ;
+    this.repo.words.subscribe(data =>{
+      this.updateData();
+      this.dataLoaded = (data.size > 1)}
+     );
+      
   }
 
   checkLocalStateChange(newState: any) : boolean{
@@ -41,13 +44,13 @@ export class StatisticsComponent {
    
 
   updateState(){
-      let state: any = {"showLetters": this.showLetters.value,
-                        "currentStatisticsPage": 1 }
+      let state: any = {"showLetters": this.showLetters.value }
       this.stateService.next(state);
   }
 
   updateData(){
-      this.data = this.convertMapToArray( this.showLetters.value ?  this.repo.letters : this.repo.words);
+      
+      this.data = this.convertMapToArray( this.showLetters.value ?  this.repo.letters.getValue() : this.repo.words.getValue());
       this.dataCount = this.data.length;
       this.numOfLinks = Math.trunc(this.dataCount  / this.itemsPerPage);
   }
@@ -68,7 +71,7 @@ export class StatisticsComponent {
   getElements():any {
     
       let pageOfData : any = [];
-      let startIndex = (this.currentStatisticsPage  - 1) * this.itemsPerPage ;
+      let startIndex = this.showLetters.value ? 1 :  (this.currentStatisticsPage  - 1) * this.itemsPerPage ;
       let endIndex = this.currentStatisticsPage  *  this.itemsPerPage;
       let size = this.dataCount;
 

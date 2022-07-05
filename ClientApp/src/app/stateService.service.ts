@@ -7,7 +7,7 @@ import { BehaviorSubject } from "rxjs";
 export class StateService extends BehaviorSubject<any>  {
    constructor(private repo : Repository){
 
-    super( {
+    super({
       "authenticated" : false,
       "overviewMode" : false,
       "currentQuranSura" :1,
@@ -25,31 +25,29 @@ export class StateService extends BehaviorSubject<any>  {
       {
           if(data != null)
           { 
-             let state : any = this.getValue();
-
-            console.log(Object.keys(data));
-            for(let key of Object.keys(data) ){
-              
-                 state[key] = data[key];              
-            }
+            let state : any = this.editState(data);
             super.next(state);  
           }
-      } );
+      });
    }
 
-   next(state : any){
-      let curState: any = this.getValue(); 
+  editState(state: any) : any{    
+    let curState: any = this.getValue(); 
+    for (let key  of Object.keys(state)){
+      curState[key] =  state[key];
+    }
 
-      for (let key  of Object.keys(state)){
-        curState[key] =  state[key];
-      }
+   return curState;     
+   }
 
+  next(state : any){
+      let curState: any = this.editState(state);
        this.update(curState);
        super.next(curState);
  
    }
 
-   update(state : any){ 
+  update(state : any){ 
     this.repo.storeSessionData("state", state);
   }
 }

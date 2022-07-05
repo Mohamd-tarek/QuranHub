@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+
+
 
 namespace ServerApp.Pages.Identity {
 
@@ -10,13 +14,21 @@ namespace ServerApp.Pages.Identity {
 
         public UserManager<IdentityUser> UserManager { get; set; }
 
-        public string Email { get; set; }
-        public string Phone { get; set; }
+        
+        public IdentityUser IdentityUser { get; set; }
+
+        public IEnumerable<string> PropertyNames
+            => typeof(IdentityUser).GetProperties()
+                .Select(prop => prop.Name);
+
+        public string GetValue(string name) =>
+            typeof(IdentityUser).GetProperty(name)
+                 .GetValue(IdentityUser)?.ToString();
+
        
         public async Task OnGetAsync() {
-            IdentityUser CurrentUser = await UserManager.GetUserAsync(User);
-            Email = CurrentUser?.Email ?? "(No Value)";
-            Phone = CurrentUser?.PhoneNumber ?? "(No Value)";
+            IdentityUser = await UserManager.GetUserAsync(User);
+         
         }
     }
 }

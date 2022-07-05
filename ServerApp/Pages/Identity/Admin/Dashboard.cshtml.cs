@@ -19,7 +19,7 @@ namespace ServerApp.Pages.Identity.Admin {
         public int UsersTwoFactor { get; set; } = 0;
 
          private readonly string[] emails = {
-            "alice@example.com", "bob@example.com", "charlie@example.com"
+            "mohamed@example.com", "ahmed@example.com", "ali@example.com"
         };
 
         public void OnGet(){

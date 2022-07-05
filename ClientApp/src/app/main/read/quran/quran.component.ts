@@ -30,7 +30,7 @@ export class QuranComponent {
                  this.updateSura();
                 });
 
-    this.repo.suras.subscribe(data => {
+    this.repo.quran.subscribe(data => {
       this.dataLoaded = data.length > 1 ;
     });
 

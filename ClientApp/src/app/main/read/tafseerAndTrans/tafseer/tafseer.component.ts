@@ -18,14 +18,20 @@ export class TafseerComponent {
 
     stateService.pipe(skipWhile(newState  => this.checkLocalStateChange(newState)))
     .subscribe(newState => {
-      this.currentTafseerAndTranSura = newState["currentTafseerAndTranSura"];
-      this.currentTafseerAndTranAya = newState["currentTafseerAndTranAya"];
-      this.updateCurrentAya();})
+      this.setInitialState(newState);
+    });
   }
 
   checkLocalStateChange(newState: any) : boolean{
     return ( newState["currentTafseerAndTranAya"]  == this.currentAya() &&
-             newState["currentTafseerAndTranSura"] == this.currentSura());  }
+             newState["currentTafseerAndTranSura"] == this.currentSura()); 
+  }
+
+  setInitialState(newState: any): void{
+    this.currentTafseerAndTranSura = newState["currentTafseerAndTranSura"];
+    this.currentTafseerAndTranAya = newState["currentTafseerAndTranAya"];
+    this.updateCurrentAya();
+ }
    
   updateCurrentAya(): void{
     this.repo.tafseer.subscribe(data =>this.aya = this.chooseAya(data));

@@ -23,7 +23,6 @@ export class NoteTextComponent {
     stateService.pipe(skipWhile(newState =>   this.checkLocalStateChange(newState)))
     .subscribe(newState => {
          this.updateState(newState);
-         this.getNote();
       });
    
   }
@@ -35,8 +34,13 @@ export class NoteTextComponent {
   }
   
   getAya():void{
-    this.repo.quran.subscribe(data => this.aya = 
-           data.filter(q => q.sura === this.currentNoteSura)[this.currentNoteAya - 1]);
+    this.repo.quran.subscribe(data => { 
+           if(data.length > 1){
+             this.aya = 
+             data.filter(q => q.sura === this.currentNoteSura)[this.currentNoteAya - 1];
+             this.getNote();
+           }
+        });
   }
 
   getNote() : void{

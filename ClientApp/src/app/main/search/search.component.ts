@@ -26,9 +26,7 @@ export class SearchComponent {
     this.repo.quranClean.subscribe(data => this.dataLoaded = data.length > 1);
     stateService.pipe(skipWhile(newState  => this.checkLocalStateChange(newState)))
     .subscribe(newState => {
-      this.currentSearch.setValue(newState["currentSearch"], {emitEvent :false});
-      this.searchForWord.setValue(newState["searchForWord"], {emitEvent :false});
-      this.setResult(this.currentSearch.value);
+        this.setIntialState(newState);
       });
 
     this.searchForWord.valueChanges.subscribe(()=> { 
@@ -46,12 +44,19 @@ export class SearchComponent {
 
   checkLocalStateChange(newState: any) : boolean{
     return ( newState["currentSearch"] == this.currentSearch.value &&
-             newState["searchForWord"] == this.searchForWord.value);  }
+             newState["searchForWord"] == this.searchForWord.value); 
+  }
+  
+  setIntialState(newState: any) : void{
+    this.currentSearch.setValue(newState["currentSearch"], {emitEvent :false});
+    this.searchForWord.setValue(newState["searchForWord"], {emitEvent :false});
+    this.setResult(this.currentSearch.value);
+  }
    
 
   setResult(word :string){ 
     if(this.searchForWord.value === true){
-      this.result = word.length > 1 ? this.repo.trie.find(word) : [];
+      this.repo.trie.subscribe(data => this.result = word.length > 1 ? data.find(word) : [])
     }
     else{
         if(word.length > 1){

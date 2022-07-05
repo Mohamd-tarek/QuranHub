@@ -1,12 +1,23 @@
 ﻿@page
 @model ServerApp.Pages.Identity.IndexModel
+@namespace  System.Reflection
+
 @{ 
     ViewBag.Workflow = "Overview";
 }
 
 <table class="table table-sm table-striped table-bordered">
+    <thead>
+        <tr><th>Property</th><th>Value</th></tr>
+    </thead>
     <tbody>
-        <tr><th>Email</th><td>@Model.Email</td></tr>
-        <tr><th>Phone</th><td>@Model.Phone</td></tr>    
+        @foreach (string name in Model.PropertyNames) {
+            <tr>
+                <td>@name</td>
+                <td class="text-truncate" style="max-width:250px">
+                    @Model.GetValue(name)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

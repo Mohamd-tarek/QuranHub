@@ -11,18 +11,30 @@ import { skipWhile } from 'rxjs/operators';
 export class NoteComponent {
   currentNoteSura: number = 1;
   currentNoteAya: number = 1;
+  dataLoaded : boolean = false;
   
   constructor(private repo: Repository, private stateService : StateService ) {
     stateService.pipe(skipWhile(newState => this.checkLocalStateChange(newState)))
     .subscribe(newState => {
-         this.currentNoteSura = newState["currentNoteSura"];
-         this.currentNoteAya = newState["currentNoteAya"];
+        this.setState(newState);
       });
+
+   this.repo.suras.subscribe(data =>{
+      this.dataLoaded = data.length > 1;
+    });
+
   }
 
   checkLocalStateChange(newState: any) : boolean{
     return ( newState["currentNoteSura"]  == this.currentNoteSura &&
-             newState["currentNoteAya"] == this.currentNoteAya);  }
+             newState["currentNoteAya"] == this.currentNoteAya); 
+  }
+
+  setState(newState: any):void{
+    this.currentNoteSura = newState["currentNoteSura"];
+    this.currentNoteAya = newState["currentNoteAya"];
+  }
+
    
 
   get curSura(): number {

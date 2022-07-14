@@ -63,7 +63,7 @@ namespace ServerApp.Pages.Identity {
                     await UserManager.GetAuthenticatorKeyAsync(IdentityUser);
                 await SignInManager.RefreshSignInAsync(IdentityUser);
             }
-            QrCodeUrl = $"otpauth://totp/ExampleApp:{IdentityUser.Email}"
+            QrCodeUrl = $"otpauth://totp/QuranHub:{IdentityUser.Email}"
                         + $"?secret={AuthenticatorKey}";
         }
     }

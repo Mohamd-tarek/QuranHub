@@ -1,0 +1,1 @@
+"Server=DESKTOP-CC9HR65\QURANSERVER;Database=QuranHub;Trusted_Connection=True" "dbo" "SessionData"

@@ -9,7 +9,7 @@ namespace ServerApp.Models
 {
     public class SeedData
     {
-        static string baseDir = @"D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\Models\SeedData";
+        static string baseDir = Directory.GetCurrentDirectory() + @"\Models\SeedData";
         static List<string> files = new List<string> {  "quran-uthmani-xml.xml",
                                                         "ar.muyassar.xml",
                                                         "ar.jalalayn.xml",

@@ -68,9 +68,9 @@ export class Repository {
            return this.http.get<T>(this.sessionURL + dataType);
   }
 
-  login(name: string, password: string ) : Observable<boolean>{
+  login(email: string, password: string ) : Observable<boolean>{
         return this.http.post<boolean>(this.authUrl + "login", 
-        {name: name, password: password});
+        {email: email, password: password});
   }
 
   logout() {

@@ -1,14 +1,14 @@
 <h4 *ngIf="showError" class="p-2 bg-danger text-white">
-    Invalid username or password
+    Invalid email or password
 </h4>
 
 <form novalidate #authForm="ngForm" class="m-3">
     <div class="form-group">
-        <label>Name:</label>
-        <input #name="ngModel" name="name" class="form-control"
-               [(ngModel)]="authService.name" required />
-        <div *ngIf="name.invalid" class="text-danger">
-            Please enter your user name
+        <label>Email:</label>
+        <input #email="ngModel" name="email" class="form-control"
+               [(ngModel)]="authService.email" required />
+        <div *ngIf="email.invalid" class="text-danger">
+            Please enter your email
         </div>
     </div>
     <div class="form-group">

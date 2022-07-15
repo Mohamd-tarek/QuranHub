@@ -9,9 +9,9 @@ namespace ServerApp.Models
 {
     public class IdentitySeedData
     {
-        private const string username = "admin";
-        private const string password = "Admin123$";
-        private const string userRole = "user";
+        private const string username = "user@example.com";
+        private const string password = "User123$";
+        private const string userRole = "User";
 
         public static async Task  SeedDatabase(IServiceProvider provider)
         {

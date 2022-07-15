@@ -18,13 +18,13 @@ export class AuthenticationService{
   }
 
   authenticated: boolean = false;
-  name!: string;
+  email!: string;
   password: string = "";
   callbackURL: string = "/";
 
   login(): Observable<boolean>{
     this.authenticated = false;
-    return this.repo.login(this.name, this.password).pipe(
+    return this.repo.login(this.email, this.password).pipe(
         map(response => {
           if(response){
             this.authenticated = true;

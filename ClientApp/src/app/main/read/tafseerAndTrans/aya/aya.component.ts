@@ -9,8 +9,8 @@ import { StateService } from 'src/app/stateService.service';
   templateUrl: "aya.component.html"
 })
 export class AyaComponent {
-  currentTafseerAndTranSura :number = 1;
-  currentTafseerAndTranAya :number = 1;  
+  currentTafseerAndTranSura :number = 0;
+  currentTafseerAndTranAya :number = 0;  
   aya!: Quran;
   
   constructor(private repo: Repository,private stateService : StateService) { 

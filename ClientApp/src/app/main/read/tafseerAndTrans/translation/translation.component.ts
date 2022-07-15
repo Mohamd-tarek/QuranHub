@@ -11,8 +11,8 @@ import { skipWhile } from 'rxjs/operators';
 })
 export class TranslationComponent {
  
-  currentTafseerAndTranSura :number = 1;
-  currentTafseerAndTranAya :number = 1; 
+  currentTafseerAndTranSura :number = 0;
+  currentTafseerAndTranAya :number = 0; 
   aya!: Translation;
   
   constructor(private repo: Repository,private stateService : StateService) { 

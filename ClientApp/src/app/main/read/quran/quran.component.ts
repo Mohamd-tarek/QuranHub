@@ -12,7 +12,7 @@ export class QuranComponent {
   
   dataLoaded : boolean = false;
   sura!: Quran[];
-  currentQuranSura : number = 1;
+  currentQuranSura : number = 0;
   
   get curSura(): number { return this.currentQuranSura; }
 
@@ -30,14 +30,14 @@ export class QuranComponent {
                  this.updateSura();
                 });
 
-    this.repo.quran.subscribe(data => {
-      this.dataLoaded = data.length > 1 ;
-    });
 
   }
  
   updateSura(){
-    this.repo.quran.subscribe(q => this.sura = q.filter(q => q.sura == this.curSura) )
+    this.repo.quran.subscribe(q =>{
+      this.sura = q.filter(q => q.sura == this.curSura);
+      this.dataLoaded = q.length > 1 ;
+    } )
   }
 
   get suras(){

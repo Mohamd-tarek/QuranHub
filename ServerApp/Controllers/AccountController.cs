@@ -34,19 +34,16 @@ namespace ServerApp.Controllers
         }
 
         private async Task<bool> DoLogin(LoginViewModel creds){
-            IdentityUser user = await userManager.FindByNameAsync(creds.Name);
-            if(user != null){
+            
                await signInManager.SignOutAsync();
-               Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, creds.Password, false, false);
+               Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(creds.Email, creds.Password, false, false);
                return result.Succeeded;
-            }
-            return false;
         }
     }
 
     public class LoginViewModel {
         [Required]
-        public string Name{ get; set;}
+        public string Email{ get; set;}
         [Required]
         public string Password{ get; set;}
     }

@@ -11,8 +11,8 @@ import { skipWhile } from 'rxjs/operators';
   templateUrl: "noteText.component.html"
 })
 export class NoteTextComponent {
-  currentNoteSura: number = 1;
-  currentNoteAya: number = 1;
+  currentNoteSura: number = 0;
+  currentNoteAya: number = 0;
   aya! : Quran;
   note! : Note;
   edit : boolean = false;

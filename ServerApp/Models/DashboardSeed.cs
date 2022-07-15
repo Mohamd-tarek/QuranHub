@@ -20,9 +20,9 @@ namespace ServerApp.Models {
                 RoleManager<IdentityRole> roleManager =
                     scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
 
-                string roleName = config["Dashboard:Role"] ?? "Dashboard";
+                string roleName = config["Dashboard:Role"] ?? "Admin";
                 string userName = config["Dashboard:User"] ?? "admin@example.com";
-                string password = config["Dashboard:Password"] ?? "mysecret";
+                string password = config["Dashboard:Password"] ?? "Admin123$";
 
                 if (!await roleManager.RoleExistsAsync(roleName)) {
                     await roleManager.CreateAsync(new IdentityRole(roleName));

@@ -9,8 +9,8 @@ import { skipWhile } from 'rxjs/operators';
   templateUrl: "tafseer.component.html"
 })
 export class TafseerComponent {
-  currentTafseerAndTranSura :number = 1;
-  currentTafseerAndTranAya :number = 1;  
+  currentTafseerAndTranSura :number = 0;
+  currentTafseerAndTranAya :number = 0;  
   aya!: Tafseer;
   
   constructor(private repo: Repository,private stateService : StateService) { 

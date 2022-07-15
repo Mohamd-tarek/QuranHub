@@ -9,8 +9,12 @@ namespace ServerApp.Models
 
         public DbSet<Quran> Quran { get; set; }
         public DbSet<Tafseer> Tafseer { get; set; }
+        public DbSet<IbnKatheer> IbnKatheer { get; set; }
+        public DbSet<Tabary> Tabary { get; set; }
+        public DbSet<Jalalayn> Jalalayn { get; set; }
         public DbSet<Translation> Translation { get; set; }
         public DbSet<QuranClean> QuranClean { get; set; }
+        public DbSet<MindMap> MindMaps { get; set;}
         public DbSet<Note> Note { get; set; }
 
         // meta-data

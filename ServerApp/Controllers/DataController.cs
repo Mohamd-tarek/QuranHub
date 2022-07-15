@@ -36,6 +36,27 @@ namespace ServerApp.Controllers
             return context.Tafseer.OrderBy(d => d.Index);
         }
 
+        [Route("Jalalayn")]
+        [HttpGet]
+        public IEnumerable<Jalalayn> GetJalalayn()
+        {
+            return context.Jalalayn.OrderBy(d => d.Index);
+        }
+
+        [Route("IbnKatheer")]
+        [HttpGet]
+        public IEnumerable<IbnKatheer> GetIbnKatheer()
+        {
+            return context.IbnKatheer.OrderBy(d => d.Index);
+        }
+
+        [Route("Tabary")]
+        [HttpGet]
+        public IEnumerable<Tabary> GetTabary()
+        {
+            return context.Tabary.OrderBy(d => d.Index);
+        }
+
         [Route("Translation")]
         [HttpGet]
         public IEnumerable<Translation> GetTranslation()
@@ -98,6 +119,13 @@ namespace ServerApp.Controllers
         public IEnumerable<Sura> GetSuras()
         {
             return context.Suras.OrderBy(d => d.Index);
+        }
+
+        [Route("MindMaps")]
+        [HttpGet]
+        public IEnumerable<MindMap> GetMindMaps()
+        {
+            return context.MindMaps.OrderBy(d => d.Index);
         }
     }
 }

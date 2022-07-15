@@ -80,7 +80,7 @@ namespace ServerApp
 
             services.AddSession(options =>{
                 options.Cookie.Name = "QuranHub.Session";
-                options.IdleTimeout = System.TimeSpan.FromHours(48);
+                options.IdleTimeout = System.TimeSpan.FromHours(72);
                 options.Cookie.HttpOnly = false;
                 options.Cookie.IsEssential = true;
             });

@@ -27,7 +27,6 @@ namespace ServerApp.Controllers
         [HttpGet("{id}")]
         public Note GetNote(long id)
         {
-         
             return context.Note.FirstOrDefault(d=> d.Index == id);
         }
 

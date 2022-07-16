@@ -17,6 +17,7 @@ import { PaginationComponent } from "./statistics/pagination/pagination.componen
 import { NoteComponent } from "./note/note.component";
 import { NoteTextComponent } from "./note/noteText/noteText.component";
 import { AnalysisComponent } from "./analysis/analysis.component";
+import { MindMapComponent } from "./mindMap/mindMap.component";
 import { DragulaModule } from 'ng2-dragula'
 
 
@@ -26,7 +27,7 @@ import { DragulaModule } from 'ng2-dragula'
   imports: [RouterModule, FormsModule, CommonModule, ReactiveFormsModule, DragulaModule],
   declarations: [HomeComponent, ReadComponent, QuranComponent,TafseerAndTransComponent, TafseerComponent, 
                 TranslationComponent,AyaComponent, SearchComponent, StatisticsComponent,
-                 ContainerComponent, PaginationComponent, AnalysisComponent, NoteComponent, NoteTextComponent],
+                 ContainerComponent, PaginationComponent, AnalysisComponent, MindMapComponent, NoteComponent, NoteTextComponent],
   providers: [],
   exports: [ReadComponent]
 })

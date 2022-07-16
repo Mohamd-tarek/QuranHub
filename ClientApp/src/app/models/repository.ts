@@ -48,7 +48,9 @@ export class Repository {
                       this.countLetters();
   }  
   
-  
+  getMindMap(index : number) :Observable<Note> {
+    return this.http.get<any>(this.apiURL + "MindMap" + '/' + index);
+  }
  
   getNote(aya : Quran) :Observable<Note> {
      return this.http.get<Note>(this.apiURL + "Note" + '/' + aya.index);

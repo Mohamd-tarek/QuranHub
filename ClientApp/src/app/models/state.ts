@@ -12,5 +12,6 @@ export class State {
     public currentSearch: string = "",
     public searchForWord: boolean = false,
     public showLetters: boolean = false,
-    public currentStatisticsPage :number = 1  ) { }
+    public currentStatisticsPage:number = 1,
+    public currentMindMapSura: number = 1  ) { }
 }

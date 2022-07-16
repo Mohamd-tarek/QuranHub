@@ -19,7 +19,7 @@ namespace ServerApp {
         }
 
         public async Task Invoke(HttpContext context) {
-            logger.LogDebug(context.Request.ToString()) ;
+            logger.LogDebug(context.Request.Path.ToString()) ;
             if (next != null) {
                 await next(context);
             }

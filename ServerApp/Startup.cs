@@ -107,6 +107,7 @@ namespace ServerApp
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<DebugMiddleWare>(); 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -117,10 +118,9 @@ namespace ServerApp
 
                 endpoints.MapControllerRoute(
                     name : "angular_fallback",
-                    pattern :"{target:regex(read|search|statistics|notes|analysis|login|logout)}",
+                    pattern :"{target:regex(read|search|statistics|notes|mindMaps|analysis|login|logout)}",
                     defaults : new {controller = "Home" , action = "Index"});
             });
-            app.UseMiddleware<DebugMiddleWare>(); 
             app.UseSpa(spa =>
             {
                 string strategy = Configuration.GetValue<string>("DevTools:ConnectionStrategy");

@@ -29,6 +29,7 @@ namespace ServerApp.Controllers
             return context.Quran.OrderBy(d=> d.Index);
         }
 
+
         [Route("Tafseer")]
         [HttpGet]
         public IEnumerable<Tafseer> GetTafseer()
@@ -121,11 +122,5 @@ namespace ServerApp.Controllers
             return context.Suras.OrderBy(d => d.Index);
         }
 
-        [Route("MindMaps")]
-        [HttpGet]
-        public IEnumerable<MindMap> GetMindMaps()
-        {
-            return context.MindMaps.OrderBy(d => d.Index);
-        }
     }
 }

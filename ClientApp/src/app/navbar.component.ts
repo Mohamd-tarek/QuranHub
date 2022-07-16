@@ -8,7 +8,7 @@ import { skipWhile } from 'rxjs/operators';
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
-  links :string[] = ["read", "search", "statistics", "notes", "analysis"]
+  links :string[] = ["read", "search", "statistics", "notes", "mindMaps", "analysis"]
   authenticated: boolean = false;
   
   constructor(public stateService: StateService,public authService : AuthenticationService){

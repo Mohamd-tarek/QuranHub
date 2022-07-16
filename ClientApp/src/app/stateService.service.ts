@@ -18,7 +18,8 @@ export class StateService extends BehaviorSubject<any>  {
       "currentSearch": "",
       "searchForWord" : false,
       "showLetters" : false,
-      "currentStatisticsPage": 1
+      "currentStatisticsPage": 1,
+      "currentMindMapSura" : 1
      });
     
      repo.getSessionData<any>("state").subscribe(data =>

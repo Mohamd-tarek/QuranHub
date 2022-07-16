@@ -6,6 +6,7 @@ import { SearchComponent } from './main/search/search.component';
 import { StatisticsComponent } from './main/statistics/statistics.component';
 import { NoteComponent } from './main/note/note.component';
 import { AnalysisComponent } from './main/analysis/analysis.component';
+import { MindMapComponent } from './main/mindMap/mindMap.component';
 import { AuthenticationComponent } from './auth/authentication.component';
 import { AuthenticationGuard } from './auth/authentication.guard';
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: "search", component: SearchComponent },
   { path: "statistics", component: StatisticsComponent },
   { path: "notes", component: NoteComponent },
+  { path: "mindMaps", component: MindMapComponent },
   { path: "analysis", component: AnalysisComponent, canActivate: [AuthenticationGuard] }
 ];
 

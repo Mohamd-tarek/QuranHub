@@ -12,9 +12,8 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using ServerApp.Models;
 using ServerApp.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity; 
  
-  
 namespace ServerApp
 {
     public class Startup

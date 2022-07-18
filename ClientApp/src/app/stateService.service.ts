@@ -13,7 +13,7 @@ export class StateService extends BehaviorSubject<any>  {
       "currentQuranSura" :1,
       "currentTafseerAndTranSura":  1,
       "currentTafseerAndTranAya": 1,
-      "currentNoteSura" : 1,
+      "currentNoteSura" : 1, 
       "currentNoteAya": 1,
       "currentSearch": "",
       "searchForWord" : false,

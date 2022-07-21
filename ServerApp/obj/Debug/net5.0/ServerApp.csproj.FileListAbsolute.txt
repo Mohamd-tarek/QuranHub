@@ -131,3 +131,4 @@ D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\obj\Debug\net5.0\R
 D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\obj\Debug\net5.0\Razor\Views\Shared\_ExternalButtonPartial.cshtml.g.cs
 D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\obj\Debug\net5.0\Razor\Pages\Identity\UserAccountCompleteExternal.cshtml.g.cs
 D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\bin\Debug\net5.0\System.Json.dll
+D:\Programming\Angular\Angular_Dotnet\QuranAnalysis\ServerApp\bin\Debug\net5.0\EASendMail.dll

@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "nKAwgLXoKrNR7aLZ3M/r275FA1XcKfmRojNB6++pyLS5edgPb9TwOzgP5/sgmAkxxHBCCo1q0cNJTRH9HOB1og==",
+  "dgSpecHash": "YcnSI+Reyjf9T3lUaKWOXyCXNt0NMSggMswQS9NnHBHfFaMUSJROHdHrfnmIMtShzLYGfPEhr4qNhh8jtmWAtg==",
   "success": true,
   "projectFilePath": "D:\\Programming\\Angular\\Angular_Dotnet\\QuranAnalysis\\ServerApp\\ServerApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mohamed\\.nuget\\packages\\bootstrap\\5.1.3\\bootstrap.5.1.3.nupkg.sha512",
+    "C:\\Users\\mohamed\\.nuget\\packages\\easendmail\\7.9.0.1\\easendmail.7.9.0.1.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\microsoft.aspnetcore.authentication.facebook\\5.0.17\\microsoft.aspnetcore.authentication.facebook.5.0.17.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\5.0.17\\microsoft.aspnetcore.authentication.google.5.0.17.nupkg.sha512",

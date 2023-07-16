@@ -1,0 +1,24 @@
+<div *ngIf="dataLoaded; else nodata">
+    <div class="row  justify-content-end m-2" [style.background-color]="'papayawhip'" >
+      <select class="col form-select p-2 me-2" aria-label="Default select example" [(ngModel)]="curTopicNumber" >
+        <option  *ngFor="let topic of TopicsCount" value={{topic}} > {{topic}}</option>
+      </select> 
+    </div>
+
+    <div class="row">
+      <span class="m-auto w-auto">
+        <previousPointer (previousEvent)="prev()"></previousPointer>
+        <nextPointer (nextEvent)="next()"></nextPointer>
+      </span>
+    </div>  
+    
+    <div class="border  border-3 rounded-3  p-2 m-2 text-end" [style.background-color]="'papayawhip'">
+        <p> topic aya : {{topic.length}}</p>
+        <ayaSetContainer [ayaSet]="topic"></ayaSetContainer>  
+      </div>
+</div>
+
+<ng-template #nodata>
+  <loading></loading>
+</ng-template> 
+

@@ -1,0 +1,11 @@
+<input type="file" class="d-none"
+    (change)="onFileSelected($event)" #fileUpload>
+
+<div>
+  <button mat-mini-fab class="btn btn-primary rounded-circle"
+          (click)="fileUpload.click()">
+    {{buttonName}}
+    <ng-content></ng-content>
+  </button>
+</div>
+  

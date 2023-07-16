@@ -1,0 +1,4 @@
+<div class="d-inline-block"  [style.width.px]="diamter">
+    <i *ngIf="picture == null" class="fa-solid fa-user"></i>
+    <img *ngIf="picture !== null" [style.width.px]="diamter" [style.height.px]="diamter" class="rounded-circle"  alt="Profile Picture" [src]="'data:image/png;base64,' + picture"  />
+</div>

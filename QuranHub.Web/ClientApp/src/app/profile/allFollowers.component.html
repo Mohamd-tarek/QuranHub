@@ -1,0 +1,19 @@
+
+<div *ngIf="dataLoaded" [style.background-color]="'wheat'" class="border border-3 rounded-3 p-2  "> 
+  <div class="row">
+    <p class="col m-2 p-2 "> Followers :  {{users.length}} </p> 
+    <div class="col flex-row-reverse m-2 p-2">
+      <textInput (change)="getFollowers($event)"></textInput>
+      </div>
+  </div>
+  <hr class="m-2">
+  <userSetContainer   [users]="users" ></userSetContainer>
+</div> 
+    
+  <ng-template #nodata>
+    <loading></loading>
+  </ng-template>
+
+  
+  
+  

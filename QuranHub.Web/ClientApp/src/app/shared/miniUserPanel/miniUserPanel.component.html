@@ -1,0 +1,16 @@
+<div  class="miniUserPanel m-2 p-2 bg-dark rounded-3">
+  <userInfo *ngIf ="authService.isAuthenticated" [user]="user" [profilePictureDiamter]="90"></userInfo>
+  <div class=" m-2 p-2">
+    <a *ngIf ="authService.isAuthenticated"
+      routerLink="/user/loginInfo" 
+      class="btn d-block btn-sm btn-primary mt-2 p-2" >Account Setting
+    </a>
+  
+    <button *ngIf ="authService.isAuthenticated"class="btn d-block btn-sm btn-primary  w-100 mt-2 p-2"
+    (click)="logout()">
+      Log Out
+    </button>
+
+  </div>
+</div>
+

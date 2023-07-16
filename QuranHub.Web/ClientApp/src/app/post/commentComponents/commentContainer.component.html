@@ -1,0 +1,17 @@
+<div  class="rounded-3" *ngFor="let comment of viewedComments">
+    <comment  (commentRemoveEvent)="commentRemoveEvent($event)"
+    [comment]="comment">
+    </comment>
+</div>
+<div class="row m-1">
+    <viewMoreComments  *ngIf="post.commentsCount > viewedComments.length" [post]="post" [totalComments]="post.commentsCount"
+     [loadedComments]="post.comments.length" 
+     (moreCommentLoadedEvent)="updateViewedComments()"></viewMoreComments>
+</div>
+
+<div *ngIf="writingComment" class="row m-1">
+    <writingComment [post]="post"
+    (cancelWritingCommentEvent)="cancelWritingComment()"
+    (addingCommentEvent)="addingCommentEvent($event)"
+    (choosingAyaEvent)="choosingAyaEvent($event)" ></writingComment>
+</div>

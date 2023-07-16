@@ -1,0 +1,4 @@
+<p class="text-end rounded p-2 lh-lg" [style.backgroundColor]="backgroundColor" >   
+    {{textToView ?? "loading..."}}
+    <span (click)="seeAll()" class="text-decoration-underline text-primary" *ngIf="seeMore" [style.cursor]="'pointer'">See More ...</span>
+</p>

@@ -1,0 +1,39 @@
+<div *ngIf="show" [style.background-color]="'wheat'" [@fadeOut] class="border border-3 rounded-3 mt-2 mb-2">
+
+  <div class="row align-items-center">
+    <postOwnerInfo class="col-8" [user]="post.quranHubUser" [post]="post"></postOwnerInfo>
+    <postOwnerOptions *ngIf="isOwner" class="col-4" (editEvent)="editEvent()" (deleteEvent)="deleteEvent()" [post]="post"></postOwnerOptions>
+  </div>
+
+  <textAndAya *ngIf="!editPost" [viewAya]="viewAya"  [post]="post"> </textAndAya>
+  <editPost *ngIf="editPost" (postEditedEvent)="editedEvent()" [post]="post"> </editPost>
+
+  <div class="px-2">
+    <post [post]="post.share.post"></post>
+  </div>
+
+  <div class="row m-2">
+    <div class="col-10">
+      <likeCount [addYou]="post.reactedTo" [count]="post.reactsCount" (showLikesEvent)="showLikesEvent()"></likeCount>
+      <likesModal *ngIf="showLikes" [postId]="post.postId" (hideLikesEvent)="hideLikesEvent()"></likesModal>
+    </div>
+    <div class="col-1">
+      <commentCount [count]="post.commentsCount"></commentCount>
+    </div>
+  </div>
+
+  <hr class="m-2">
+
+  <div class="row m-2">
+    <div class="col-6">
+      <like [liked]="post.reactedTo" (likeEvent)="likeEvent()" (unlikeEvent)="unlikeEvent()" style="cursor: pointer;"></like>
+    </div>
+    <div class="col-6">
+      <addComment (writingCommentEvent)="startWritingComment()" style="cursor: pointer;"></addComment>
+    </div>
+  </div>
+
+  <hr class="m-2">
+  <commentContainer [post]="post" [writingComment]="writingComment"
+                    (cancelWritingCommentEvent)="cancelWritingComment()"></commentContainer>
+</div>

@@ -1,0 +1,25 @@
+<div *ngIf="userLoaded; else nodata">
+  <cover  class="row" [picture]="user.coverPicture"></cover>
+  <div class="row align-items-center">
+    <div class="col-12 col-md m-2 position-relative">
+      <div *ngIf="currentUser.id == userId" class="position-absolute">
+        <uploadFile  [fileName]="'ProfilePictureFile'" (fileSelectedEvent)="onFileSelected($event)">
+          <i class="fa-sharp fa-solid fa-camera"></i>
+        </uploadFile>
+      </div>
+      <userInfo [user]="user" [profilePictureDiamter]="120"></userInfo>
+    </div>
+    <followOrUnfollowButton class="col-12 col-md" *ngIf="currentUser.id !== userId" [userId]="userId"></followOrUnfollowButton>
+    <div class="col-12 col-md">
+      <i class="fa-solid fa-users"></i> Followers : {{user?.numberOfFollower}} |
+      <i class="fa-solid fa-users"></i> Following : {{user?.numberOfFollowed}}
+    </div>
+  </div>
+</div>
+      
+  <ng-template #nodata>
+    <loading></loading>
+  </ng-template>
+  
+  
+  

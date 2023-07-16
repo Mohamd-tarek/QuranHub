@@ -1,0 +1,35 @@
+<div class="row justify-content-center">
+    <div class="col-4">
+      <h4 *ngIf="showMessage" class="p-2 bg-danger text-white">
+        {{message}}
+      </h4>
+        
+        <form novalidate #authForm="ngForm" >
+            <div class="form-group">
+                <label>Email:</label>
+                <input #email="ngModel" name="email" class="form-control"
+                        [(ngModel)]="authService.email" required />
+                <div *ngIf="email.invalid && email.dirty" class="text-danger">
+                    Please enter a valid email
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" #password="ngModel" name="password" 
+                        class="form-control" [(ngModel)]="authService.password" required />
+                <div *ngIf="password.invalid && password.dirty" class="text-danger">
+                    Please enter a valid password
+                </div>
+            </div>    
+            <div class="text-center pt-2">
+                <button class="btn btn-primary" [disabled]="authForm.invalid"
+                        (click)="signUp()">
+                        <spinner *ngIf="loading"></spinner>
+                        <span *ngIf="!loading">  SignUp</span>
+                </button>
+            </div>
+        </form>   
+        <hr>   
+        <externalSignUps></externalSignUps>
+    </div>
+</div>

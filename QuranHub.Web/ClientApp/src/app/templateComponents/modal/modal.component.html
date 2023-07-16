@@ -1,0 +1,11 @@
+<div class="modal d-block" tabindex="-1" >
+  <div class="modal-dialog">
+    <div class="modal-content" [style.background-color]="'wheat'">
+      <div class="modal-header">
+        <h5 class="modal-title">{{title}}</h5>
+        <button type="button" class="btn-close" (click)="hideModal()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <ng-content></ng-content>
+    </div>
+</div>
+</div>

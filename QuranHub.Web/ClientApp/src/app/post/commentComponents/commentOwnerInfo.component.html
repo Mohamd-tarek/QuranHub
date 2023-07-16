@@ -1,0 +1,12 @@
+<div class="m-1 row rounded-3">
+  <div class="col-2">
+    <profilePicture [diamter]="40" [picture]="user?.profilePicture"></profilePicture>
+  </div>
+  <div class="col ">
+    <a [routerLink]="['/profile' ,user.id, 'profileDetails']"
+       class="text-truncate d-block">
+      {{user.userName}}
+    </a>
+    <dateTime [dateTime]="comment.dateTime"></dateTime>
+  </div>
+</div>

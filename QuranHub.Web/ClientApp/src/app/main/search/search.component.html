@@ -1,0 +1,37 @@
+  <div *ngIf="dataLoaded; else nodata">
+    <div class="border  border-3 rounded-3 p-2 m-2" [style.background-color]="'papayawhip'">
+     <div class="row g-3 align-items-center " >
+       <div class="col flex-row-reverse">
+         <input id="searchForWord" type="checkbox" [formControl]="searchForWord">
+         <label for="searchForWord" class="m-2"> search for words </label>
+       </div>
+       <div class="col flex-row-reverse">
+         <label for="currentSearch" class="">  </label>
+         <input id="currentSearch" placeholder="enter a word" type="text" class="border border-3 rounded-3" [formControl]="currentSearch">
+       </div>
+    </div>
+    </div>
+    
+    <div class="border  border-3 rounded-3  p-2 m-2 text-end" [style.background-color]="'papayawhip'">
+      <p >total result : {{result.length}}</p>
+      <ayaSetContainer *ngIf="!searchForWord.value; else wordBlock" [ayaSet]="result"></ayaSetContainer>  
+      <ng-template #wordBlock>
+      <div [dragula]="'DRAGULA_ITEMS'">
+        <div *ngFor="let aya of result; index as i; let odd = odd" class="border  border-3 rounded-3 p-2 m-2"
+           [class.bg-primary]="odd"
+           [class.text-white]="odd"
+           [class.bg-light]="!odd" >
+           <button type="button" class="d-inline float-start btn-close" aria-label="Close" (click)='removeItem(i)'></button>
+            <div>
+              <p >{{aya[0]}}</p>
+              <p >{{aya[1]}}</p>
+            </div>
+        </div>
+      </div>
+      </ng-template>   
+     </div>    
+</div>
+  
+  <ng-template #nodata>
+    <loading></loading>
+  </ng-template>

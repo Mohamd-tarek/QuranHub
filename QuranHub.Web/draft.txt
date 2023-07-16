@@ -1,0 +1,34 @@
+dotnet ef database drop --force --context QuranContext
+dotnet ef database drop --force --context IdentityDataContext
+dotnet ef database drop --force --context VideoContext
+
+dotnet ef database update --context QuranContext
+dotnet sql-cache create "Server=DESKTOP-SI6RBRO;TrustServerCertificate=True;Database=QuranHub;Trusted_Connection=True" "dbo" "SessionData"
+dotnet ef database update --context IdentityDataContext
+dotnet ef database update --context VideoContext
+
+
+dotnet ef migrations add Initial --context QuranContext
+dotnet ef migrations add Initial --context IdentityDataContext
+dotnet ef migrations add Initial --context VideoDataContext
+
+packages:
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.0-preview.3.23174.2
+dotnet add package Microsoft.EntityFrameworkCore --version 8.0.0-preview.3.23174.2
+dotnet add package Microsoft.EntityFrameworkCore.Relational --version 8.0.0-preview.3.23174.2
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.0-preview.3.23174.2
+dotnet add package Microsoft.Extensions.Identity.Core --version 6.0.16
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 6.0.16	
+dotnet add package Microsoft.Extensions.Caching.SqlServer --version 6.0.16
+dotnet add package EASendMail --version 7.9.1.6
+dotnet add package MailKit --version 4.0.0
+dotnet add package FFmpeg.AutoGen --version 6.0.0.2
+dotnet add package SixLabors.ImageSharp --version 3.0.1
+dotnet add package IronSoftware.System.Drawing --version 2023.7.1
+dotnet add package MediaInfo.Wrapper.Core --version 21.9.3
+
+Power Shell Commands
+Add-Migration InitialMigration -Context QuranContext;
+Add-Migration InitialMigration -Context IdentityDataContext;
+Add-Migration InitialMigration -Context VideoContext;
+Update-Database -Context IdentityDataContext;

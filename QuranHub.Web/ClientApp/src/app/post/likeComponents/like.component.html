@@ -1,0 +1,12 @@
+<div [style.cursor]="'pointer'">
+  <div *ngIf="!liked" (click)="onLike()">
+      <i  class="fa-regular fa-thumbs-up" ></i>
+      <span> Like</span>
+  </div>
+
+  <div *ngIf="liked" (click)="onUnlike()">
+      <i class="fa-solid fa-thumbs-up" ></i>
+      <span> Unlike</span>
+  </div>
+</div>
+

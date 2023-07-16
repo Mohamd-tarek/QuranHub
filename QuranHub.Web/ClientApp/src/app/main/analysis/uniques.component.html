@@ -1,0 +1,12 @@
+<div *ngIf="dataLoaded; else nodata">
+    
+    <div class="border  border-3 rounded-3  p-2 m-2 text-end" [style.background-color]="'papayawhip'">
+        <p>total result : {{result.length}}</p>
+        <ayaSetContainer [ayaSet]="result"></ayaSetContainer>  
+      </div>
+</div>
+
+<ng-template #nodata>
+  <loading></loading>
+</ng-template> 
+

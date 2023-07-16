@@ -1,0 +1,52 @@
+
+<div *ngIf="dataLoaded; else nodata">
+    <h4 *ngIf="message != null" class="p-2 bg-danger text-white">
+        {{message}}
+    </h4>
+
+    <form class="m-2" novalidate [formGroup]="aboutInfoForm" (ngSubmit)="submitForm()">
+
+        <div class="bg-danger text-white p-2 mb-2" 
+                *ngIf="loading && aboutInfoForm.invalid">
+            There are problems with the form
+            <ul>
+                <li *ngFor="let error of aboutInfoForm.getFormValidationMessages()">
+                    {{error}}
+                </li>
+            </ul>
+        </div>
+    
+        <ng-container *ngFor="let control of aboutInfoForm.aboutInfoControls">
+            <div class="form-group" [ngSwitch]="control.type">
+                <label>{{control.label}}</label>
+                    <select *ngSwitchCase="'select'"  class="form-control" 
+                    name="{{control.modelProperty}}"
+                    formControlName="{{control.modelProperty}}">
+                     <option  *ngFor="let option of control.options | keyvalue" value={{option.value}}  > {{option.key}}</option>
+                   </select>
+                   <input *ngSwitchDefault  class="form-control" 
+                        type="{{control.type}}"
+                        name="{{control.modelProperty}}"
+                        formControlName="{{control.modelProperty}}" />
+                    <ul class="text-danger list-unstyled"
+                            *ngIf="control.dirty && control.invalid">
+                        <li *ngFor="let error of control.getValidationMessages()">
+                            {{error}}
+                        </li>
+                    </ul>
+            </div>
+        </ng-container> 
+    
+        <button class="btn btn-primary mt-2" type="submit"
+            [disabled]="aboutInfoForm.invalid"
+            [class.btn-secondary]="aboutInfoForm.invalid">
+            <spinner *ngIf="loading"></spinner>
+            <span *ngIf="!loading">Edit</span>
+                
+        </button>
+    </form>
+</div> 
+
+<ng-template #nodata>
+    <h4 class="m-2">Loading Data...</h4>
+</ng-template> 

@@ -1,0 +1,13 @@
+<div class="border border-3 p-2 mb-2 mt-2  rounded-3"  *ngIf="dataLoaded; else nodata"  [style.background-color]="'papayawhip'">
+  <p class="border border-3 p-2 ms-2 mt-2 me-2  rounded-3"  [style.background-color]="'wheat'"> <span  class="fw-bold">Date Of Birth : </span>  {{aboutInfo.dateOfBirth | date : "dd/M/yyyy"}} <i class="fa-solid fa-cake-candles"></i> </p>
+  <p class="border border-3 p-2 ms-2 mt-2 me-2 rounded-3" [style.background-color]="'wheat'" > <span  class="fw-bold">Gender : </span>    {{getGenderName(aboutInfo.gender) }} </p>
+  <p class="border border-3 p-2 ms-2 mt-2 me-2 rounded-3" [style.background-color]="'wheat'"> <span  class="fw-bold">Religion :</span>  {{getReligionName(aboutInfo.religion) }} </p>
+  <p class="border border-3 p-2 ms-2 mt-2 me-2 rounded-3" [style.background-color]="'wheat'"> <span  class="fw-bold">About Me :</span> {{aboutInfo.aboutMe }} </p>
+</div>
+
+<ng-template #nodata>
+  <loading></loading>
+</ng-template>
+  
+  
+  

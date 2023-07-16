@@ -1,0 +1,26 @@
+<div *ngIf="followings" [style.background-color]="'wheat'" class="border border-3 rounded-3 ">  
+  <div class="row m-2">
+    <div class="col">
+      <span class="m-2 p-2 text-underline">Folllowings :  {{followings.length}}</span>
+    </div>
+    <div class="col">
+      <a 
+        [routerLink]="['/profile' , userId, 'followings']"
+        class="p-2" >see all
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <followInfo class="col" *ngFor="let following of followings" [user]="following" >
+    </followInfo>
+  </div>
+</div>  
+
+
+    
+<ng-template #nodata>
+  <loading></loading>
+</ng-template>
+  
+  
+  

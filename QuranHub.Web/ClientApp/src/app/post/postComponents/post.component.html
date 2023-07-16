@@ -1,0 +1,43 @@
+
+<div *ngIf="show" class="border  border-3 rounded-3 mt-2 mb-2" [@fadeOut] [style.background-color]="'papayawhip'" [id]="post.postId">
+
+    <div class="row align-items-center">
+      <postOwnerInfo class="col-8" [user]="post.quranHubUser" [post]="post"></postOwnerInfo>
+      <postOwnerOptions *ngIf="isOwner"  class="col-4" (editEvent)="editEvent()" (deleteEvent)="deleteEvent()" [post]="post"></postOwnerOptions>
+    </div>
+
+    <textAndAya *ngIf="!editPost" [post]="post" > </textAndAya>
+    <editPost *ngIf="editPost" (postEditedEvent)="editedEvent()" [post]="post"> </editPost>
+
+    <div class="row m-2">
+        <div class="col-10">
+            <likeCount [addYou]="post.reactedTo" [count]="post.reactsCount" (showLikesEvent)="showLikesEvent()"  ></likeCount>
+            <likesModal  *ngIf="showLikes"  [postId]="post.postId" (hideLikesEvent)="hideLikesEvent()"></likesModal>
+        </div>
+        <div class="col-1">
+            <commentCount [count]="post.commentsCount"></commentCount>        
+        </div>
+        <div class="col-1">
+            <shareCount [count]="post.sharesCount"></shareCount>        
+        </div>
+    </div>
+
+    <hr class="m-2">
+
+    <div class="row m-2">
+            <like class="col-4" [liked]="post.reactedTo" (likeEvent)="likeEvent()" (unlikeEvent)="unlikeEvent()" ></like>
+        <div class="col-4">
+            <addComment (writingCommentEvent)="startWritingComment()" ></addComment>        
+        </div>
+        <div class="col-4">
+            <share  (shareStartEvent)="shareStartEvent()" ></share>        
+        </div>
+    </div>
+
+    <shareModal *ngIf="shareStarted" (shareDoneEvent)="shareDoneEvent()" [post]="post"></shareModal>
+
+<hr class="m-2">
+
+    <commentContainer  [post]="post" [writingComment]="writingComment"
+                         (cancelWritingCommentEvent)="cancelWritingComment()"></commentContainer>
+</div>

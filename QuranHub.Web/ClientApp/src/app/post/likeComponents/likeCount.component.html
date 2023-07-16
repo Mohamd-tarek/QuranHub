@@ -1,0 +1,12 @@
+<div (click)="showLikes()" [style.cursor]="'pointer'">
+<i class="fa-solid fa-heart"></i>
+  <i>
+      <i *ngIf="addYou">
+          You    {{ count - 1 > 0 ? ' and ' + (count - 1).toString() : 'liked this'  }}
+      </i>
+      <i *ngIf="!addYou">
+           {{count }}
+      </i> 
+   </i>
+
+</div>

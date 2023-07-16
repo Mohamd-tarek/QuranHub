@@ -1,0 +1,43 @@
+
+<div *ngIf="dataLoaded; else nodata">
+    <h4 *ngIf="showMessage" class="p-2 bg-danger text-white">
+        {{message}}
+    </h4>
+
+    <form class="m-2" novalidate [formGroup]="userForm" (ngSubmit)="submitForm()">
+
+        <div class="bg-danger text-white p-2 mb-2" 
+                *ngIf="loading && userForm.invalid">
+            There are problems with the form
+            <ul>
+                <li *ngFor="let error of userForm.getFormValidationMessages()">
+                    {{error}}
+                </li>
+            </ul>
+        </div>
+    
+        <div class="form-group" *ngFor="let control of userForm.userControls">
+            <label>{{control.label}}</label>
+            <input class="form-control" 
+                name="{{control.modelProperty}}"
+                formControlName="{{control.modelProperty}}" />
+            <ul class="text-danger list-unstyled"
+                    *ngIf="control.dirty && control.invalid">
+                <li *ngFor="let error of control.getValidationMessages()">
+                    {{error}}
+                </li>
+            </ul>
+        </div>
+    
+        <button class="btn btn-primary mt-2" type="submit"
+            [disabled]="userForm.invalid"
+            [class.btn-secondary]="userForm.invalid">
+            <spinner *ngIf="loading"></spinner>
+            <span *ngIf="!loading">Edit</span>
+        </button>
+    </form>
+</div> 
+
+<ng-template #nodata>
+    <h4 class="m-2">Loading Data...</h4>
+</ng-template> 

@@ -1,0 +1,22 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" key="previous">
+        <button class="page-link"
+        (click) = "selectPage($event)" 
+        [value]="current - 1"
+        >Previous</button>
+      </li>
+      <li *ngFor="let link of getLinks()" [ngClass]="'page-item ' + (current == link ? 'active' : '')" >
+        <button class="page-link"
+         
+        (click) = "selectPage($event)" 
+           value={{link}}>{{link}}
+        </button>
+      </li>
+      <li class="page-item" key="next">
+        <button class="page-link"
+        (click) = "selectPage($event)" 
+        [value]="current + 1">Next</button>
+      </li>
+    </ul>
+  </nav>

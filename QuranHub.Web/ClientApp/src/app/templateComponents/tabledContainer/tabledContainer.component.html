@@ -1,0 +1,8 @@
+    <div class="m-2 ">
+        <div *ngFor="let row of buildTable()" class = "row" >
+            <div *ngFor="let cell of row"  
+            [class]="bordered ? 'border border-dark' : ''"
+            [ngClass]="'col-' + (12 / numOfCol) + ' text-center'" 
+            >{{cell}} </div>
+        </div>
+    </div>

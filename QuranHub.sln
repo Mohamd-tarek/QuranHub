@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuranHub.Domain", "QuranHub.Domain\QuranHub.Domain.csproj", "{DFF8C134-33AA-4551-B82F-CD78B788B201}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuranHub.DAL", "QuranHub.DAL\QuranHub.DAL.csproj", "{1C053F3C-390C-4A53-A8F8-26252AFE8916}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuranHub.Web", "QuranHub.Web\QuranHub.Web.csproj", "{63C9A203-5EEC-4B14-978B-99444664B69A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuranHub.BLL", "QuranHub.BLL\QuranHub.BLL.csproj", "{13D7F0CD-F74A-4EDD-A828-DFF6508F1A61}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFF8C134-33AA-4551-B82F-CD78B788B201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFF8C134-33AA-4551-B82F-CD78B788B201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFF8C134-33AA-4551-B82F-CD78B788B201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFF8C134-33AA-4551-B82F-CD78B788B201}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C053F3C-390C-4A53-A8F8-26252AFE8916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C053F3C-390C-4A53-A8F8-26252AFE8916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C053F3C-390C-4A53-A8F8-26252AFE8916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C053F3C-390C-4A53-A8F8-26252AFE8916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63C9A203-5EEC-4B14-978B-99444664B69A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C9A203-5EEC-4B14-978B-99444664B69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C9A203-5EEC-4B14-978B-99444664B69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C9A203-5EEC-4B14-978B-99444664B69A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13D7F0CD-F74A-4EDD-A828-DFF6508F1A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13D7F0CD-F74A-4EDD-A828-DFF6508F1A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13D7F0CD-F74A-4EDD-A828-DFF6508F1A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13D7F0CD-F74A-4EDD-A828-DFF6508F1A61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D4F0E55-9201-44A1-A67B-809B3897F520}
+	EndGlobalSection
+EndGlobal

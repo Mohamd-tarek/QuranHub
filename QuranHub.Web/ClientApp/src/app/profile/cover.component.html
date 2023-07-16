@@ -1,0 +1,13 @@
+  <div class="row justify-content-end align-items-end m-1 rounded-3 "  [ngStyle]="{'background-image': 'url(' + 'data:image/png;base64,' + picture + ')'}"
+  style='height : 140px ;background-size: contain' >
+    <div class="col-3 m-2" *ngIf="currentUser.id === userId">
+      <uploadFile *ngIf="currentUser" class="float-end"
+                  [fileName]="'CoverPictureFile'"
+                  (fileSelectedEvent)="onFileSelected($event)">
+        <i class="fa-sharp fa-solid fa-file-image"></i>
+      </uploadFile>
+    </div>
+  </div>
+  
+  
+  

@@ -1,0 +1,14 @@
+<div class="dropdown float-end me-2 ">
+  <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenu2">
+    <li><button class="dropdown-item" (click)="edit()" type="button">Edit</button></li>
+    <li>
+      <button class="dropdown-item" type="button" (click)="delete()">
+        <spinner *ngIf="loading"></spinner>
+        <span *ngIf="!loading">Delete</span>
+      </button>
+    </li>
+  </ul>
+</div>
+

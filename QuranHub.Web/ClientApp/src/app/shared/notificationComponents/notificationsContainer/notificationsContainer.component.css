@@ -1,0 +1,15 @@
+.miniNotificationPanel{
+  position: absolute;
+  top: 73px;
+  right: 0px;
+  z-index: 1010;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+} 
+
+.count{
+  position: relative;
+  left: 12px;
+  top: -40px;
+}

@@ -29,10 +29,6 @@ namespace QuranHub.DAL.Migrations.Video
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayListInfoId"));
 
-                    b.Property<byte[]>("Image")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -40,27 +36,27 @@ namespace QuranHub.DAL.Migrations.Video
                     b.Property<int>("NumberOfVideos")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("ThumbnailImage")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.HasKey("PlayListInfoId");
 
                     b.ToTable("PlayListsInfo");
                 });
 
-            modelBuilder.Entity("QuranHub.Domain.Models.VideoData", b =>
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfo", b =>
                 {
-                    b.Property<int>("VideoDataId")
+                    b.Property<int>("VideoInfoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideoDataId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideoInfoId"));
 
-                    b.Property<int>("Height")
+                    b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("Image")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("Length")
+                    b.Property<int>("Height")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -71,14 +67,15 @@ namespace QuranHub.DAL.Migrations.Video
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PlayListId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PlayListInfoId")
                         .HasColumnType("int");
 
                     b.Property<int>("Size")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("ThumbnailImage")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -90,14 +87,14 @@ namespace QuranHub.DAL.Migrations.Video
                     b.Property<int>("Width")
                         .HasColumnType("int");
 
-                    b.HasKey("VideoDataId");
+                    b.HasKey("VideoInfoId");
 
                     b.HasIndex("PlayListInfoId");
 
-                    b.ToTable("VideosData");
+                    b.ToTable("VideosInfo");
                 });
 
-            modelBuilder.Entity("QuranHub.Domain.Models.VideoData", b =>
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfo", b =>
                 {
                     b.HasOne("QuranHub.Domain.Models.PlayListInfo", "PlayListInfo")
                         .WithMany()

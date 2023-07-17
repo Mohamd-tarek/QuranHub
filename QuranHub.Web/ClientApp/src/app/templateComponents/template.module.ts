@@ -28,6 +28,12 @@ import { ModalComponent } from "./modal/modal.component";
 import { TabledContainerComponent } from "./tabledContainer/tabledContainer.component";
 import { PaginationComponent } from "./pagination/pagination.component";
 import { DateTimeComponent } from "./dateTime/dateTime.component";
+import { VideoInfoComponent } from "./videoInfo/videoInfo.component";
+import { VideosContainerComponent } from "./videosContainer/videosContainer.component";
+import { VideoViewerComponent } from "./videoViewer/videoViwer.component";
+import { PlayListComponent } from "./playList/playList.component";
+import { PlayListsInfoComponent } from "./playListsInfo/playListsInfo.component";
+import { PlayListInfoComponent } from "./playListInfo/playListInfo.component";
 import { onClickOutsideHideDirective } from "./onClickOutsideHide.directive";
 import { DragulaModule } from 'ng2-dragula';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -69,6 +75,12 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     TabledContainerComponent,
     PaginationComponent,
     DateTimeComponent,
+    VideoInfoComponent,
+    VideosContainerComponent,
+    VideoViewerComponent,
+    PlayListInfoComponent,
+    PlayListsInfoComponent,
+    PlayListComponent,
     onClickOutsideHideDirective
   ],
 
@@ -102,6 +114,12 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     TabledContainerComponent,
     PaginationComponent,
     DateTimeComponent,
+    VideoInfoComponent,
+    VideosContainerComponent,
+    VideoViewerComponent,
+    PlayListInfoComponent,
+    PlayListsInfoComponent,
+    PlayListComponent,
     onClickOutsideHideDirective
   ]
 })

@@ -4,7 +4,7 @@ namespace QuranHub.Domain.Models;
 public class PlayListInfo : IEquatable<PlayListInfo>
 {
     public int PlayListInfoId { get; set; }
-    public byte[] Image {get; set;}
+    public byte[] ThumbnailImage {get; set;}
     public string Name { get; set; }
     public int NumberOfVideos { get; set; }
 

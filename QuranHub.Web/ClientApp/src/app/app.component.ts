@@ -16,5 +16,6 @@ export class AppComponent {
                   {name :"notes", url : "/notes"},
                   {name :"statistics", url : "/statistics"},
                   {name :"analysis", url : "/analysis"},
+                  {name :"documentary", url : "/documentary"},
                 ];
 }

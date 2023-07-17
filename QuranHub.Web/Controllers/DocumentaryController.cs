@@ -36,7 +36,7 @@ public class DocumentaryController : ControllerBase
     [HttpGet("Video/{name}")]
     public async Task GetVideoAsync(string name) 
     {
-       
+       throw new NotImplementedException();
     }
 
 

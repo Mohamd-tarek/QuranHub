@@ -13,10 +13,7 @@ public class VideoSeedData
 
         if (VideoContext.PlayListsInfo.Count() == 0 )
         {
-
-
             await SeedPlayListsInfoAsync(VideoContext);
-
         }
     } 
 
@@ -27,7 +24,7 @@ public class VideoSeedData
         PlayListInfo playListInfo = new PlayListInfo
         {
             Name = "العلم والايمان ",
-            Image =  File.ReadAllBytes(thumbnailsfiles[0]),
+            ThumbnailImage =  File.ReadAllBytes(thumbnailsfiles[0]),
             NumberOfVideos = thumbnailsfiles.Length
         };
 
@@ -47,6 +44,7 @@ public class VideoSeedData
 
     public static async Task  SeedVideoInfoAsync(VideoContext VideoContext, PlayListInfo playListInfo, string path ) 
     {
+        Console.WriteLine("path : " + path);
         var mediaInfo = new MediaInfoWrapper(path);
         string name = Path.GetFileNameWithoutExtension(path);
         var videoInfo = new VideoInfo

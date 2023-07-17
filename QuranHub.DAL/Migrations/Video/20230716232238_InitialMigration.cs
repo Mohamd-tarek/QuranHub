@@ -16,7 +16,7 @@ namespace QuranHub.DAL.Migrations.Video
                 {
                     PlayListInfoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ThumbnailImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NumberOfVideos = table.Column<int>(type: "int", nullable: false)
                 },
@@ -26,28 +26,27 @@ namespace QuranHub.DAL.Migrations.Video
                 });
 
             migrationBuilder.CreateTable(
-                name: "VideosData",
+                name: "VideosInfo",
                 columns: table => new
                 {
-                    VideoDataId = table.Column<int>(type: "int", nullable: false)
+                    VideoInfoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ThumbnailImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Size = table.Column<int>(type: "int", nullable: false),
-                    Length = table.Column<int>(type: "int", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
                     Width = table.Column<int>(type: "int", nullable: false),
                     Height = table.Column<int>(type: "int", nullable: false),
                     Path = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PlayListId = table.Column<int>(type: "int", nullable: false),
-                    PlayListInfoId = table.Column<int>(type: "int", nullable: false),
-                    Views = table.Column<int>(type: "int", nullable: false)
+                    Views = table.Column<int>(type: "int", nullable: false),
+                    PlayListInfoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VideosData", x => x.VideoDataId);
+                    table.PrimaryKey("PK_VideosInfo", x => x.VideoInfoId);
                     table.ForeignKey(
-                        name: "FK_VideosData_PlayListsInfo_PlayListInfoId",
+                        name: "FK_VideosInfo_PlayListsInfo_PlayListInfoId",
                         column: x => x.PlayListInfoId,
                         principalTable: "PlayListsInfo",
                         principalColumn: "PlayListInfoId",
@@ -55,8 +54,8 @@ namespace QuranHub.DAL.Migrations.Video
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideosData_PlayListInfoId",
-                table: "VideosData",
+                name: "IX_VideosInfo_PlayListInfoId",
+                table: "VideosInfo",
                 column: "PlayListInfoId");
         }
 
@@ -64,7 +63,7 @@ namespace QuranHub.DAL.Migrations.Video
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "VideosData");
+                name: "VideosInfo");
 
             migrationBuilder.DropTable(
                 name: "PlayListsInfo");

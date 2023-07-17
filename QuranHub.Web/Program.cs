@@ -75,6 +75,8 @@ using (var scope = app.Services.CreateScope())
     await QuranSeedData.SeedDatabaseAsync(scope.ServiceProvider);
 
     await IdentitySeedData.SeedDatabaseAsync(scope.ServiceProvider);
+
+   // await VideoSeedData.SeedDatabaseAsync(scope.ServiceProvider);
 }
 
 app.Run();

@@ -20,6 +20,10 @@ import { CompareComponent } from "./analysis/compare.component";
 import { MindMapComponent } from "./mindMap/mindMap.component";
 import { DragulaModule } from 'ng2-dragula'
 import { TemplateModule } from "../templateComponents/template.module";
+import { DocumentaryComponent } from "./documentary/documentary.component";
+import { DocumentaryPlayListsComponent } from "./documentary/documentaryPlayLists.component";
+import { DocumentaryPlayListComponent } from "./documentary/documentaryPlayList.component";
+import { VideoViewerComponent } from "../templateComponents/videoViewer/videoViwer.component";
 
 const routes: Routes = [
   { path: "read/:ayaIndex", component: ReadComponent },
@@ -37,8 +41,17 @@ const routes: Routes = [
         {path: "topics", component: TopicsComponent},
         {path: "compare", component: CompareComponent}
       ],
-      canActivate: [AuthenticationGuard] },
-    ];
+    canActivate: [AuthenticationGuard]},
+  {
+    path: "documentary", component: DocumentaryComponent,
+    children: [
+      { path: "", redirectTo: "similar", pathMatch: "full" },
+      { path: "playLists", component: DocumentaryPlayListsComponent },
+      { path: "playList/:name", component: DocumentaryPlayListComponent },
+    ],
+  },
+  { path: "videoViewer/:path", component: VideoViewerComponent },
+   ];
 
     
 @NgModule({   
@@ -65,7 +78,10 @@ const routes: Routes = [
     CompareComponent,
     MindMapComponent,
     NoteComponent,
-    NoteTextComponent
+    NoteTextComponent,
+    DocumentaryComponent,
+    DocumentaryPlayListsComponent,
+    DocumentaryPlayListComponent
   ],
 
   providers: [],

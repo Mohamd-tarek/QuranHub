@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Hosting;
 using QuranHub.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +37,6 @@ if (!app.Environment.IsDevelopment())
 
 if (app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -67,6 +67,15 @@ app.MapControllerRoute(
 
 app.MapHub<NotificationHub>("/NotificationHub");
 
+app.MapGet("/video/{filename}", (string filename) =>
+{
+    //Build the File Path.  
+    string path = Path.Combine(app.Environment.WebRootPath, "files/") + filename + ".mp4";  // the video file is in the wwwroot/files folder  
+
+    var filestream = System.IO.File.OpenRead(path);
+    return Results.File(filestream, contentType: "video/mp4", fileDownloadName: filename, enableRangeProcessing: true);
+});
+
 app.MapFallbackToFile("index.html");
 
 
@@ -76,7 +85,7 @@ using (var scope = app.Services.CreateScope())
 
     await IdentitySeedData.SeedDatabaseAsync(scope.ServiceProvider);
 
-   // await VideoSeedData.SeedDatabaseAsync(scope.ServiceProvider);
+    await VideoSeedData.SeedDatabaseAsync(scope.ServiceProvider);
 }
 
 app.Run();

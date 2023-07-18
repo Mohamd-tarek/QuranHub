@@ -22,13 +22,17 @@ export class DocumentaryDataRepository extends DocumentaryRepository  {
     return this.http.get<PlayListInfo[]>(documentaryPaths.PlayListsInfo);
 
   }
+
+  getPlayListInfo(playlistName: string): Observable<PlayListInfo> {
+    return this.http.get<PlayListInfo>(documentaryPaths.PlayListInfo + playlistName);
+  }
     
   getVideoInfoForPlayList(playListName: string, offset: number, amount: number): Observable<VideoInfo[]>
   {
-    return this.http.get<VideoInfo[]>(documentaryPaths.VideoInfoForPlayList + '/' + playListName + '/' + offset + '/' + amount);
+    return this.http.get<VideoInfo[]>(documentaryPaths.VideoInfoForPlayList  + playListName + '/' + offset + '/' + amount);
   }
 
   GetVideoInfoAsync(name: string): Observable<VideoInfo> {
-    return this.http.get<VideoInfo>(documentaryPaths.VideoInfoForPlayList + '/' + name);
+    return this.http.get<VideoInfo>(documentaryPaths.VideoInfo + name);
   }
 }

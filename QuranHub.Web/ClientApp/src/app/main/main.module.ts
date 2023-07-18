@@ -23,7 +23,7 @@ import { TemplateModule } from "../templateComponents/template.module";
 import { DocumentaryComponent } from "./documentary/documentary.component";
 import { DocumentaryPlayListsComponent } from "./documentary/documentaryPlayLists.component";
 import { DocumentaryPlayListComponent } from "./documentary/documentaryPlayList.component";
-import { VideoViewerComponent } from "../templateComponents/videoViewer/videoViwer.component";
+import { DocumentaryVideoViewerComponent } from "./documentary/documentaryVideoViewer.component"
 
 const routes: Routes = [
   { path: "read/:ayaIndex", component: ReadComponent },
@@ -45,12 +45,13 @@ const routes: Routes = [
   {
     path: "documentary", component: DocumentaryComponent,
     children: [
-      { path: "", redirectTo: "similar", pathMatch: "full" },
+      { path: "", redirectTo: "playLists", pathMatch: "full" },
       { path: "playLists", component: DocumentaryPlayListsComponent },
-      { path: "playList/:name", component: DocumentaryPlayListComponent },
+      { path: "playLists/playList/:name", component: DocumentaryPlayListComponent },
+      { path: "playLists/playList/videoViewer/:name", component: DocumentaryVideoViewerComponent },
+      
     ],
   },
-  { path: "videoViewer/:path", component: VideoViewerComponent },
    ];
 
     
@@ -81,7 +82,8 @@ const routes: Routes = [
     NoteTextComponent,
     DocumentaryComponent,
     DocumentaryPlayListsComponent,
-    DocumentaryPlayListComponent
+    DocumentaryPlayListComponent,
+    DocumentaryVideoViewerComponent
   ],
 
   providers: [],

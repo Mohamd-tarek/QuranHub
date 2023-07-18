@@ -4,5 +4,5 @@ export class PlayListInfo {
     public id: string,
     public thumbnailImage: any,
     public name: string,
-    public numberOfVideos: string) { }  
+    public numberOfVideos: number) { }  
   }

@@ -6,19 +6,28 @@ public class DocumentaryController : ControllerBase
 {
     private ILogger<DocumentaryController> _logger;
     private IDocumentaryRepository _documentaryRepository;
+    private readonly IWebHostEnvironment _env;
 
     public DocumentaryController(
         ILogger<DocumentaryController> logger,
-        IDocumentaryRepository documentaryRepository)
+        IDocumentaryRepository documentaryRepository,
+        IWebHostEnvironment env)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger)); 
         _documentaryRepository = documentaryRepository ?? throw new ArgumentNullException(nameof(documentaryRepository));
+        _env = env ?? throw new ArgumentNullException(nameof(env));
     }
 
     [HttpGet("PlayListsInfo")]
     public async Task<IEnumerable<PlayListInfo>> GetPlayListsInfoAsync() 
     {
         return await  this._documentaryRepository.GetPlayListsAsync();
+    }
+
+    [HttpGet("PlayListInfo/{PlaylistName}")]
+    public async Task<PlayListInfo> GetPlayListsInfoAsync(string PlaylistName)
+    {
+        return await this._documentaryRepository.GetPlayListByNameAsync(PlaylistName);
     }
 
     [HttpGet("VideoInfoForPlayList/{playListName}/{offset}/{amount}")]
@@ -32,12 +41,4 @@ public class DocumentaryController : ControllerBase
     {
         return await  this._documentaryRepository.GetVideoInfoByNameAsync(name);
     }
-
-    [HttpGet("Video/{name}")]
-    public async Task GetVideoAsync(string name) 
-    {
-       throw new NotImplementedException();
-    }
-
-
 }

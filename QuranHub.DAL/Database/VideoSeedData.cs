@@ -4,7 +4,7 @@ using MediaInfo;
 public class VideoSeedData
 {
     static string baseDir = Directory.GetCurrentDirectory();
-    static string videosDir = Directory.GetParent(baseDir) + @"\QuranHub.Web\wwwroot\1";
+    static string videosDir = Directory.GetParent(baseDir) + @"\QuranHub.Web\wwwroot\files";
     public static async Task  SeedDatabaseAsync(IServiceProvider provider)
     {
         provider.GetRequiredService<VideoContext>().Database.Migrate();
@@ -28,35 +28,42 @@ public class VideoSeedData
             NumberOfVideos = thumbnailsfiles.Length
         };
 
+        await videoContext.PlayListsInfo.AddAsync(playListInfo);
+
         await videoContext.SaveChangesAsync();
-        
+
+
         var files = Directory.GetFiles(videosDir);
 
-        foreach(var file in files)
+        foreach (var file in files)
         {
             await SeedVideoInfoAsync(videoContext, playListInfo, file);
         }
 
         await videoContext.SaveChangesAsync();
-          
-       
+
+
     }
 
     public static async Task  SeedVideoInfoAsync(VideoContext VideoContext, PlayListInfo playListInfo, string path ) 
     {
-        Console.WriteLine("path : " + path);
-        var mediaInfo = new MediaInfoWrapper(path);
+
+         var mediaInfo = new MediaInfo();
+         mediaInfo.Open(path);
+
         string name = Path.GetFileNameWithoutExtension(path);
+
+        string dirctory = Path.GetDirectoryName(path);
+
         var videoInfo = new VideoInfo
         {
-            ThumbnailImage = File.ReadAllBytes(path + "/thumbnails/" + name + ".jpeg"),
+            ThumbnailImage = File.ReadAllBytes(dirctory + @"\thumbnails\" + name + ".jpeg" ),
             Name = name,
-            Type = mediaInfo.Format,
-            Size = (int)mediaInfo.Size,
-            Duration = mediaInfo.Duration,
-            Width = mediaInfo.Width,
-            Height = mediaInfo.Height,
-            Path = path,
+            Type = mediaInfo.Get(StreamKind.Video, 0, "Format"),
+            Duration = TimeSpan.FromMilliseconds(int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Duration"))),
+            Width = int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Width")),
+            Height = int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Height")),
+            Path = "https://localhost:7046/video/" + name,
             PlayListInfoId = playListInfo.PlayListInfoId
         };
 

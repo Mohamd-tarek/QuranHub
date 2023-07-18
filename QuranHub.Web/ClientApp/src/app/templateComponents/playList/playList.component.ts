@@ -1,39 +1,48 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { VideoInfo } from 'src/app/models/video/VideoInfo.model';
-import { ActivatedRoute } from '@angular/router';
+import { PlayListInfo } from '../../models/video/playListInfo.model';
+
 
 @Component({
   selector: "playList",
   templateUrl: "playList.component.html"
 })
 
-export class PlayListComponent  {
+export class PlayListComponent implements OnInit {
 
-  playListName!:string
+
   infos!: VideoInfo[];
   currentPage : number = 1;
   itemsPerPage: number = 36;
-  numOfLinks: number = 0 ; 
+  numOfLinks: number = 0;
+  linksPerPage: number = 10;
   dataLoaded: boolean = false;
 
   @Input()
-  repository:any
+  repository: any
 
-  constructor(private activeRoute: ActivatedRoute) 
-  {
-    this.playListName = this.activeRoute.snapshot.params["name"];
+  @Input()
+  playListInfo!: PlayListInfo;
+
+  constructor() { }
+
+  ngOnInit() {
+    this.numOfLinks = Math.trunc(this.playListInfo.numberOfVideos / this.itemsPerPage);
+    this.linksPerPage = Math.min(this.linksPerPage, this.numOfLinks);
     this.getData();
+    
   }
 
-  navigateEvent(value:number){
-     
+  navigateEvent(value: number) {
+    console.log("navigated : "  + value);
+    this.currentPage = value;
     this.getData();
   }
 
   getData(): void {
     this.dataLoaded = false;
-    let offset = (this.currentPage  - 1) * this.itemsPerPage ;
-    this.repository.getVideoInfoForPlayList(this.playListName, offset, this.itemsPerPage).subscribe((videosInfo:any) => {
+    let offset = (this.currentPage - 1) * this.itemsPerPage;
+    this.repository.getVideoInfoForPlayList(this.playListInfo.name, offset, this.itemsPerPage).subscribe((videosInfo: any) => {
        this.infos = videosInfo;
        this.dataLoaded = true;
     })

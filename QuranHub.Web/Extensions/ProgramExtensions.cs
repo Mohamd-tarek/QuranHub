@@ -111,6 +111,8 @@ public static class ProgramExtensions
 
         builder.Services.AddTransient<IQuranRepository, QuranRepository>();
 
+        builder.Services.AddTransient<IDocumentaryRepository, DocumentaryRepository>();
+
         builder.Services.AddTransient<IPostRepository, PostRepository>();
 
         builder.Services.AddTransient<INotificationRepository, NotificationRepository>();

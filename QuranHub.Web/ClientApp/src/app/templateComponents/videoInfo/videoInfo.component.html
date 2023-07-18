@@ -4,10 +4,9 @@
                 class=" m-1 rounded-3" [picture]="info?.thumbnailImage" ></rectanglePicture>
       <div class="">
         <a 
-        [routerLink]="['/videoViewer' , info.path]"  
+        [routerLink]="['../videoViewer' , info.name]"
         class="" >{{info.name}}
       </a>
     </div>
    </div>
   </div>
-  

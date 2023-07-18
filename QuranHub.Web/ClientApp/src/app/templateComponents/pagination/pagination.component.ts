@@ -24,7 +24,7 @@ export class PaginationComponent implements OnInit {
   ngOnInit(){
     this.startElement = this.current - (this.current % this.linksPerPage) + 1;
     this.endElement = this.startElement + this.linksPerPage - 1;
-    console.log(this.current + " , " + this.startElement + " , " + this.endElement);
+    this.linksPerPage = Math.min(this.linksPerPage, this.numOfLinks);
   }
 
   selectPage(event: any) {

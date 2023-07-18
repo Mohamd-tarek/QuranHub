@@ -3,7 +3,7 @@
       <div *ngFor="let cell of row"  
       [class]="bordered ? 'border border-dark' : ''"
       [ngClass]="'col-' + (12 / numOfCol) + ' text-center'" >
-      <playListInfo [info]="cell"></playListInfo>
+      <playListInfo  [info]="cell"></playListInfo>
       </div>
   </div>
 </div>

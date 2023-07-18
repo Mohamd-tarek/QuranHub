@@ -7,8 +7,7 @@ public class VideoInfo : IEquatable<VideoInfo>
     public byte[] ThumbnailImage  {get; set;}
     public string Name { get; set; }
     public string Type { get; set; }
-    public int Size { get; set; }
-    public int Duration { get; set; }
+    public TimeSpan Duration { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
     public string Path { get; set; }

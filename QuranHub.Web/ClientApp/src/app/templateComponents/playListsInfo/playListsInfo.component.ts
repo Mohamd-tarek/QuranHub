@@ -16,6 +16,7 @@ export class PlayListsInfoComponent  {
 
   @Input()
   bordered: boolean = false;
+ 
 
   buildTable() : any[]{
     let dataIndex =  0;

@@ -1,9 +1,8 @@
 <div *ngIf="dataLoaded; else nodata">
-  <playListsInfo [infos]="playListsInfo"  [numOfCol]="6"></playListsInfo>
+ <videoViewer [info]="info"></videoViewer>
 </div>
 
 
 <ng-template #nodata>
   <loading></loading>
 </ng-template>
-

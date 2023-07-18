@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { DocumentaryRepository } from 'src/app/abstractions/repositories/documentaryRepository';
+import { PlayListInfo } from '../../models/video/playListInfo.model';
+import { ActivatedRoute } from '@angular/router';
+
 
 
 @Component({
@@ -9,6 +12,16 @@ import { DocumentaryRepository } from 'src/app/abstractions/repositories/documen
 
 export class DocumentaryPlayListComponent  {
 
-  constructor(public documentaryRepository: DocumentaryRepository) { }
+  playListInfo!: PlayListInfo;
+  dataLoaded: boolean = false;
+
+  constructor(public documentaryRepository: DocumentaryRepository, private activeRoute: ActivatedRoute) {
+    let playListName = this.activeRoute.snapshot.params["name"];
+
+    this.documentaryRepository.getPlayListInfo(playListName).subscribe(infos => {
+      this.playListInfo = infos;
+      this.dataLoaded = true;
+    })
+  }
 
 }

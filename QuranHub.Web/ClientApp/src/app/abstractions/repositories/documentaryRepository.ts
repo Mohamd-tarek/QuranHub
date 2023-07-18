@@ -7,6 +7,8 @@ export abstract class DocumentaryRepository {
 
   abstract getPlayLists(): Observable<PlayListInfo[]>;
 
+  abstract getPlayListInfo(palylistName : string ): Observable<PlayListInfo>;
+
   abstract getVideoInfoForPlayList(playListName: string, offset: number, amount: number): Observable<VideoInfo[]>;
 
   abstract GetVideoInfoAsync(name :string ): Observable<VideoInfo>;

@@ -4,7 +4,7 @@ import { AyaComponent } from "./aya/aya.component";
 import { InlineAyaComponent } from "./inlineAya/inlineAya.component";
 import { LoadingComponent } from "./loading/loading.component";
 import { ProfilePictureComponent } from "./profilePicture/profilePicture.component";
-import { RectanglePictureComponent } from "./rectangleProfilePicture/rectanglePicture.component";
+import { RectanglePictureComponent } from "./rectanglePicture/rectanglePicture.component";
 import { LinkElementComponent } from "./linkElement/linkElement.component";
 import { RouterModule } from "@angular/router";
 import { AnchorListComponent } from "./anchorList/anchorList.component";

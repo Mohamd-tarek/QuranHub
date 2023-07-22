@@ -8,10 +8,7 @@ public class React :IEquatable<React>
     public int Type { get; set; }
     public string? QuranHubUserId { get; set; }
     public QuranHubUser QuranHubUser{ get; set;}
-
-
     public PostReactNotification ReactNotification { get; set; }
-
     public React(){}
     public React(int type, string quranHubUserId )
     {

@@ -59,7 +59,7 @@ export class UserDataService extends UserService {
         {email: email, username: username});
   }
 
-  editAboutData(dateOfBirth: Date, gender: string, religion: string, aboutMe: string): Observable<any> {
+  editAboutData(dateOfBirth: string, gender: string, religion: string, aboutMe: string): Observable<any> {
     return this.http.post<any>(userPaths.EditAboutInfo, 
       {dateOfBirth: dateOfBirth,
         gender: Number(gender),

@@ -112,10 +112,10 @@ export class PostDataRepository extends PostRepository {
 
   }
 
-  editPost(postId: number, postVerseId: number, text: string, privacy: string): Observable<true> {
+  editPost(postId: number, verseId: number, text: string, privacy: string): Observable<true> {
     return this.http.put<true>(postPaths.EditPost, {
       postId: postId,
-      postVerseId: postVerseId,
+      verseId: verseId,
       text: text,
       privacy: Number(privacy)
     });

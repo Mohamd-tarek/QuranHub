@@ -6,13 +6,10 @@ import { VideoInfo } from 'src/app/models/video/VideoInfo.model';
   templateUrl: "videoViewer.component.html"
 })
 
-export class VideoViewerComponent implements OnInit {
+export class VideoViewerComponent  {
 
   @Input()
   info!: VideoInfo;
-  srcValue!: string;
 
-  ngOnInit() {
-     
-  }
+ 
 }

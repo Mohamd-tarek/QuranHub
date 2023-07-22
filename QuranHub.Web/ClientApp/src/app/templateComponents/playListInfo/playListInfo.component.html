@@ -1,4 +1,4 @@
-<div class="m-1 row  border  border-3 rounded-3 " [style.background-color]="'papayawhip'" >
+<div  (click)='navigateToPlayList()' class="m-1 row  border  border-3 rounded-3 " [style.cursor]="'pointer'"  [style.background-color]="'papayawhip'" >
     <div class="col d-inline  p-1 ">
       <rectanglePicture [width]="90" [height]="90" 
                 class=" m-1 rounded-3" [picture]="info?.thumbnailImage" ></rectanglePicture>

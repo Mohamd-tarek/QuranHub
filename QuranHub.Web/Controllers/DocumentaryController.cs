@@ -6,16 +6,13 @@ public class DocumentaryController : ControllerBase
 {
     private ILogger<DocumentaryController> _logger;
     private IDocumentaryRepository _documentaryRepository;
-    private readonly IWebHostEnvironment _env;
 
     public DocumentaryController(
         ILogger<DocumentaryController> logger,
-        IDocumentaryRepository documentaryRepository,
-        IWebHostEnvironment env)
+        IDocumentaryRepository documentaryRepository)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger)); 
         _documentaryRepository = documentaryRepository ?? throw new ArgumentNullException(nameof(documentaryRepository));
-        _env = env ?? throw new ArgumentNullException(nameof(env));
     }
 
     [HttpGet("PlayListsInfo")]

@@ -19,7 +19,7 @@ public class PostRepository : IPostRepository
 
         await this._identityDataContext.SaveChangesAsync();
 
-        this._identityDataContext.ShareablePosts.Attach(post);
+        post = await this.GetShareablePostByIdAsync(post.PostId);
 
         return post;
     }
@@ -239,11 +239,16 @@ public class PostRepository : IPostRepository
 
     public async Task<Post> EditPostAsync(Post post)
     {
-        post =  this._identityDataContext.Posts.Update(post).Entity;
+
+        Post targetpost = await this._identityDataContext.Posts.FindAsync(post.PostId);
+
+        targetpost.Text = post.Text;
+        targetpost.VerseId = post.VerseId;
+        targetpost.Privacy = post.Privacy;
 
         await _identityDataContext.SaveChangesAsync();
 
-        return post;
+        return targetpost;
     }
 
     public async Task<bool> DeletePostAsync(int postId)

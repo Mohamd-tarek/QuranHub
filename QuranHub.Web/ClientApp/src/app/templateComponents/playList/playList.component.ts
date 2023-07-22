@@ -13,7 +13,7 @@ export class PlayListComponent implements OnInit {
 
   infos!: VideoInfo[];
   currentPage : number = 1;
-  itemsPerPage: number = 36;
+  itemsPerPage: number = 24;
   numOfLinks: number = 0;
   linksPerPage: number = 10;
   dataLoaded: boolean = false;

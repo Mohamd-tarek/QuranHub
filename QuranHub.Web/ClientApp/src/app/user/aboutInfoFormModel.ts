@@ -53,7 +53,7 @@ export class AboutInfoControl extends FormControl{
 
 export class AboutInfoFormModel extends FormGroup {
   
-        constructor(dateOfBirth:Date, gender:string, religion:string, aboutMe: string) {
+        constructor(dateOfBirth:string, gender:string, religion:string, aboutMe: string) {
             super({
                 dateOfBirth: new AboutInfoControl("Date of birth", "dateOfBirth", dateOfBirth, Validators.required, "date" ),
                 gender: new AboutInfoControl("Gender", "gender", gender, Validators.required,  "select", Gender),

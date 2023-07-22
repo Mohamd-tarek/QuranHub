@@ -1,8 +1,8 @@
-<div class="m-1 row  border  border-3 rounded-3 " [style.background-color]="'papayawhip'" >
-  <div class="col d-inline  p-1 ">
-    <rectanglePicture [width]="90" [height]="90" 
-              class=" m-1 rounded-3" [picture]="user?.profilePicture" ></rectanglePicture>
-    <div class="">
+<div class="m-1 border  border-3 rounded-3 " [style.background-color]="'papayawhip'" [style.max-width]="'130px'" >
+  <div class="row justify-content-center p-1 ">
+    <rectanglePicture [width]="105" [height]="105" 
+              class="col m-1 rounded-3" [picture]="user?.profilePicture" ></rectanglePicture>
+    <div class="col">
       <a 
       [routerLink]="['/profile' ,user.id, 'profileDetails']"  
       class="" >{{user.userName}}

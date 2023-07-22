@@ -12,7 +12,7 @@ export class AboutInfoComponent {
     loading: boolean = false;
     aboutInfoForm!: AboutInfoFormModel;
     dataLoaded:boolean = false;
-    dateOfBirth!:Date;
+    dateOfBirth!:string;
     gender!: string;
     religion!:string;
     aboutMe!:string;

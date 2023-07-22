@@ -14,7 +14,7 @@ export enum Religion{
 }
 
 export interface IAboutInfo {
-  dateOfBirth: Date,
+  dateOfBirth: string,
   gender: Gender;
   religion: Religion;
   aboutMe: string; 
@@ -39,7 +39,7 @@ export abstract class UserService{
 
   abstract editUserData(email:string, username:string): Observable<any>;
 
-  abstract editAboutData(dateOfBirth:Date, gender:string, religion: string, aboutMe: string): Observable<any>;
+  abstract editAboutData(dateOfBirth:string, gender:string, religion: string, aboutMe: string): Observable<any>;
 
   abstract changePassword(current:string, newPassword:string, confirmPassword:string) :Observable<boolean>;
          

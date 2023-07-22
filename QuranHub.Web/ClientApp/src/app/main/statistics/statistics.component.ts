@@ -89,7 +89,7 @@ export class StatisticsComponent implements OnDestroy {
     let size = this.dataCount;
 
     while( startIndex < size && startIndex < endIndex) {
-    pageOfData.push(this.data[startIndex][0] + ':'  + this.data[startIndex][1]);
+    pageOfData.push(this.data[startIndex][0] + ' : '  + this.data[startIndex][1]);
     ++startIndex;
     }
 

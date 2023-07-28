@@ -4,19 +4,15 @@ public class Share : IEquatable<Share>
 {
     public int ShareId { get; set; }
     public DateTime DateTime { get; set; }
-    public int PostId { get; set; }
-    public ShareablePost Post { get; set; }
-    public SharedPost SharedPost { get; set; }
     public string? QuranHubUserId { get; set; }
     public QuranHubUser QuranHubUser { get; set; }
     public ShareNotification ShareNotification { get; set; }
 
     public Share() { }
 
-    public Share(string quranHubUserId, int postId)
+    public Share(string quranHubUserId)
     {
         QuranHubUserId = quranHubUserId;
-        PostId = postId;
         DateTime = DateTime.Now;
     }
 

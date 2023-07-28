@@ -41,8 +41,11 @@ public class NotificationController : ControllerBase
             case "FollowNotification" : return await this.GetFollowNotificationByIdAsync(notificationId); break;
             case "PostReactNotification" : return await this.GetPostReactNotificationByIdAsync(notificationId); break;
             case "ShareNotification" : return await this.GetShareNotificationByIdAsync(notificationId); break;
+            case "PostShareNotification": return await this.GetPostShareNotificationByIdAsync(notificationId); break;
             case "CommentNotification" : return await this.GetCommentNotificationByIdAsync(notificationId); break;
+            case "PostCommentNotification": return await this.GetPostCommentNotificationByIdAsync(notificationId); break;
             case "CommentReactNotification" : return await this.GetCommentReactNotificationByIdAsync(notificationId); break;
+            case "PostCommentReactNotification": return await this.GetPostCommentReactNotificationByIdAsync(notificationId); break;
             default: return  this._notificationViewModelsFactory.BuildNotificationViewModel(notification); break;
         }
     }
@@ -59,17 +62,35 @@ public class NotificationController : ControllerBase
         ShareNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildShareNotificationViewModel(notification);
         return notificationViewModel;
     }
+    private async Task<ShareNotificationViewModel> GetPostShareNotificationByIdAsync(int notifictionId)
+    {
+        PostShareNotification notification = await _notificationRepository.GetPostShareNotificationByIdAsync(notifictionId);
+        ShareNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildShareNotificationViewModel(notification);
+        return notificationViewModel;
+    }
     private async Task<CommentNotificationViewModel> GetCommentNotificationByIdAsync(int notifictionId)
     {
         CommentNotification notification =  await _notificationRepository.GetCommentNotificationByIdAsync(notifictionId);
         CommentNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildCommentNotificationViewModel(notification);
         return notificationViewModel;
     }
+    private async Task<CommentNotificationViewModel> GetPostCommentNotificationByIdAsync(int notifictionId)
+    {
+        PostCommentNotification notification = await _notificationRepository.GetPostCommentNotificationByIdAsync(notifictionId);
+        CommentNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildCommentNotificationViewModel(notification);
+        return notificationViewModel;
+    }
 
-     private async Task<CommentReactNotificationViewModel> GetCommentReactNotificationByIdAsync(int notifictionId)
+    private async Task<CommentReactNotificationViewModel> GetCommentReactNotificationByIdAsync(int notifictionId)
     {
         CommentReactNotification notification =  await _notificationRepository.GetCommentReactNotificationByIdAsync(notifictionId);
         CommentReactNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildCommentReactNotificationViewModel(notification);
+        return notificationViewModel;
+    }
+    private async Task<CommentReactNotificationViewModel> GetPostCommentReactNotificationByIdAsync(int notifictionId)
+    {
+        PostCommentReactNotification notification = await _notificationRepository.GetPostCommentReactNotificationByIdAsync(notifictionId);
+        CommentReactNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildCommentReactNotificationViewModel(notification);
         return notificationViewModel;
     }
 

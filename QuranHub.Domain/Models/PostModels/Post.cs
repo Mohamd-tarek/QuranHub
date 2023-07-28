@@ -13,18 +13,14 @@ public class Post :IEquatable<Post>
     public string Text { get; set; }
     public  int ReactsCount {get; set;}
     public  int CommentsCount { get; set;}
-    public List<PostReact> Reacts { get; set; }
-    public List<PostNotification> PostNotifications { get; set; }
-    public List<Comment> Comments { get; set; }
+    public List<PostReact> Reacts { get; set; } = new();
+    public List<PostReactNotification> PostReactNotifications { get; set; } = new();
+    public List<PostCommentNotification> PostCommentNotifications { get; set; } = new();
+    public List<PostCommentReactNotification> PostCommentReactNotifications { get; set; } = new();
+    public List<PostComment> Comments { get; set; } = new();
 
     public Post()
-    {
-        Reacts = new List<PostReact>();
-
-        Comments = new List<Comment> ();
-
-        PostNotifications = new List<PostNotification>();
-    }
+    { }
 
     public PostReact AddReact(string quranHubUserId, int type = 0)
     {
@@ -44,7 +40,7 @@ public class Post :IEquatable<Post>
 
         var ReactNotification = new PostReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.PostId, ReactId);
 
-        PostNotifications.Add(ReactNotification);
+        PostReactNotifications.Add(ReactNotification);
 
         return ReactNotification;
     }
@@ -56,9 +52,9 @@ public class Post :IEquatable<Post>
         ReactsCount--;
     }
 
-    public Comment AddComment(string quranHubUserId, string text, int? verseId)
+    public PostComment AddComment(string quranHubUserId, string text, int? verseId)
     {
-        var Comment = new Comment(quranHubUserId, PostId, text, verseId);
+        var Comment = new PostComment(quranHubUserId, PostId, text, verseId);
 
         Comments.Add(Comment);
 
@@ -66,21 +62,21 @@ public class Post :IEquatable<Post>
 
         return Comment;
     }
-    public CommentNotification AddCommentNotifiaction(QuranHubUser quranHubUser, int CommentId)
+    public PostCommentNotification AddCommentNotifiaction(QuranHubUser quranHubUser, int CommentId)
     {
         string message = quranHubUser.UserName + " commented on your post "
                  + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";;
 
-        var CommentNotification = new CommentNotification(quranHubUser.Id, this.QuranHubUserId, message, this.PostId, CommentId);
+        var CommentNotification = new PostCommentNotification(quranHubUser.Id, this.QuranHubUserId, message, this.PostId, CommentId);
 
-        PostNotifications.Add(CommentNotification);
+        PostCommentNotifications.Add(CommentNotification);
 
         return CommentNotification;
     }
 
     public void RemoveComment(int CommentId)
     {
-        Comments.Remove(new Comment() {CommentId = CommentId});
+        Comments.Remove(new PostComment() {CommentId = CommentId});
 
         CommentsCount--;
     }

@@ -3,7 +3,7 @@
 public class SharedPost : Post
 {
     public int? ShareId { get; set; }
-    public Share Share { get; set; }
+    public PostShare Share { get; set; }
     public SharedPost() : base()
     {}
     public SharedPost(PostPrivacy privacy, string quranHubUserId, string text, int verseId) : this()

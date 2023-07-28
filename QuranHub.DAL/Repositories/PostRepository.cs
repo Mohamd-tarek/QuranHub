@@ -55,7 +55,7 @@ public class PostRepository : IPostRepository
 
         if(!post.Comments.Contains(new Comment(){CommentId = commentId}))
         {
-            Comment comment  = await this._identityDataContext.Comments.FindAsync(commentId);
+            PostComment comment  = await this._identityDataContext.PostComments.FindAsync(commentId);
             post.Comments.Add(comment);
         }
 
@@ -151,9 +151,9 @@ public class PostRepository : IPostRepository
                                              .ToListAsync();
     }
 
-    public async Task<List<Comment>> GetCommentsAsync(int postId)
+    public async Task<List<PostComment>> GetCommentsAsync(int postId)
     {
-        return await this._identityDataContext.Comments
+        return await this._identityDataContext.PostComments
                                               .Include(comment => comment.Verse)
                                               .Include(comment => comment.QuranHubUser)
                                               .Where(Comment => Comment.PostId == postId)
@@ -161,25 +161,25 @@ public class PostRepository : IPostRepository
                                               .ToListAsync();
     }
 
-    public async Task<Comment> GetCommentByIdAsync(int commentId)
+    public async Task<PostComment> GetCommentByIdAsync(int commentId)
     {
-        return await this._identityDataContext.Comments
+        return await this._identityDataContext.PostComments
                                               .Include(comment => comment.Verse)
                                               .Include(comment => comment.QuranHubUser)
                                               .FirstAsync((comment) => comment.CommentId ==  commentId);
     }
 
-    public async Task<List<Share>> GetPostSharesAsync(int postId)
+    public async Task<List<PostShare>> GetPostSharesAsync(int postId)
     {
-        return await this._identityDataContext.Shares
+        return await this._identityDataContext.PostShares
                                               .Include(share => share.QuranHubUser)
                                               .Where(Share => Share.PostId == postId)
                                               .ToListAsync();
     }
 
-    public async Task<Share> GetSharedPostShareAsync(int shareId)
+    public async Task<PostShare> GetSharedPostShareAsync(int shareId)
     {
-        Share share =  await this._identityDataContext.Shares.FindAsync(shareId);
+        PostShare share =  await this._identityDataContext.PostShares.FindAsync(shareId);
 
         share.Post = await this.GetShareablePostByIdAsync(share.PostId);
 
@@ -187,9 +187,9 @@ public class PostRepository : IPostRepository
                
     }
 
-    public async Task<List<Comment>> GetMoreCommentsAsync(int postId, int offset, int amount)
+    public async Task<List<PostComment>> GetMoreCommentsAsync(int postId, int offset, int amount)
     {
-        List<Comment> PostComments = await _identityDataContext.Comments
+        List<PostComment> PostComments = await _identityDataContext.PostComments
                                                                .Include(comment => comment.Verse)
                                                                .Include(comment => comment.QuranHubUser)
                                                                .Where(PostComment => PostComment.PostId == postId)
@@ -199,9 +199,9 @@ public class PostRepository : IPostRepository
                                                                .ToListAsync();
         return PostComments;
     }
-    public async Task<List<CommentReact>> GetMoreCommentReactsAsync(int postId, int offset, int amount)
+    public async Task<List<PostCommentReact>> GetMoreCommentReactsAsync(int postId, int offset, int amount)
     {
-        List<CommentReact> CommentReacts = await _identityDataContext.CommentReacts
+        List<PostCommentReact> CommentReacts = await _identityDataContext.PostCommentReacts
                                                                      .Include(commentReact => commentReact.QuranHubUser)
                                                                      .Where(CommentReact => CommentReact.CommentId == postId)
                                                                      .AsQueryable()
@@ -223,9 +223,9 @@ public class PostRepository : IPostRepository
         return PostReacts;
     }
 
-    public async Task<List<Share>> GetMoreSharesAsync(int postId, int offset, int amount)
+    public async Task<List<PostShare>> GetMoreSharesAsync(int postId, int offset, int amount)
     {
-        List<Share> Shares = await _identityDataContext.Shares
+        List<PostShare> Shares = await _identityDataContext.PostShares
                                                        .Include(share => share.QuranHubUser)
                                                        .Where(Share => Share.PostId == postId)
                                                        .AsQueryable()
@@ -259,7 +259,7 @@ public class PostRepository : IPostRepository
         {
             SharedPost sharedPost  = await this._identityDataContext.SharedPosts.FindAsync(postId);
 
-            Share share = await this._identityDataContext.Shares
+            PostShare share = await this._identityDataContext.PostShares
                                                          .Include(Share => Share.Post)
                                                          .Include(Share => Share.ShareNotification)
                                                          .FirstAsync(share => share.ShareId == sharedPost.ShareId);
@@ -332,13 +332,13 @@ public class PostRepository : IPostRepository
         return true;
     }
 
-    public async Task<Tuple<Comment, CommentNotification>> AddCommentAsync(Comment comment, QuranHubUser user)
+    public async Task<Tuple<PostComment, PostCommentNotification>> AddCommentAsync(PostComment comment, QuranHubUser user)
     {
         Post post = await this._identityDataContext.Posts
                                                    .Include(post => post.QuranHubUser)
                                                    .FirstAsync(post => post.PostId == comment.PostId);
 
-        Comment insertedComment = post.AddComment(user.Id, comment.Text, comment.VerseId);
+        PostComment insertedComment = post.AddComment(user.Id, comment.Text, comment.VerseId);
 
        if(post.QuranHubUserId != user.Id)
        {
@@ -358,7 +358,7 @@ public class PostRepository : IPostRepository
 
         this._identityDataContext.Comments.Attach(insertedComment);
 
-        CommentNotification commentNotification = new();
+        PostCommentNotification commentNotification = new();
 
         if (post.QuranHubUserId != user.Id)
         {
@@ -367,13 +367,13 @@ public class PostRepository : IPostRepository
             await this._identityDataContext.SaveChangesAsync();
         }
 
-        return new Tuple<Comment, CommentNotification>( insertedComment, commentNotification);
+        return new Tuple<PostComment, PostCommentNotification>( insertedComment, commentNotification);
     }
 
     public async Task<bool> RemoveCommentAsync(int commentId)
     {
-        Comment comment = await this._identityDataContext.Comments
-                                                         .Include(comment => comment.CommentNotifications)
+        PostComment comment = await this._identityDataContext.PostComments
+                                                         .Include(comment => comment.CommentReactNotifications)
                                                          .FirstAsync(comment => comment.CommentId == commentId );
 
         Post post = this._identityDataContext.Posts.Find(comment.PostId);
@@ -386,14 +386,14 @@ public class PostRepository : IPostRepository
         return true;
     }
 
-    public async Task<Tuple<CommentReact, CommentReactNotification>> AddCommentReactAsync(CommentReact commentReact, QuranHubUser user)
+    public async Task<Tuple<PostCommentReact, PostCommentReactNotification>> AddCommentReactAsync(PostCommentReact commentReact, QuranHubUser user)
     {
-        Comment comment = await this._identityDataContext.Comments
+        PostComment comment = await this._identityDataContext.PostComments
                                                          .Include(comment => comment.QuranHubUser)
                                                          .Include(comment => comment.Post)
                                                          .FirstAsync(comment => comment.CommentId ==  commentReact.CommentId);
 
-        CommentReact insertedCommentReact = comment.AddCommentReact(user.Id);
+        PostCommentReact insertedCommentReact = comment.AddPostCommentReact(user.Id);
 
         if(comment.QuranHubUserId  != user.Id)
         {
@@ -407,18 +407,18 @@ public class PostRepository : IPostRepository
 
         await this._identityDataContext.SaveChangesAsync();
 
-        this._identityDataContext.CommentReacts.Attach(insertedCommentReact);
+        this._identityDataContext.PostCommentReacts.Attach(insertedCommentReact);
 
-        CommentReactNotification commentReactNotification = new();
+        PostCommentReactNotification commentReactNotification = new();
 
         if (comment.QuranHubUserId != user.Id)
         {
-            commentReactNotification = comment.AddCommentReactNotifiaction(user, insertedCommentReact.ReactId);
+            commentReactNotification = comment.AddPostCommentReactNotifiaction(user, insertedCommentReact.ReactId);
 
             await this._identityDataContext.SaveChangesAsync();
         }
 
-        return new Tuple<CommentReact, CommentReactNotification> (insertedCommentReact, commentReactNotification);
+        return new Tuple<PostCommentReact, PostCommentReactNotification> (insertedCommentReact, commentReactNotification);
     }
 
     public async Task<bool> RemoveCommentReactAsync(int commentId, QuranHubUser user)
@@ -436,14 +436,14 @@ public class PostRepository : IPostRepository
 
         return true;
     }
-    public async Task<Tuple<Share, ShareNotification>> SharePostAsync(SharedPost sharedPost, QuranHubUser user)
+    public async Task<Tuple<PostShare, PostShareNotification>> SharePostAsync(SharedPost sharedPost, QuranHubUser user)
     {
 
         ShareablePost post = await this._identityDataContext.ShareablePosts
                                                             .Include(post => post.QuranHubUser)
                                                             .FirstAsync(post => post.PostId == sharedPost.Share.PostId);
 
-        Share insertedShare = post.AddShare(user.Id);
+        PostShare insertedShare = post.AddShare(user.Id);
 
        if(post.QuranHubUserId  != user.Id)
        {
@@ -469,7 +469,7 @@ public class PostRepository : IPostRepository
 
         this._identityDataContext.SharedPosts.Attach(sharedPost);
 
-        ShareNotification shareNotification = new();
+        PostShareNotification shareNotification = new();
 
         if (post.QuranHubUserId != user.Id)
         {
@@ -480,7 +480,7 @@ public class PostRepository : IPostRepository
 
        
 
-        return new Tuple<Share, ShareNotification>( insertedShare,shareNotification);
+        return new Tuple<PostShare, PostShareNotification>(insertedShare, shareNotification);
     }
     public async Task<List<ShareablePost>> SearchShareablePostsAsync(string keyword)
     {

@@ -40,8 +40,11 @@ public class NotificationRepository : INotificationRepository
             case "FollowNotification" : return await this.GetFollowNotificationByIdAsync(notificationId); break;
             case "PostReactNotification" : return await this.GetPostReactNotificationByIdAsync(notificationId); break;
             case "ShareNotification" : return await this.GetShareNotificationByIdAsync(notificationId); break;
+            case "PostShareNotification": return await this.GetPostShareNotificationByIdAsync(notificationId); break;
             case "CommentNotification" : return await this.GetCommentNotificationByIdAsync(notificationId); break;
+            case "PostCommentNotification": return await this.GetPostCommentNotificationByIdAsync(notificationId); break;
             case "CommentReactNotification" : return await this.GetCommentReactNotificationByIdAsync(notificationId); break;
+            case "PostCommentReactNotification": return await this.GetPostCommentReactNotificationByIdAsync(notificationId); break;
             default: return await this.GetNotificationByIdAsync(notificationId); break;
         }
     }
@@ -74,6 +77,15 @@ public class NotificationRepository : INotificationRepository
                          .FirstAsync(notification => notification.NotificationId == notificationId );
 
     }
+
+    public async Task<PostShareNotification> GetPostShareNotificationByIdAsync(int notificationId)
+    {
+
+        return await this._identityDataContext.PostShareNotifications
+                         .Include(notification => notification.SourceUser)
+                         .FirstAsync(notification => notification.NotificationId == notificationId);
+
+    }
     public async Task<CommentNotification> GetCommentNotificationByIdAsync(int notificationId)
     {
         
@@ -81,13 +93,27 @@ public class NotificationRepository : INotificationRepository
                          .Include(notification => notification.SourceUser)
                          .FirstAsync(notification => notification.NotificationId == notificationId );
     }
+    public async Task<PostCommentNotification> GetPostCommentNotificationByIdAsync(int notificationId)
+    {
 
-     public async Task<CommentReactNotification> GetCommentReactNotificationByIdAsync(int notificationId)
+        return await this._identityDataContext.PostCommentNotifications
+                         .Include(notification => notification.SourceUser)
+                         .FirstAsync(notification => notification.NotificationId == notificationId);
+    }
+
+    public async Task<CommentReactNotification> GetCommentReactNotificationByIdAsync(int notificationId)
     {
         
         return await this._identityDataContext.CommentReactNotifications
                          .Include(notification => notification.SourceUser)
                          .FirstAsync(notification => notification.NotificationId == notificationId );
+    }
+    public async Task<PostCommentReactNotification> GetPostCommentReactNotificationByIdAsync(int notificationId)
+    {
+
+        return await this._identityDataContext.PostCommentReactNotifications
+                         .Include(notification => notification.SourceUser)
+                         .FirstAsync(notification => notification.NotificationId == notificationId);
     }
 
     public async Task<List<Notification>> GetUserNotificationsAsync(QuranHubUser user)

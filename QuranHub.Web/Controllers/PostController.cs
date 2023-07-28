@@ -72,7 +72,7 @@ public class PostController : ControllerBase
     [HttpGet("LoadMoreComments/{PostId}/{Offset}/{Size}")]
     public async Task<IEnumerable<CommentViewModel>> LoadMoreCommentsAsync(int PostId, int Offset, int Size) 
     {
-        List<Comment> comments = await _postRepository.GetMoreCommentsAsync(PostId, Offset, Size);
+        List<PostComment> comments = await _postRepository.GetMoreCommentsAsync(PostId, Offset, Size);
 
         List<CommentViewModel> commentViewModels = await _postViewModelsFactory.BuildCommentsViewModelAsync(comments);
 
@@ -82,7 +82,7 @@ public class PostController : ControllerBase
     [HttpGet("LoadMoreCommentReacts/{PostId}/{Offset}/{Size}")]
     public async Task<IEnumerable<CommentReactViewModel>> LoadMoreCommentReactsAsync(int PostId, int Offset, int Size)
     {
-        List<CommentReact> comments = await _postRepository.GetMoreCommentReactsAsync(PostId, Offset, Size);
+        List<PostCommentReact> comments = await _postRepository.GetMoreCommentReactsAsync(PostId, Offset, Size);
 
         List<CommentReactViewModel> commentReactViewModels =  _postViewModelsFactory.BuildCommentReactsViewModel(comments);
 
@@ -92,7 +92,7 @@ public class PostController : ControllerBase
     [HttpGet("LoadMoreShares/{PostId}/{Offset}/{Size}")]
     public async Task<IEnumerable<ShareViewModel>> LoadMoreSharesAsync(int PostId, int Offset, int Size)
     {
-        List<Share> shares = await _postRepository.GetMoreSharesAsync(PostId, Offset, Size);
+        List<PostShare> shares = await _postRepository.GetMoreSharesAsync(PostId, Offset, Size);
 
         List<ShareViewModel> ShareViewModels =  _postViewModelsFactory.BuildSharesViewModel(shares);
 
@@ -135,9 +135,9 @@ public class PostController : ControllerBase
     }
 
     [HttpPost("AddComment")]
-    public async Task<CommentViewModel> AddCommentAsync([FromBody] Comment comment)
+    public async Task<CommentViewModel> AddCommentAsync([FromBody] PostComment comment)
     {
-        Tuple<Comment, CommentNotification> result = await _postRepository.AddCommentAsync(comment, _currentUser);
+        Tuple<PostComment, PostCommentNotification> result = await _postRepository.AddCommentAsync(comment, _currentUser);
 
         var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 
@@ -158,9 +158,9 @@ public class PostController : ControllerBase
     }
 
     [HttpPost("AddCommentReact")]
-    public async Task<CommentReactViewModel> AddCommentReactAsync([FromBody] CommentReact commentReact) 
+    public async Task<CommentReactViewModel> AddCommentReactAsync([FromBody] PostCommentReact commentReact) 
     {
-        Tuple<CommentReact, CommentReactNotification> result = await _postRepository.AddCommentReactAsync(commentReact, _currentUser);
+        Tuple<PostCommentReact, PostCommentReactNotification> result = await _postRepository.AddCommentReactAsync(commentReact, _currentUser);
 
         var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 
@@ -195,7 +195,7 @@ public class PostController : ControllerBase
     [HttpPost("SharePost")]
     public async Task<ShareViewModel> SharePostAsync([FromBody] SharedPost sharedPost)
     {
-        Tuple<Share, ShareNotification> result = await _postRepository.SharePostAsync(sharedPost, _currentUser);
+        Tuple<PostShare, PostShareNotification> result = await _postRepository.SharePostAsync(sharedPost, _currentUser);
 
         var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 

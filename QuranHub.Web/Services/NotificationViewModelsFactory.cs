@@ -51,21 +51,7 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
         };
         return followNotificationViewModel;
     }
-    public  PostNotificationViewModel BuildPostNotificationViewModel(PostNotification postNotification)
-    {
-        PostNotificationViewModel postNotificationViewModel = new PostNotificationViewModel()
-        {
-            NotificationId = postNotification.NotificationId,
-            DateTime = postNotification.DateTime,
-            SourceUser = this._userViewModelsFactory.BuildUserBasicInfoViewModel(postNotification.SourceUser),
-            Message = postNotification.Message,
-            Type = postNotification.Type,
-            Seen = postNotification.Seen,
-            PostId = postNotification.PostId
-
-        };
-        return postNotificationViewModel;
-    }
+   
     public PostReactNotificationViewModel BuildPostReactNotificationViewModel(PostReactNotification postReactNotification)
     {
         PostReactNotificationViewModel postReactNotificationViewModel = new PostReactNotificationViewModel()
@@ -92,8 +78,23 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Message = shareNotification.Message,
             Type = shareNotification.Type,
             Seen = shareNotification.Seen,
-            PostId = shareNotification.PostId,
             ShareId =  shareNotification.ShareId
+        };
+        return shareNotificationViewModel;
+    }
+
+    public ShareNotificationViewModel BuildPostShareNotificationViewModel(PostShareNotification shareNotification)
+    {
+        ShareNotificationViewModel shareNotificationViewModel = new ShareNotificationViewModel()
+        {
+            NotificationId = shareNotification.NotificationId,
+            DateTime = shareNotification.DateTime,
+            SourceUser = this._userViewModelsFactory.BuildUserBasicInfoViewModel(shareNotification.SourceUser),
+            Message = shareNotification.Message,
+            Type = shareNotification.Type,
+            Seen = shareNotification.Seen,
+            PostId = shareNotification.PostId,
+            ShareId = shareNotification.ShareId
         };
         return shareNotificationViewModel;
     }
@@ -107,8 +108,25 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Message = commentNotification.Message,
             Type = commentNotification.Type,
             Seen = commentNotification.Seen,
-            PostId = commentNotification.PostId,
             CommentId = commentNotification.CommentId 
+
+        };
+        return commentNotificationViewModel;
+
+    }
+
+    public CommentNotificationViewModel BuildPostCommentNotificationViewModel(PostCommentNotification commentNotification)
+    {
+        CommentNotificationViewModel commentNotificationViewModel = new CommentNotificationViewModel()
+        {
+            NotificationId = commentNotification.NotificationId,
+            DateTime = commentNotification.DateTime,
+            SourceUser = this._userViewModelsFactory.BuildUserBasicInfoViewModel(commentNotification.SourceUser),
+            Message = commentNotification.Message,
+            Type = commentNotification.Type,
+            Seen = commentNotification.Seen,
+            PostId = commentNotification.PostId,
+            CommentId = commentNotification.CommentId
 
         };
         return commentNotificationViewModel;
@@ -124,9 +142,25 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Message = commentReactNotification.Message,
             Type = commentReactNotification.Type,
             Seen = commentReactNotification.Seen,
-            PostId = commentReactNotification.PostId,
             CommentId = commentReactNotification.CommentId,
-            CommentReactId = commentReactNotification.CommentReactId
+            CommentReactId = commentReactNotification.ReactId
+        };
+        return commentReactNotificationViewModel;
+
+    }
+    public CommentReactNotificationViewModel BuildPostCommentReactNotificationViewModel(PostCommentReactNotification commentReactNotification)
+    {
+        CommentReactNotificationViewModel commentReactNotificationViewModel = new CommentReactNotificationViewModel()
+        {
+            NotificationId = commentReactNotification.NotificationId,
+            DateTime = commentReactNotification.DateTime,
+            SourceUser = this._userViewModelsFactory.BuildUserBasicInfoViewModel(commentReactNotification.SourceUser),
+            Message = commentReactNotification.Message,
+            Type = commentReactNotification.Type,
+            Seen = commentReactNotification.Seen,
+            CommentId = commentReactNotification.CommentId,
+            CommentReactId = commentReactNotification.ReactId,
+            PostId = commentReactNotification.PostId
         };
         return commentReactNotificationViewModel;
 

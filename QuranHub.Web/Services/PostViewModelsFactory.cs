@@ -132,7 +132,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
     }
 
 
-    public async Task<List<CommentViewModel>> BuildCommentsViewModelAsync(List<Comment> comments)
+    public async Task<List<CommentViewModel>> BuildCommentsViewModelAsync(List<PostComment> comments)
     {
         List<CommentViewModel> commentsViewModels = new List<CommentViewModel>();
 
@@ -145,7 +145,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return commentsViewModels;
     }
 
-    public  async Task<CommentViewModel> BuildCommentViewModelAsync(Comment comment) 
+    public  async Task<CommentViewModel> BuildCommentViewModelAsync(PostComment comment) 
     {
         CommentViewModel commentViewModel = new CommentViewModel()
         {
@@ -161,7 +161,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return commentViewModel;
     }
 
-    public List<CommentReactViewModel> BuildCommentReactsViewModel(List<CommentReact> commentReacts) 
+    public List<CommentReactViewModel> BuildCommentReactsViewModel(List<PostCommentReact> commentReacts) 
     {
         List<CommentReactViewModel> commentReactsViewMdoel = new List<CommentReactViewModel>();
 
@@ -174,7 +174,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return commentReactsViewMdoel;
      } 
 
-    public CommentReactViewModel BuildCommentReactViewModel(CommentReact commentReact)
+    public CommentReactViewModel BuildCommentReactViewModel(PostCommentReact commentReact)
     {
 
         CommentReactViewModel commentReactViewModel = new CommentReactViewModel()
@@ -206,7 +206,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return false;
     }     
 
-    public  List<ShareViewModel> BuildSharesViewModel(List<Share> shares) 
+    public  List<ShareViewModel> BuildSharesViewModel(List<PostShare> shares) 
     {
         List<ShareViewModel> shareViewModels = new List<ShareViewModel>();
 
@@ -219,7 +219,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return shareViewModels;
     }
 
-    public ShareViewModel BuildShareViewModel(Share share)
+    public ShareViewModel BuildShareViewModel(PostShare share)
     {
         ShareViewModel shareViewModel = new ShareViewModel()
         {
@@ -232,7 +232,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return shareViewModel;
     }
 
-    public async Task<ShareViewModel> BuildSharedPostShareViewModelAsync(Share share)
+    public async Task<ShareViewModel> BuildSharedPostShareViewModelAsync(PostShare share)
     {
         ShareViewModel shareViewModel = new ShareViewModel()
         {

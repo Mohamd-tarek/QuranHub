@@ -9,14 +9,14 @@ public interface IPostViewModelsFactory
     public VerseViewModel BuildVerseViewModel(Verse Verse);
     public List<PostReactViewModel> BuildPostReactsViewModel(List<PostReact> postReacts);
     public Task<bool> CheckPostReactedToAsync(int PostId);
-    public Task<List<CommentViewModel>> BuildCommentsViewModelAsync(List<Comment> comments);
-    public List<CommentReactViewModel> BuildCommentReactsViewModel(List<CommentReact> commentReacts);
-    public List<ShareViewModel> BuildSharesViewModel(List<Share> shares);
+    public Task<List<CommentViewModel>> BuildCommentsViewModelAsync(List<PostComment> comments);
+    public List<CommentReactViewModel> BuildCommentReactsViewModel(List<PostCommentReact> commentReacts);
+    public List<ShareViewModel> BuildSharesViewModel(List<PostShare> shares);
     public PostReactViewModel BuildPostReactViewModel(PostReact postReact);
-    public Task<CommentViewModel> BuildCommentViewModelAsync(Comment comment);
-    public CommentReactViewModel BuildCommentReactViewModel(CommentReact commentReact);
+    public Task<CommentViewModel> BuildCommentViewModelAsync(PostComment comment);
+    public CommentReactViewModel BuildCommentReactViewModel(PostCommentReact commentReact);
     public Task<bool> CheckCommentReactedToAsync(int CommentId);
-    public ShareViewModel BuildShareViewModel(Share share);
-    public Task<ShareViewModel> BuildSharedPostShareViewModelAsync(Share share);
+    public ShareViewModel BuildShareViewModel(PostShare share);
+    public Task<ShareViewModel> BuildSharedPostShareViewModelAsync(PostShare share);
 
 }

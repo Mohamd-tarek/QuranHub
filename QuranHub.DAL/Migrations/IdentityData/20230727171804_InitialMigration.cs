@@ -261,9 +261,10 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     QuranHubUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     VerseId = table.Column<int>(type: "int", nullable: true),
-                    PostId = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReactsCount = table.Column<int>(type: "int", nullable: false)
+                    ReactsCount = table.Column<int>(type: "int", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -293,19 +294,38 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     Seen = table.Column<bool>(type: "bit", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
-                    FollowId = table.Column<int>(type: "int", nullable: true),
+                    CommentNotification_CommentId = table.Column<int>(type: "int", nullable: true),
                     PostId = table.Column<int>(type: "int", nullable: true),
+                    PostCommentId = table.Column<int>(type: "int", nullable: true),
+                    FollowId = table.Column<int>(type: "int", nullable: true),
+                    ReactId = table.Column<int>(type: "int", nullable: true),
                     CommentId = table.Column<int>(type: "int", nullable: true),
                     CommentReactId = table.Column<int>(type: "int", nullable: true),
-                    ReactId = table.Column<int>(type: "int", nullable: true),
-                    ShareId = table.Column<int>(type: "int", nullable: true)
+                    PostCommentReactNotification_PostId = table.Column<int>(type: "int", nullable: true),
+                    PostCommentReactId = table.Column<int>(type: "int", nullable: true),
+                    PostCommentCommentId = table.Column<int>(type: "int", nullable: true),
+                    PostReactNotification_PostId = table.Column<int>(type: "int", nullable: true),
+                    PostReactId = table.Column<int>(type: "int", nullable: true),
+                    ShareId = table.Column<int>(type: "int", nullable: true),
+                    PostShareNotification_PostId = table.Column<int>(type: "int", nullable: true),
+                    PostShareId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notifications", x => x.NotificationId);
                     table.ForeignKey(
                         name: "FK_CommentNotification_Comment_CommentId",
+                        column: x => x.CommentNotification_CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "CommentId");
+                    table.ForeignKey(
+                        name: "FK_CommentReactNotification_Comment_CommentId",
                         column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "CommentId");
+                    table.ForeignKey(
+                        name: "FK_Notifications_Comments_PostCommentCommentId",
+                        column: x => x.PostCommentCommentId,
                         principalTable: "Comments",
                         principalColumn: "CommentId");
                     table.ForeignKey(
@@ -314,6 +334,11 @@ namespace QuranHub.DAL.Migrations.IdentityData
                         principalTable: "Follows",
                         principalColumn: "FollowId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PostCommentNotification_PostComment_CommentId",
+                        column: x => x.CommentNotification_CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "CommentId");
                     table.ForeignKey(
                         name: "FK_Source_QuranHubUsers",
                         column: x => x.SourceUserId,
@@ -368,8 +393,9 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     QuranHubUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     CommentId = table.Column<int>(type: "int", nullable: true),
+                    PostCommentReact_PostId = table.Column<int>(type: "int", nullable: true),
                     PostId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -390,6 +416,12 @@ namespace QuranHub.DAL.Migrations.IdentityData
                         column: x => x.QuranHubUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Reacts_Posts_PostCommentReact_PostId",
+                        column: x => x.PostCommentReact_PostId,
+                        principalTable: "Posts",
+                        principalColumn: "PostId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -399,8 +431,9 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     ShareId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    QuranHubUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    QuranHubUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -493,6 +526,13 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_CommentNotification_CommentId",
+                table: "Notifications",
+                column: "CommentNotification_CommentId",
+                unique: true,
+                filter: "[CommentId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Notifications_CommentReactId",
                 table: "Notifications",
                 column: "CommentReactId",
@@ -507,9 +547,48 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 filter: "[FollowId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_PostCommentCommentId",
+                table: "Notifications",
+                column: "PostCommentCommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_PostCommentReactId",
+                table: "Notifications",
+                column: "PostCommentReactId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_PostCommentReactNotification_PostId",
+                table: "Notifications",
+                column: "PostCommentReactNotification_PostId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Notifications_PostId",
                 table: "Notifications",
                 column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_PostReactId",
+                table: "Notifications",
+                column: "PostReactId",
+                unique: true,
+                filter: "[PostReactId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_PostReactNotification_PostId",
+                table: "Notifications",
+                column: "PostReactNotification_PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_PostShareId",
+                table: "Notifications",
+                column: "PostShareId",
+                unique: true,
+                filter: "[PostShareId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_PostShareNotification_PostId",
+                table: "Notifications",
+                column: "PostShareNotification_PostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_ReactId",
@@ -564,6 +643,11 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reacts_PostCommentReact_PostId",
+                table: "Reacts",
+                column: "PostCommentReact_PostId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reacts_PostId",
                 table: "Reacts",
                 column: "PostId");
@@ -599,19 +683,61 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 principalColumn: "ReactId");
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Notifications_Reacts_PostCommentReactId",
+                table: "Notifications",
+                column: "PostCommentReactId",
+                principalTable: "Reacts",
+                principalColumn: "ReactId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_PostReactNotification_PostReact_PostReactId",
+                table: "Notifications",
+                column: "PostReactId",
+                principalTable: "Reacts",
+                principalColumn: "ReactId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ReactNotification_React_ReactId",
                 table: "Notifications",
                 column: "ReactId",
                 principalTable: "Reacts",
                 principalColumn: "ReactId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Notifications_Posts_PostId",
+                name: "FK_PostCommentNotification_Post_PostId",
                 table: "Notifications",
                 column: "PostId",
                 principalTable: "Posts",
-                principalColumn: "PostId",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "PostId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PostCommentReactNotification_Post_PostId",
+                table: "Notifications",
+                column: "PostCommentReactNotification_PostId",
+                principalTable: "Posts",
+                principalColumn: "PostId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PostReactNotification_Post_PostId",
+                table: "Notifications",
+                column: "PostReactNotification_PostId",
+                principalTable: "Posts",
+                principalColumn: "PostId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PostShareNotification_ShareablePost_PostId",
+                table: "Notifications",
+                column: "PostShareNotification_PostId",
+                principalTable: "Posts",
+                principalColumn: "PostId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ShareNotification_PostShare_PostShareId",
+                table: "Notifications",
+                column: "PostShareId",
+                principalTable: "Shares",
+                principalColumn: "ShareId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ShareNotification_Share_ShareId",

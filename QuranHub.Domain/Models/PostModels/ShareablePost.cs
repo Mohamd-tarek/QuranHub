@@ -4,11 +4,11 @@ namespace QuranHub.Domain.Models;
 public class ShareablePost :Post
 {
     public int SharesCount {get; set;}
-    public List<Share> Shares { get; set; }
+    public List<PostShare> Shares { get; set; } = new();
+
+    public List<PostShareNotification> PostShareNotifications { get; set; } = new();
     public ShareablePost():base()
-    {
-        Shares = new  List<Share>();
-    }
+    {  }
 
     public ShareablePost(PostPrivacy privacy, string quranHubUserId, string text, int verseId ): this()
     {
@@ -24,9 +24,9 @@ public class ShareablePost :Post
         DateTime = DateTime.Now;
     }
 
-    public Share AddShare(string quranHubUserId)
+    public PostShare AddShare(string quranHubUserId)
     {
-        var share = new Share(quranHubUserId, PostId);
+        var share = new PostShare(quranHubUserId, PostId);
 
         Shares.Add(share);
 
@@ -35,21 +35,21 @@ public class ShareablePost :Post
         return share;
     }
 
-    public ShareNotification AddShareNotification(QuranHubUser quranHubUser, int shareId )
+    public PostShareNotification AddShareNotification(QuranHubUser quranHubUser, int shareId )
     {
         string message = quranHubUser.UserName + " shared  your post "
                 + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
 
-        var ShareNotification = new ShareNotification(quranHubUser.Id, this.QuranHubUserId, message, this.PostId, shareId);
+        var ShareNotification = new PostShareNotification(quranHubUser.Id, this.QuranHubUserId, message, shareId, this.PostId);
 
-        PostNotifications.Add(ShareNotification);
+        PostShareNotifications.Add(ShareNotification);
 
         return ShareNotification;
     }
 
     public void RemoveShare(int shareId)
     {
-        Shares.Remove(new Share(){ ShareId = shareId});
+        Shares.Remove(new PostShare(){ ShareId = shareId});
 
         SharesCount--;
     }

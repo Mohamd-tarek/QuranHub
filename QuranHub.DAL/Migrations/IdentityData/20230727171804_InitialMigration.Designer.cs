@@ -12,7 +12,7 @@ using QuranHub.DAL.Database;
 namespace QuranHub.DAL.Migrations.IdentityData
 {
     [DbContext(typeof(IdentityDataContext))]
-    [Migration("20230714010524_InitialMigration")]
+    [Migration("20230727171804_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -169,8 +169,10 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("QuranHubUserId")
                         .HasColumnType("nvarchar(450)");
@@ -187,13 +189,15 @@ namespace QuranHub.DAL.Migrations.IdentityData
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("PostId");
-
                     b.HasIndex("QuranHubUserId");
 
                     b.HasIndex("VerseId");
 
                     b.ToTable("Comments");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Comment");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.Follow", b =>
@@ -496,8 +500,8 @@ namespace QuranHub.DAL.Migrations.IdentityData
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("QuranHubUserId")
                         .HasColumnType("nvarchar(450)");
@@ -525,19 +529,23 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("QuranHubUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ShareId");
 
-                    b.HasIndex("PostId");
-
                     b.HasIndex("QuranHubUserId");
 
                     b.ToTable("Shares");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Share");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.Verse", b =>
@@ -563,6 +571,38 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.ToTable("Verses");
                 });
 
+            modelBuilder.Entity("QuranHub.Domain.Models.PostComment", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.Comment");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("PostId");
+
+                    b.HasDiscriminator().HasValue("PostComment");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.CommentNotification", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.Notification");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("CommentId")
+                        .IsUnique()
+                        .HasFilter("[CommentId] IS NOT NULL");
+
+                    b.ToTable("Notifications", t =>
+                        {
+                            t.Property("CommentId")
+                                .HasColumnName("CommentNotification_CommentId");
+                        });
+
+                    b.HasDiscriminator().HasValue("CommentNotification");
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.FollowNotification", b =>
                 {
                     b.HasBaseType("QuranHub.Domain.Models.Notification");
@@ -577,16 +617,32 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.HasDiscriminator().HasValue("FollowNotification");
                 });
 
-            modelBuilder.Entity("QuranHub.Domain.Models.PostNotification", b =>
+            modelBuilder.Entity("QuranHub.Domain.Models.ReactNotification", b =>
                 {
                     b.HasBaseType("QuranHub.Domain.Models.Notification");
 
-                    b.Property<int>("PostId")
+                    b.Property<int>("ReactId")
                         .HasColumnType("int");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("ReactId")
+                        .IsUnique()
+                        .HasFilter("[ReactId] IS NOT NULL");
 
-                    b.HasDiscriminator().HasValue("PostNotification");
+                    b.HasDiscriminator().HasValue("ReactNotification");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.ShareNotification", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.Notification");
+
+                    b.Property<int>("ShareId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ShareId")
+                        .IsUnique()
+                        .HasFilter("[ShareId] IS NOT NULL");
+
+                    b.HasDiscriminator().HasValue("ShareNotification");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.ShareablePost", b =>
@@ -641,58 +697,152 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.HasDiscriminator().HasValue("PostReact");
                 });
 
-            modelBuilder.Entity("QuranHub.Domain.Models.CommentNotification", b =>
+            modelBuilder.Entity("QuranHub.Domain.Models.PostShare", b =>
                 {
-                    b.HasBaseType("QuranHub.Domain.Models.PostNotification");
+                    b.HasBaseType("QuranHub.Domain.Models.Share");
 
-                    b.Property<int>("CommentId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.HasIndex("CommentId");
+                    b.HasIndex("PostId");
 
-                    b.HasDiscriminator().HasValue("CommentNotification");
+                    b.HasDiscriminator().HasValue("PostShare");
                 });
 
-            modelBuilder.Entity("QuranHub.Domain.Models.PostReactNotification", b =>
+            modelBuilder.Entity("QuranHub.Domain.Models.PostCommentNotification", b =>
                 {
-                    b.HasBaseType("QuranHub.Domain.Models.PostNotification");
+                    b.HasBaseType("QuranHub.Domain.Models.CommentNotification");
 
-                    b.Property<int>("ReactId")
+                    b.Property<int>("PostCommentId")
                         .HasColumnType("int");
 
-                    b.HasIndex("ReactId")
-                        .IsUnique()
-                        .HasFilter("[ReactId] IS NOT NULL");
-
-                    b.HasDiscriminator().HasValue("PostReactNotification");
-                });
-
-            modelBuilder.Entity("QuranHub.Domain.Models.ShareNotification", b =>
-                {
-                    b.HasBaseType("QuranHub.Domain.Models.PostNotification");
-
-                    b.Property<int>("ShareId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.HasIndex("ShareId")
-                        .IsUnique()
-                        .HasFilter("[ShareId] IS NOT NULL");
+                    b.HasIndex("PostId");
 
-                    b.HasDiscriminator().HasValue("ShareNotification");
+                    b.ToTable("Notifications", t =>
+                        {
+                            t.Property("CommentId")
+                                .HasColumnName("CommentNotification_CommentId");
+                        });
+
+                    b.HasDiscriminator().HasValue("PostCommentNotification");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.CommentReactNotification", b =>
                 {
-                    b.HasBaseType("QuranHub.Domain.Models.CommentNotification");
+                    b.HasBaseType("QuranHub.Domain.Models.ReactNotification");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CommentReactId")
                         .HasColumnType("int");
+
+                    b.HasIndex("CommentId");
 
                     b.HasIndex("CommentReactId")
                         .IsUnique()
                         .HasFilter("[CommentReactId] IS NOT NULL");
 
                     b.HasDiscriminator().HasValue("CommentReactNotification");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostReactNotification", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.ReactNotification");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostReactId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("PostReactId")
+                        .IsUnique()
+                        .HasFilter("[PostReactId] IS NOT NULL");
+
+                    b.ToTable("Notifications", t =>
+                        {
+                            t.Property("PostId")
+                                .HasColumnName("PostReactNotification_PostId");
+                        });
+
+                    b.HasDiscriminator().HasValue("PostReactNotification");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostShareNotification", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.ShareNotification");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostShareId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("PostShareId")
+                        .IsUnique()
+                        .HasFilter("[PostShareId] IS NOT NULL");
+
+                    b.ToTable("Notifications", t =>
+                        {
+                            t.Property("PostId")
+                                .HasColumnName("PostShareNotification_PostId");
+                        });
+
+                    b.HasDiscriminator().HasValue("PostShareNotification");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostCommentReact", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.CommentReact");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Reacts", t =>
+                        {
+                            t.Property("PostId")
+                                .HasColumnName("PostCommentReact_PostId");
+                        });
+
+                    b.HasDiscriminator().HasValue("PostCommentReact");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostCommentReactNotification", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.CommentReactNotification");
+
+                    b.Property<int?>("PostCommentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostCommentReactId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("PostCommentCommentId");
+
+                    b.HasIndex("PostCommentReactId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Notifications", t =>
+                        {
+                            t.Property("PostId")
+                                .HasColumnName("PostCommentReactNotification_PostId");
+                        });
+
+                    b.HasDiscriminator().HasValue("PostCommentReactNotification");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -748,12 +898,6 @@ namespace QuranHub.DAL.Migrations.IdentityData
 
             modelBuilder.Entity("QuranHub.Domain.Models.Comment", b =>
                 {
-                    b.HasOne("QuranHub.Domain.Models.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("QuranHub.Domain.Models.QuranHubUser", "QuranHubUser")
                         .WithMany("Commnets")
                         .HasForeignKey("QuranHubUserId");
@@ -761,8 +905,6 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.HasOne("QuranHub.Domain.Models.Verse", "Verse")
                         .WithMany("Comments")
                         .HasForeignKey("VerseId");
-
-                    b.Navigation("Post");
 
                     b.Navigation("QuranHubUser");
 
@@ -846,19 +988,34 @@ namespace QuranHub.DAL.Migrations.IdentityData
 
             modelBuilder.Entity("QuranHub.Domain.Models.Share", b =>
                 {
-                    b.HasOne("QuranHub.Domain.Models.ShareablePost", "Post")
-                        .WithMany("Shares")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("QuranHub.Domain.Models.QuranHubUser", "QuranHubUser")
                         .WithMany("Shares")
                         .HasForeignKey("QuranHubUserId");
 
-                    b.Navigation("Post");
-
                     b.Navigation("QuranHubUser");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostComment", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.CommentNotification", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.Comment", "Comment")
+                        .WithOne("CommentNotification")
+                        .HasForeignKey("QuranHub.Domain.Models.CommentNotification", "CommentId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_CommentNotification_Comment_CommentId");
+
+                    b.Navigation("Comment");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.FollowNotification", b =>
@@ -872,20 +1029,33 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("Follow");
                 });
 
-            modelBuilder.Entity("QuranHub.Domain.Models.PostNotification", b =>
+            modelBuilder.Entity("QuranHub.Domain.Models.ReactNotification", b =>
                 {
-                    b.HasOne("QuranHub.Domain.Models.Post", "Post")
-                        .WithMany("PostNotifications")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("QuranHub.Domain.Models.React", "React")
+                        .WithOne("ReactNotification")
+                        .HasForeignKey("QuranHub.Domain.Models.ReactNotification", "ReactId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_ReactNotification_React_ReactId");
 
-                    b.Navigation("Post");
+                    b.Navigation("React");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.ShareNotification", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.Share", "Share")
+                        .WithOne("ShareNotification")
+                        .HasForeignKey("QuranHub.Domain.Models.ShareNotification", "ShareId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_ShareNotification_Share_ShareId");
+
+                    b.Navigation("Share");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.SharedPost", b =>
                 {
-                    b.HasOne("QuranHub.Domain.Models.Share", "Share")
+                    b.HasOne("QuranHub.Domain.Models.PostShare", "Share")
                         .WithOne("SharedPost")
                         .HasForeignKey("QuranHub.Domain.Models.SharedPost", "ShareId");
 
@@ -928,57 +1098,142 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("QuranHubUser");
                 });
 
-            modelBuilder.Entity("QuranHub.Domain.Models.CommentNotification", b =>
+            modelBuilder.Entity("QuranHub.Domain.Models.PostShare", b =>
                 {
-                    b.HasOne("QuranHub.Domain.Models.Comment", "Comment")
-                        .WithMany("CommentNotifications")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_CommentNotification_Comment_CommentId");
+                    b.HasOne("QuranHub.Domain.Models.ShareablePost", "Post")
+                        .WithMany("Shares")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Comment");
+                    b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("QuranHub.Domain.Models.PostReactNotification", b =>
+            modelBuilder.Entity("QuranHub.Domain.Models.PostCommentNotification", b =>
                 {
-                    b.HasOne("QuranHub.Domain.Models.PostReact", "React")
-                        .WithOne("ReactNotification")
-                        .HasForeignKey("QuranHub.Domain.Models.PostReactNotification", "ReactId")
+                    b.HasOne("QuranHub.Domain.Models.PostComment", "PostComment")
+                        .WithOne("PostCommentNotification")
+                        .HasForeignKey("QuranHub.Domain.Models.PostCommentNotification", "CommentId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired()
-                        .HasConstraintName("FK_PostReactNotification_PostReact_PostReactId");
+                        .HasConstraintName("FK_PostCommentNotification_PostComment_CommentId");
 
-                    b.Navigation("React");
-                });
-
-            modelBuilder.Entity("QuranHub.Domain.Models.ShareNotification", b =>
-                {
-                    b.HasOne("QuranHub.Domain.Models.Share", "Share")
-                        .WithOne("ShareNotification")
-                        .HasForeignKey("QuranHub.Domain.Models.ShareNotification", "ShareId")
+                    b.HasOne("QuranHub.Domain.Models.Post", "Post")
+                        .WithMany("PostCommentNotifications")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired()
-                        .HasConstraintName("FK_ShareNotification_Share_ShareId");
+                        .HasConstraintName("FK_PostCommentNotification_Post_PostId");
 
-                    b.Navigation("Share");
+                    b.Navigation("Post");
+
+                    b.Navigation("PostComment");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.CommentReactNotification", b =>
                 {
+                    b.HasOne("QuranHub.Domain.Models.Comment", "Comment")
+                        .WithMany("CommentReactNotifications")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_CommentReactNotification_Comment_CommentId");
+
                     b.HasOne("QuranHub.Domain.Models.CommentReact", "CommentReact")
-                        .WithOne("ReactNotification")
+                        .WithOne("CommentReactNotification")
                         .HasForeignKey("QuranHub.Domain.Models.CommentReactNotification", "CommentReactId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired()
                         .HasConstraintName("FK_CommentReactNotification_CommentReact_CommentReactId");
 
+                    b.Navigation("Comment");
+
                     b.Navigation("CommentReact");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostReactNotification", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.Post", "Post")
+                        .WithMany("PostReactNotifications")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostReactNotification_Post_PostId");
+
+                    b.HasOne("QuranHub.Domain.Models.PostReact", "PostReact")
+                        .WithOne("PostReactNotification")
+                        .HasForeignKey("QuranHub.Domain.Models.PostReactNotification", "PostReactId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostReactNotification_PostReact_PostReactId");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("PostReact");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostShareNotification", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.ShareablePost", "Post")
+                        .WithMany("PostShareNotifications")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostShareNotification_ShareablePost_PostId");
+
+                    b.HasOne("QuranHub.Domain.Models.PostShare", "PostShare")
+                        .WithOne("PostShareNotification")
+                        .HasForeignKey("QuranHub.Domain.Models.PostShareNotification", "PostShareId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_ShareNotification_PostShare_PostShareId");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("PostShare");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostCommentReact", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostCommentReactNotification", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.PostComment", null)
+                        .WithMany("PostCommentReactNotifications")
+                        .HasForeignKey("PostCommentCommentId");
+
+                    b.HasOne("QuranHub.Domain.Models.PostCommentReact", "PostCommentReact")
+                        .WithMany()
+                        .HasForeignKey("PostCommentReactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuranHub.Domain.Models.Post", "Post")
+                        .WithMany("PostCommentReactNotifications")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostCommentReactNotification_Post_PostId");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("PostCommentReact");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.Comment", b =>
                 {
-                    b.Navigation("CommentNotifications");
+                    b.Navigation("CommentNotification")
+                        .IsRequired();
+
+                    b.Navigation("CommentReactNotifications");
 
                     b.Navigation("Reacts");
                 });
@@ -993,7 +1248,11 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("PostNotifications");
+                    b.Navigation("PostCommentNotifications");
+
+                    b.Navigation("PostCommentReactNotifications");
+
+                    b.Navigation("PostReactNotifications");
 
                     b.Navigation("Reacts");
                 });
@@ -1024,12 +1283,15 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("TargetNotifications");
                 });
 
+            modelBuilder.Entity("QuranHub.Domain.Models.React", b =>
+                {
+                    b.Navigation("ReactNotification")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.Share", b =>
                 {
                     b.Navigation("ShareNotification")
-                        .IsRequired();
-
-                    b.Navigation("SharedPost")
                         .IsRequired();
                 });
 
@@ -1040,20 +1302,39 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("Posts");
                 });
 
+            modelBuilder.Entity("QuranHub.Domain.Models.PostComment", b =>
+                {
+                    b.Navigation("PostCommentNotification")
+                        .IsRequired();
+
+                    b.Navigation("PostCommentReactNotifications");
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.ShareablePost", b =>
                 {
+                    b.Navigation("PostShareNotifications");
+
                     b.Navigation("Shares");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.CommentReact", b =>
                 {
-                    b.Navigation("ReactNotification")
+                    b.Navigation("CommentReactNotification")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.PostReact", b =>
                 {
-                    b.Navigation("ReactNotification")
+                    b.Navigation("PostReactNotification")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PostShare", b =>
+                {
+                    b.Navigation("PostShareNotification")
+                        .IsRequired();
+
+                    b.Navigation("SharedPost")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

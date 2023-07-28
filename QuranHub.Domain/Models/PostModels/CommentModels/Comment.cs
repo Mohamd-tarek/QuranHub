@@ -11,26 +11,23 @@ public class Comment :IEquatable<Comment>
 
     public int? VerseId { get; set; }
     public Verse Verse { get; set; }
-    public int PostId { get; set; }
-    public Post Post { get; set; }
     public string Text { get; set; }
     public int ReactsCount {get; set;}
     public List<CommentReact> Reacts { get; set; }
-    public List<CommentNotification> CommentNotifications { get; set; }
+    public CommentNotification CommentNotification { get; set; }
+    public List<CommentReactNotification> CommentReactNotifications{ get; set; }
 
 
     public Comment()
     {
         Reacts = new List<CommentReact>();
 
-        CommentNotifications = new List<CommentNotification>();
+        CommentReactNotifications = new List<CommentReactNotification>();
     }
 
-    public Comment(string quranHubUserId, int postId, string text, int? verseId): this()
+    public Comment(string quranHubUserId, string text, int? verseId): this()
     {
         QuranHubUserId = quranHubUserId;
-
-        PostId = postId;
 
         Text = text;
 
@@ -56,9 +53,9 @@ public class Comment :IEquatable<Comment>
         string message = quranHubUser.UserName + " reacted to your comment "
            + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
 
-        var CommentReactNotification = new CommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.Post.PostId, this.CommentId, reactId);
+        var CommentReactNotification = new CommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.CommentId, reactId);
 
-        CommentNotifications.Add(CommentReactNotification);
+        CommentReactNotifications.Add(CommentReactNotification);
         return CommentReactNotification;
     }
 

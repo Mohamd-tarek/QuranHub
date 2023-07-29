@@ -186,7 +186,7 @@ public class PostController : ControllerBase
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException(nameof(RemoveCommentReactAsync));
+            throw new InvalidOperationException(ex.StackTrace);
         }
 
         return BadRequest();

@@ -3,7 +3,7 @@
 public class PostShare : Share
 {
     public int PostId { get; set; }
-    public ShareablePost Post { get; set; }
+    public ShareablePost ShareablePost { get; set; }
     public SharedPost SharedPost { get; set; }
     public PostShareNotification PostShareNotification { get; set; }
 

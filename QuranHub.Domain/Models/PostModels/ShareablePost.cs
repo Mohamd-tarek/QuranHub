@@ -4,7 +4,7 @@ namespace QuranHub.Domain.Models;
 public class ShareablePost :Post
 {
     public int SharesCount {get; set;}
-    public List<PostShare> Shares { get; set; } = new();
+    public List<PostShare> PostShares { get; set; } = new();
 
     public List<PostShareNotification> PostShareNotifications { get; set; } = new();
     public ShareablePost():base()
@@ -24,18 +24,18 @@ public class ShareablePost :Post
         DateTime = DateTime.Now;
     }
 
-    public PostShare AddShare(string quranHubUserId)
+    public PostShare AddPostShare(string quranHubUserId)
     {
         var share = new PostShare(quranHubUserId, PostId);
 
-        Shares.Add(share);
+        PostShares.Add(share);
 
         SharesCount++;
 
         return share;
     }
 
-    public PostShareNotification AddShareNotification(QuranHubUser quranHubUser, int shareId )
+    public PostShareNotification AddPostShareNotification(QuranHubUser quranHubUser, int shareId )
     {
         string message = quranHubUser.UserName + " shared  your post "
                 + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
@@ -47,9 +47,9 @@ public class ShareablePost :Post
         return ShareNotification;
     }
 
-    public void RemoveShare(int shareId)
+    public void RemovePostShare(int shareId)
     {
-        Shares.Remove(new PostShare(){ ShareId = shareId});
+        PostShares.Remove(new PostShare(){ ShareId = shareId});
 
         SharesCount--;
     }

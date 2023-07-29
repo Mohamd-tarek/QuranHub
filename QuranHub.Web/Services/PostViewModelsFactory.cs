@@ -47,7 +47,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
             ReactsCount = post.ReactsCount,
             CommentsCount = post.CommentsCount,
             SharesCount = post.SharesCount,
-            Comments =  await this.BuildCommentsViewModelAsync(post.Comments)                      
+            Comments =  await this.BuildCommentsViewModelAsync(post.PostComments)                      
         };
 
         return postViewModel;
@@ -66,8 +66,8 @@ public class PostViewModelsFactory :IPostViewModelsFactory
             ReactedTo = await this.CheckPostReactedToAsync(sharedPost.PostId),
             ReactsCount = sharedPost.ReactsCount,
             CommentsCount = sharedPost.CommentsCount,
-            Comments = await this.BuildCommentsViewModelAsync(sharedPost.Comments),
-            Share = await this.BuildSharedPostShareViewModelAsync(sharedPost.Share)
+            Comments = await this.BuildCommentsViewModelAsync(sharedPost.PostComments),
+            Share = await this.BuildSharedPostShareViewModelAsync(sharedPost.PostShare)
         };
 
         return sharedPostViewModel;
@@ -190,7 +190,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
     } 
 
     public async Task<bool> CheckCommentReactedToAsync(int CommentId){
-        List<CommentReact> commentReacts = await this._identityDataContext.CommentReacts
+        List<PostCommentReact> commentReacts = await this._identityDataContext.PostCommentReacts
                                                .Where(commentReact => commentReact.CommentId == CommentId)
                                                .Include(commentReact => commentReact.QuranHubUser)
                                                .ToListAsync();
@@ -239,7 +239,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
             ShareId = share.ShareId,
             DateTime = share.DateTime,
             QuranHubUser = this._userViewModelsFactory.BuildPostUserViewModel(share.QuranHubUser),
-            Post = await this.BuildShareablePostViewModelAsync(share.Post)
+            Post = await this.BuildShareablePostViewModelAsync(share.ShareablePost)
         };
 
         return shareViewModel;

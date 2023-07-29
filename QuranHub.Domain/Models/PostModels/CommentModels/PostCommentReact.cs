@@ -6,7 +6,7 @@ public class PostCommentReact : CommentReact
     public int PostId { get; set; }
     public Post Post { get; set; }
 
-    public PostCommentReactNotification ReactNotification { get; set; }
+    public PostCommentReactNotification PostCommentReactNotification { get; set; }
 
     public PostCommentReact(): base()
     {}

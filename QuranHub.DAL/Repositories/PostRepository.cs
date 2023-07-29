@@ -1,4 +1,6 @@
 ﻿
+using QuranHub.Domain.Models;
+
 namespace QuranHub.DAL.Repositories;
 
 public class PostRepository : IPostRepository 
@@ -39,7 +41,7 @@ public class PostRepository : IPostRepository
                                                    .Where(post => post.PostId == postId)
                                                    .FirstAsync();
 
-        post.Comments = await this.GetCommentsAsync(post.PostId);
+        post.PostComments = await this.GetCommentsAsync(post.PostId);
 
         return post;
     }
@@ -53,10 +55,10 @@ public class PostRepository : IPostRepository
 
         Post post = await this.GetPostByIdAsync(postId);
 
-        if(!post.Comments.Contains(new Comment(){CommentId = commentId}))
+        if(!post.PostComments.Contains(new Comment(){CommentId = commentId}))
         {
             PostComment comment  = await this._identityDataContext.PostComments.FindAsync(commentId);
-            post.Comments.Add(comment);
+            post.PostComments.Add(comment);
         }
 
         return post;
@@ -74,7 +76,7 @@ public class PostRepository : IPostRepository
                                                             .Where(post => post.PostId == postId)
                                                             .FirstAsync();
 
-        post.Comments = await this.GetCommentsAsync(post.PostId);
+        post.PostComments = await this.GetCommentsAsync(post.PostId);
        
         return post;
     }
@@ -90,7 +92,7 @@ public class PostRepository : IPostRepository
                                                                    .ToListAsync();
         foreach(var post in posts)
         {
-            post.Comments = await this.GetCommentsAsync(post.PostId);
+            post.PostComments = await this.GetCommentsAsync(post.PostId);
         }
         return posts;
 
@@ -101,13 +103,13 @@ public class PostRepository : IPostRepository
         SharedPost Sharedpost = await this._identityDataContext.SharedPosts
                                                                .Include(post => post.QuranHubUser)
                                                                .Include(post => post.Verse)
-                                                               .Include(post => post.Share)
+                                                               .Include(post => post.PostShare)
                                                                .Where(post => post.PostId == postId)
                                                                .FirstAsync();
 
-        Sharedpost.Comments = await this.GetCommentsAsync(Sharedpost.PostId);
+        Sharedpost.PostComments = await this.GetCommentsAsync(Sharedpost.PostId);
         
-        Sharedpost.Share.Post = await GetShareablePostByIdAsync(Sharedpost.Share.PostId);
+        Sharedpost.PostShare.ShareablePost = await GetShareablePostByIdAsync(Sharedpost.PostShare.PostId);
 
         return Sharedpost;
     }
@@ -117,7 +119,7 @@ public class PostRepository : IPostRepository
         List<SharedPost> posts = await this._identityDataContext.SharedPosts
                                                                 .Include(post => post.QuranHubUser)
                                                                 .Include(post => post.Verse)
-                                                                .Include(post => post.Share)
+                                                                .Include(post => post.PostShare)
                                                                 .Where(post => post.QuranHubUserId == quranHubUserId)
                                                                 .OrderByDescending(Post => Post.DateTime)
                                                                 .ToListAsync();
@@ -126,12 +128,12 @@ public class PostRepository : IPostRepository
 
         foreach(var post in posts)
         {
-            post.Comments = await this.GetCommentsAsync(post.PostId);
+            post.PostComments = await this.GetCommentsAsync(post.PostId);
         }
 
         foreach (var post in posts)
         {
-            post.Share.Post = await GetShareablePostByIdAsync(post.Share.PostId);
+            post.PostShare.ShareablePost = await GetShareablePostByIdAsync(post.PostShare.PostId);
         }
 
         return posts;
@@ -181,7 +183,7 @@ public class PostRepository : IPostRepository
     {
         PostShare share =  await this._identityDataContext.PostShares.FindAsync(shareId);
 
-        share.Post = await this.GetShareablePostByIdAsync(share.PostId);
+        share.ShareablePost = await this.GetShareablePostByIdAsync(share.PostId);
 
         return share;
                
@@ -190,24 +192,24 @@ public class PostRepository : IPostRepository
     public async Task<List<PostComment>> GetMoreCommentsAsync(int postId, int offset, int amount)
     {
         List<PostComment> PostComments = await _identityDataContext.PostComments
-                                                               .Include(comment => comment.Verse)
-                                                               .Include(comment => comment.QuranHubUser)
-                                                               .Where(PostComment => PostComment.PostId == postId)
-                                                               .AsQueryable()
-                                                               .Skip(offset)
-                                                               .Take(amount)
-                                                               .ToListAsync();
+                                                                   .Include(comment => comment.Verse)
+                                                                   .Include(comment => comment.QuranHubUser)
+                                                                   .Where(PostComment => PostComment.PostId == postId)
+                                                                   .AsQueryable()
+                                                                   .Skip(offset)
+                                                                   .Take(amount)
+                                                                   .ToListAsync();
         return PostComments;
     }
     public async Task<List<PostCommentReact>> GetMoreCommentReactsAsync(int postId, int offset, int amount)
     {
         List<PostCommentReact> CommentReacts = await _identityDataContext.PostCommentReacts
-                                                                     .Include(commentReact => commentReact.QuranHubUser)
-                                                                     .Where(CommentReact => CommentReact.CommentId == postId)
-                                                                     .AsQueryable()
-                                                                     .Skip(offset)
-                                                                     .Take(amount)
-                                                                     .ToListAsync();
+                                                                         .Include(commentReact => commentReact.QuranHubUser)
+                                                                         .Where(CommentReact => CommentReact.CommentId == postId)
+                                                                         .AsQueryable()
+                                                                         .Skip(offset)
+                                                                         .Take(amount)
+                                                                         .ToListAsync();
         return CommentReacts;
     }
 
@@ -226,12 +228,12 @@ public class PostRepository : IPostRepository
     public async Task<List<PostShare>> GetMoreSharesAsync(int postId, int offset, int amount)
     {
         List<PostShare> Shares = await _identityDataContext.PostShares
-                                                       .Include(share => share.QuranHubUser)
-                                                       .Where(Share => Share.PostId == postId)
-                                                       .AsQueryable()
-                                                       .Skip(offset)
-                                                       .Take(amount)
-                                                       .ToListAsync();
+                                                           .Include(share => share.QuranHubUser)
+                                                           .Where(Share => Share.PostId == postId)
+                                                           .AsQueryable()
+                                                           .Skip(offset)
+                                                           .Take(amount)
+                                                           .ToListAsync();
         return Shares;
     }
 
@@ -253,32 +255,77 @@ public class PostRepository : IPostRepository
 
     public async Task<bool> DeletePostAsync(int postId)
     {
-        Post post = await this._identityDataContext.Posts.FindAsync(postId);
+
+        bool deleted = false;
 
         if ((await this._identityDataContext.SharedPosts.FindAsync(postId)) != null)
         {
-            SharedPost sharedPost  = await this._identityDataContext.SharedPosts.FindAsync(postId);
+            SharedPost sharedPost = await this._identityDataContext.SharedPosts.Include(post => post.PostReacts)
+                                                                               .Include(post => post.PostComments)
+                                                                               .Include(post => post.PostReactNotifications)
+                                                                               .Include(post => post.PostCommentNotifications)
+                                                                               .Include(post => post.PostCommentReactNotifications)
+                                                                               .Include(post => post.PostShare)
+                                                                               .ThenInclude(postshare => postshare.PostShareNotification)
+                                                                               .FirstAsync(post => post.PostId == postId);
 
             PostShare share = await this._identityDataContext.PostShares
-                                                         .Include(Share => Share.Post)
-                                                         .Include(Share => Share.ShareNotification)
-                                                         .FirstAsync(share => share.ShareId == sharedPost.ShareId);
+                                                             .Include(Share => Share.ShareablePost)
+                                                             .Include(Share => Share.PostShareNotification)
+                                                             .FirstAsync(share => share.ShareId == sharedPost.PostShareId);
 
-            share.Post.SharesCount--;
+            share.ShareablePost.SharesCount--;
 
-            EntityEntry<Share> shareEntityEntry = this._identityDataContext.Shares.Remove(share);
+
+            EntityEntry<SharedPost> postEntityEntry = this._identityDataContext.SharedPosts.Remove(sharedPost);
+
+            if (postEntityEntry.State.Equals(EntityState.Deleted))
+            {
+                deleted = true;
+            }
+        }
+        else
+        {
+            ShareablePost shareablePost = await this._identityDataContext.ShareablePosts.Include(post => post.PostReacts)
+                                                       .Include(post => post.PostComments)
+                                                       .Include(post => post.PostReactNotifications)
+                                                       .Include(post => post.PostCommentNotifications)
+                                                       .Include(post => post.PostCommentReactNotifications)
+                                                       .Include(post => post.PostShareNotifications)
+                                                       .Include(post => post.PostShares)
+                                                       .FirstAsync(post => post.PostId == postId);
+
+
+
+            foreach(var PostShare in  shareablePost.PostShares)
+            {
+                SharedPost  curSharedPost =  await this._identityDataContext.SharedPosts.Include(post => post.PostReacts)
+                                                                                        .Include(post => post.PostComments)
+                                                                                        .Include(post => post.PostReactNotifications)
+                                                                                        .Include(post => post.PostCommentNotifications)
+                                                                                        .Include(post => post.PostCommentReactNotifications)
+                                                                                        .Include(post => post.PostShare)
+                                                                                        .ThenInclude(postshare => postshare.PostShareNotification)
+                                                                                        .FirstAsync(post => post.PostShareId == PostShare.ShareId);
+
+                EntityEntry<SharedPost> curSharedPostEntityEntry = this._identityDataContext.SharedPosts.Remove(curSharedPost);
+
+            }
+
+
+            EntityEntry<ShareablePost> postEntityEntry = this._identityDataContext.ShareablePosts.Remove(shareablePost);
+
+            if (postEntityEntry.State.Equals(EntityState.Deleted))
+            {
+                deleted = true;
+            }
+
         }
 
-        EntityEntry<Post> postEntityEntry = this._identityDataContext.Posts.Remove(post);
 
         await _identityDataContext.SaveChangesAsync();
 
-        if (postEntityEntry.State.Equals(EntityState.Detached))
-        {
-            return true;
-        }
-
-        return false;
+        return deleted;
     }
 
     public async Task<Tuple<PostReact, PostReactNotification>> AddPostReactAsync(PostReact postReact, QuranHubUser user)
@@ -287,13 +334,13 @@ public class PostRepository : IPostRepository
                                                    .Include(post => post.QuranHubUser)
                                                    .FirstAsync(post => post.PostId == postReact.PostId);
 
-        PostReact insertedPostReact = post.AddReact(user.Id);
+        PostReact insertedPostReact = post.AddPostReact(user.Id);
 
         if(post.QuranHubUserId  != user.Id)
         {
             Follow follow = await this._identityDataContext.Follows
-                                                        .Where(follow => follow.FollowedId == post.QuranHubUserId && follow.FollowerId == user.Id)
-                                                        .FirstAsync(); 
+                                                           .Where(follow => follow.FollowedId == post.QuranHubUserId && follow.FollowerId == user.Id)
+                                                           .FirstAsync(); 
 
             follow.Likes++;     
         }                                                
@@ -306,7 +353,7 @@ public class PostRepository : IPostRepository
 
         if (post.QuranHubUserId != user.Id)
         {
-           reactNotification = post.AddReactNotifiaction(user, insertedPostReact.ReactId);
+           reactNotification = post.AddPostReactNotifiaction(user, insertedPostReact.ReactId);
 
            await this._identityDataContext.SaveChangesAsync();
         }
@@ -322,10 +369,10 @@ public class PostRepository : IPostRepository
 
         PostReact postReact = await this._identityDataContext.PostReacts
                                                              .Where(postReact => post.PostId == postReact.PostId && postReact.QuranHubUserId == user.Id)
-                                                             .Include(postReact => postReact.ReactNotification)
+                                                             .Include(postReact => postReact.PostReactNotification)
                                                              .FirstAsync();
 
-        post.RemoveReact(postReact.ReactId);
+        post.RemovePostReact(postReact.ReactId);
 
         await this._identityDataContext.SaveChangesAsync();
 
@@ -338,13 +385,13 @@ public class PostRepository : IPostRepository
                                                    .Include(post => post.QuranHubUser)
                                                    .FirstAsync(post => post.PostId == comment.PostId);
 
-        PostComment insertedComment = post.AddComment(user.Id, comment.Text, comment.VerseId);
+        PostComment insertedComment = post.AddPostComment(user.Id, comment.Text, comment.VerseId);
 
        if(post.QuranHubUserId != user.Id)
        {
             Follow follow = await this._identityDataContext.Follows
-                                                        .Where(follow => follow.FollowedId == post.QuranHubUserId && follow.FollowerId == user.Id)
-                                                        .FirstAsync(); 
+                                                           .Where(follow => follow.FollowedId == post.QuranHubUserId && follow.FollowerId == user.Id)
+                                                           .FirstAsync(); 
 
             follow.Comments++;   
        }                                                  
@@ -362,7 +409,7 @@ public class PostRepository : IPostRepository
 
         if (post.QuranHubUserId != user.Id)
         {
-            commentNotification = post.AddCommentNotifiaction(user, insertedComment.CommentId);
+            commentNotification = post.AddPostCommentNotifiaction(user, insertedComment.CommentId);
 
             await this._identityDataContext.SaveChangesAsync();
         }
@@ -373,12 +420,12 @@ public class PostRepository : IPostRepository
     public async Task<bool> RemoveCommentAsync(int commentId)
     {
         PostComment comment = await this._identityDataContext.PostComments
-                                                         .Include(comment => comment.CommentReactNotifications)
-                                                         .FirstAsync(comment => comment.CommentId == commentId );
+                                                             .Include(comment => comment.PostCommentReactNotifications)
+                                                             .FirstAsync(comment => comment.CommentId == commentId );
 
         Post post = this._identityDataContext.Posts.Find(comment.PostId);
 
-        post.RemoveComment(comment.CommentId);
+        post.RemovePostComment(comment.CommentId);
                                                   
 
         await this._identityDataContext.SaveChangesAsync();
@@ -389,23 +436,25 @@ public class PostRepository : IPostRepository
     public async Task<Tuple<PostCommentReact, PostCommentReactNotification>> AddCommentReactAsync(PostCommentReact commentReact, QuranHubUser user)
     {
         PostComment comment = await this._identityDataContext.PostComments
-                                                         .Include(comment => comment.QuranHubUser)
-                                                         .Include(comment => comment.Post)
-                                                         .FirstAsync(comment => comment.CommentId ==  commentReact.CommentId);
+                                                             .Include(comment => comment.QuranHubUser)
+                                                             .Include(comment => comment.Post)
+                                                             .FirstAsync(comment => comment.CommentId ==  commentReact.CommentId);
 
         PostCommentReact insertedCommentReact = comment.AddPostCommentReact(user.Id);
+        
 
         if(comment.QuranHubUserId  != user.Id)
         {
             Follow follow = await this._identityDataContext.Follows
-                                                        .Where(follow => follow.FollowedId == comment.QuranHubUserId && follow.FollowerId == user.Id)
-                                                        .FirstAsync(); 
+                                                           .Where(follow => follow.FollowedId == comment.QuranHubUserId && follow.FollowerId == user.Id)
+                                                           .FirstAsync(); 
 
 
             follow.Likes++;                                                     
         }
 
         await this._identityDataContext.SaveChangesAsync();
+        Console.WriteLine(insertedCommentReact.ReactId);
 
         this._identityDataContext.PostCommentReacts.Attach(insertedCommentReact);
 
@@ -423,14 +472,14 @@ public class PostRepository : IPostRepository
 
     public async Task<bool> RemoveCommentReactAsync(int commentId, QuranHubUser user)
     {
-        Comment comment =  await this._identityDataContext.Comments.FindAsync(commentId);
+        PostComment comment =  await this._identityDataContext.PostComments.FindAsync(commentId);
 
-        CommentReact CommentReact = await this._identityDataContext.CommentReacts
-                                                                   .Include(commentReact => commentReact.ReactNotification)
-                                                                   .Where(CommentReact => CommentReact.CommentId == comment.CommentId && CommentReact.QuranHubUserId == user.Id)
+        PostCommentReact CommentReact = await this._identityDataContext.PostCommentReacts
+                                                                   .Include(postCommentReact => postCommentReact.PostCommentReactNotification)
+                                                                   .Where(postCommentReact => postCommentReact.CommentId == comment.CommentId && postCommentReact.QuranHubUserId == user.Id)
                                                                    .FirstAsync();
 
-        comment.RemoveCommentReact(CommentReact.ReactId);
+        comment.RemovePostCommentReact(CommentReact.ReactId);
 
         await this._identityDataContext.SaveChangesAsync();
 
@@ -441,15 +490,15 @@ public class PostRepository : IPostRepository
 
         ShareablePost post = await this._identityDataContext.ShareablePosts
                                                             .Include(post => post.QuranHubUser)
-                                                            .FirstAsync(post => post.PostId == sharedPost.Share.PostId);
+                                                            .FirstAsync(post => post.PostId == sharedPost.PostShare.PostId);
 
-        PostShare insertedShare = post.AddShare(user.Id);
+        PostShare insertedShare = post.AddPostShare(user.Id);
 
        if(post.QuranHubUserId  != user.Id)
        {
             Follow follow = await this._identityDataContext.Follows
-                                                        .Where(follow => follow.FollowedId == post.QuranHubUserId && follow.FollowerId == user.Id)
-                                                        .FirstAsync(); 
+                                                           .Where(follow => follow.FollowedId == post.QuranHubUserId && follow.FollowerId == user.Id)
+                                                           .FirstAsync(); 
 
             follow.Shares++;  
        }                                                   
@@ -461,7 +510,7 @@ public class PostRepository : IPostRepository
 
         sharedPost.DateTime = DateTime.Now;
 
-        sharedPost.Share = insertedShare;
+        sharedPost.PostShare = insertedShare;
 
         await this._identityDataContext.SharedPosts.AddAsync(sharedPost);
 
@@ -473,7 +522,7 @@ public class PostRepository : IPostRepository
 
         if (post.QuranHubUserId != user.Id)
         {
-            shareNotification = post.AddShareNotification(user, insertedShare.ShareId);
+            shareNotification = post.AddPostShareNotification(user, insertedShare.ShareId);
 
             await this._identityDataContext.SaveChangesAsync();
         }

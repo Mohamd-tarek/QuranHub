@@ -63,7 +63,7 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Type = postReactNotification.Type,
             Seen = postReactNotification.Seen,
             PostId = postReactNotification.PostId,
-            PostReactId = postReactNotification.ReactId
+            PostReactId = postReactNotification.ReactId ??= 0
 
         };
         return postReactNotificationViewModel;
@@ -78,7 +78,7 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Message = shareNotification.Message,
             Type = shareNotification.Type,
             Seen = shareNotification.Seen,
-            ShareId =  shareNotification.ShareId
+            ShareId =  shareNotification.ShareId ??= 0
         };
         return shareNotificationViewModel;
     }
@@ -94,7 +94,7 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Type = shareNotification.Type,
             Seen = shareNotification.Seen,
             PostId = shareNotification.PostId,
-            ShareId = shareNotification.ShareId
+            ShareId = shareNotification.ShareId ??= 0
         };
         return shareNotificationViewModel;
     }
@@ -108,7 +108,7 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Message = commentNotification.Message,
             Type = commentNotification.Type,
             Seen = commentNotification.Seen,
-            CommentId = commentNotification.CommentId 
+            CommentId = commentNotification.CommentId  ??= 0
 
         };
         return commentNotificationViewModel;
@@ -126,7 +126,7 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Type = commentNotification.Type,
             Seen = commentNotification.Seen,
             PostId = commentNotification.PostId,
-            CommentId = commentNotification.CommentId
+            CommentId = commentNotification.CommentId ??= 0
 
         };
         return commentNotificationViewModel;
@@ -143,7 +143,7 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Type = commentReactNotification.Type,
             Seen = commentReactNotification.Seen,
             CommentId = commentReactNotification.CommentId,
-            CommentReactId = commentReactNotification.ReactId
+            CommentReactId = commentReactNotification.ReactId ??= 0
         };
         return commentReactNotificationViewModel;
 
@@ -159,7 +159,7 @@ public class NotificationViewModelsFactory : INotificationViewModelsFactory
             Type = commentReactNotification.Type,
             Seen = commentReactNotification.Seen,
             CommentId = commentReactNotification.CommentId,
-            CommentReactId = commentReactNotification.ReactId,
+            CommentReactId = commentReactNotification.ReactId ??= 0,
             PostId = commentReactNotification.PostId
         };
         return commentReactNotificationViewModel;

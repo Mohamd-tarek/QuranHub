@@ -10,10 +10,9 @@ public class PostReact : React
 
     public PostReact():base()
     {}
-    public PostReact(int type, string quranHubUserId, int postId ):base(type, quranHubUserId)
+    public PostReact(string quranHubUserId, int postId, int type = 0):base(quranHubUserId, type)
     {
         PostId = postId;
-
     }
 
 }

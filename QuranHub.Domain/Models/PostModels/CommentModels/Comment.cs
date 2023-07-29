@@ -13,17 +13,13 @@ public class Comment :IEquatable<Comment>
     public Verse Verse { get; set; }
     public string Text { get; set; }
     public int ReactsCount {get; set;}
-    public List<CommentReact> Reacts { get; set; }
+    public List<CommentReact> CommentReacts { get; set; } = new();
     public CommentNotification CommentNotification { get; set; }
-    public List<CommentReactNotification> CommentReactNotifications{ get; set; }
+    public List<CommentReactNotification> CommentReactNotifications { get; set; } = new();
 
 
     public Comment()
-    {
-        Reacts = new List<CommentReact>();
-
-        CommentReactNotifications = new List<CommentReactNotification>();
-    }
+    { }
 
     public Comment(string quranHubUserId, string text, int? verseId): this()
     {
@@ -39,9 +35,9 @@ public class Comment :IEquatable<Comment>
 
     public CommentReact AddCommentReact(string quranHubUserId, int type = 0)
     {
-        var CommentReact = new CommentReact(quranHubUserId, type, CommentId);
+        var CommentReact = new CommentReact(quranHubUserId, CommentId, type);
 
-        Reacts.Add(CommentReact);
+        CommentReacts.Add(CommentReact);
 
         ReactsCount++;
 
@@ -61,7 +57,7 @@ public class Comment :IEquatable<Comment>
 
     public void RemoveCommentReact(int CommentReactId)
     {
-        Reacts.Remove(new CommentReact() {ReactId = CommentReactId});
+        CommentReacts.Remove(new CommentReact() {ReactId = CommentReactId});
 
         ReactsCount--;
     }

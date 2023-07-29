@@ -3,7 +3,7 @@ namespace QuranHub.Domain.Models;
 
 public class ReactNotification : Notification
 {
-    public int ReactId { get; set; }
+    public int? ReactId { get; set; }
     public React React { get; set; }
     public ReactNotification() :base()
     { }

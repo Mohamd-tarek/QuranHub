@@ -65,7 +65,8 @@ public class NotificationController : ControllerBase
     private async Task<ShareNotificationViewModel> GetPostShareNotificationByIdAsync(int notifictionId)
     {
         PostShareNotification notification = await _notificationRepository.GetPostShareNotificationByIdAsync(notifictionId);
-        ShareNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildShareNotificationViewModel(notification);
+        Console.WriteLine("notification.PostId: " + notification.PostId);
+        ShareNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildPostShareNotificationViewModel(notification);
         return notificationViewModel;
     }
     private async Task<CommentNotificationViewModel> GetCommentNotificationByIdAsync(int notifictionId)
@@ -77,7 +78,7 @@ public class NotificationController : ControllerBase
     private async Task<CommentNotificationViewModel> GetPostCommentNotificationByIdAsync(int notifictionId)
     {
         PostCommentNotification notification = await _notificationRepository.GetPostCommentNotificationByIdAsync(notifictionId);
-        CommentNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildCommentNotificationViewModel(notification);
+        CommentNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildPostCommentNotificationViewModel(notification);
         return notificationViewModel;
     }
 
@@ -90,7 +91,7 @@ public class NotificationController : ControllerBase
     private async Task<CommentReactNotificationViewModel> GetPostCommentReactNotificationByIdAsync(int notifictionId)
     {
         PostCommentReactNotification notification = await _notificationRepository.GetPostCommentReactNotificationByIdAsync(notifictionId);
-        CommentReactNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildCommentReactNotificationViewModel(notification);
+        CommentReactNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildPostCommentReactNotificationViewModel(notification);
         return notificationViewModel;
     }
 

@@ -10,7 +10,7 @@ public class React :IEquatable<React>
     public QuranHubUser QuranHubUser{ get; set;}
     public ReactNotification ReactNotification { get; set; }
     public React(){}
-    public React(int type, string quranHubUserId )
+    public React(string quranHubUserId, int type = 0 )
     {
         Type = type;
 

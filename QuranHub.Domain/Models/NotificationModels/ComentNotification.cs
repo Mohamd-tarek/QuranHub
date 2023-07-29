@@ -3,7 +3,7 @@ namespace QuranHub.Domain.Models;
 
 public class CommentNotification : Notification
 {
-    public int CommentId { get; set; }
+    public int? CommentId { get; set; }
     public Comment Comment { get; set; }
 
     public CommentNotification():base()

@@ -3,7 +3,7 @@ namespace QuranHub.Domain.Models;
 
 public class ShareNotification : Notification
 {
-    public int ShareId { get; set; }
+    public int? ShareId { get; set; }
     public Share Share { get; set; }
 
     public ShareNotification():base()

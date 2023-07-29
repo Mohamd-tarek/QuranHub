@@ -2,8 +2,8 @@
 
 public class SharedPost : Post
 {
-    public int? ShareId { get; set; }
-    public PostShare Share { get; set; }
+    public int? PostShareId { get; set; }
+    public PostShare PostShare { get; set; }
     public SharedPost() : base()
     {}
     public SharedPost(PostPrivacy privacy, string quranHubUserId, string text, int verseId) : this()

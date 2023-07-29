@@ -9,12 +9,12 @@ public class PostReactNotification : ReactNotification
     public PostReact PostReact { get; set; }
     public PostReactNotification() :base()
     { }
-    public PostReactNotification(string sourceUserId, string targetUserId, string message, int postId, int postReactId) 
+    public PostReactNotification(string sourceUserId, string targetUserId, string message,  int postReactId, int postId) 
     :base(sourceUserId, targetUserId, message, postReactId)
     {
         Type = "PostReactNotification";
-        PostId = postId;
         PostReactId = postReactId;
+        PostId = postId;
     }
 }
 

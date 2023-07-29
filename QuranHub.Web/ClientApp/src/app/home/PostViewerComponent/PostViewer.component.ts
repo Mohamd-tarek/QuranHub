@@ -27,9 +27,10 @@ export class PostViewerComponent implements AfterContentInit{
     public notificationRepository: NotificationRepository) {
 
     this.notificationId = this.activeRoute.snapshot.params["notificationId"];
+    console.log("this.notificationId : " + this.notificationId);
     this.notificationRepository.getNotificationById(this.notificationId).subscribe(notification => {
-        this.notification = notification;
-        console.log(this.notification);
+      this.notification = notification;
+      console.log("this.notification : " + this.notification.postId);
         if(notification.commentId) {
           this.postDataRepository.getPostByIdWithSpecificComment(this.notification.postId, this.notification.commentId).subscribe(post => {
             const index = post.comments.findIndex(comment => comment.commentId == this.notification.commentId);

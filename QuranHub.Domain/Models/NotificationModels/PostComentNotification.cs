@@ -11,7 +11,7 @@ public class PostCommentNotification : CommentNotification
 
     public PostCommentNotification():base()
     { }
-    public PostCommentNotification(string sourceUserId, string targetUserId, string message, int postId, int commentId)
+    public PostCommentNotification(string sourceUserId, string targetUserId, string message, int commentId, int postId)
     : base(sourceUserId, targetUserId, message, commentId)
     {
         Type = "PostCommentNotification";

@@ -30,7 +30,7 @@ export class DocumentaryVideoViewerComponent  {
 
   likeEvent() {
     this.info.reactedTo = true;
-    this.documentaryRepository.addVideoInfoReact(1, this.info.videoInfoId).subscribe(like => {
+    this.documentaryRepository.addReact(1, this.info.videoInfoId).subscribe(like => {
       this.info.reactedTo = true;
       this.info.reactsCount++;
     },
@@ -42,7 +42,7 @@ export class DocumentaryVideoViewerComponent  {
 
   unlikeEvent() {
     this.info.reactedTo = false;
-    this.documentaryRepository.removeVideoInfoReact(this.info.videoInfoId).subscribe(response => {
+    this.documentaryRepository.removeReact(this.info.videoInfoId).subscribe(response => {
       this.info.reactedTo = false;
       this.info.reactsCount--;
     },

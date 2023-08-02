@@ -6,7 +6,7 @@ export const documentaryURL = RestApiUrl + "/Documentary";
 
 export const VideoActions = {
   LoadMoreComments: `LoadMoreComments`,
-  LoadMoreVideoInfoReacts: `LoadMoreVideoInfoReacts`,
+  LoadMoreVideoInfoReacts: `LoadMoreReacts`,
   LoadMoreCommentReacts: `LoadMoreCommentReacts`,
   AddVideoInfoReact: `AddReact`,
   RemoveVideoInfoReact: `RemoveReact`,

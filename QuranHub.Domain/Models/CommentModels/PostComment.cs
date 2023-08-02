@@ -36,7 +36,7 @@ public class PostComment :Comment
         string message = quranHubUser.UserName + " reacted to your comment "
            + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
 
-        var CommentReactNotification = new PostCommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.CommentId, reactId, this.Post.PostId);
+        var CommentReactNotification = new PostCommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.CommentId, reactId, this.PostId);
 
         PostCommentReactNotifications.Add(CommentReactNotification);
         return CommentReactNotification;
@@ -48,7 +48,6 @@ public class PostComment :Comment
 
         this.RemoveCommentReact(PostCommentReactId);
 
-        ReactsCount--;
     }
 
 }

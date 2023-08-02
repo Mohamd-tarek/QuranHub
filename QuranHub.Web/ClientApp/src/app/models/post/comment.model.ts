@@ -1,5 +1,5 @@
 import { UserBasicInfo } from "../user/userBasicInfo.model";
-import { CommentReact } from "./commentReact.model";
+import { React } from "./react.model";
 import { Quran } from "../quran/quran.model";
 
 
@@ -11,7 +11,7 @@ export class Comment  {
         public verse: Quran,
         public reactedTo: boolean,
         public reactsCount: number,
-        public reacts : CommentReact [] ,
+        public reacts : React [] ,
         public text : string 
     ){}
   

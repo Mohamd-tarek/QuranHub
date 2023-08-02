@@ -11,5 +11,10 @@ export class VideoViewerComponent  {
   @Input()
   info!: VideoInfo;
 
+  @Input()
+  textEnd: boolean = false;
+
+
+
  
 }

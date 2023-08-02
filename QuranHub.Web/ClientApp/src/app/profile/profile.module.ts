@@ -5,7 +5,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { TemplateModule } from "../templateComponents/template.module";
 import { ProfileComponent } from "./profile.component";
-import { PostModule } from "../post/post.module";
 import { CoverComponent } from "./cover.component";
 import { MainInfoComponent } from "./mainInfo.component"
 import { OtherInfoComponent } from "./otherInfo.component";
@@ -41,7 +40,6 @@ const routes: Routes = [
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    PostModule,
     TemplateModule
   ],
 

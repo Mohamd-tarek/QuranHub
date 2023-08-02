@@ -59,6 +59,21 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 });
 
             migrationBuilder.CreateTable(
+                name: "PlayListsInfo",
+                columns: table => new
+                {
+                    PlayListInfoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ThumbnailImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumberOfVideos = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayListsInfo", x => x.PlayListInfoId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Verses",
                 columns: table => new
                 {
@@ -253,6 +268,35 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 });
 
             migrationBuilder.CreateTable(
+                name: "VideosInfo",
+                columns: table => new
+                {
+                    VideoInfoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ThumbnailImage = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duration = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Width = table.Column<int>(type: "int", nullable: false),
+                    Height = table.Column<int>(type: "int", nullable: false),
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Views = table.Column<int>(type: "int", nullable: false),
+                    PlayListInfoId = table.Column<int>(type: "int", nullable: false),
+                    ReactsCount = table.Column<int>(type: "int", nullable: false),
+                    CommentsCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VideosInfo", x => x.VideoInfoId);
+                    table.ForeignKey(
+                        name: "FK_VideosInfo_PlayListsInfo_PlayListInfoId",
+                        column: x => x.PlayListInfoId,
+                        principalTable: "PlayListsInfo",
+                        principalColumn: "PlayListInfoId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -263,8 +307,9 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     VerseId = table.Column<int>(type: "int", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReactsCount = table.Column<int>(type: "int", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: true)
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: true),
+                    VideoInfoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -279,6 +324,12 @@ namespace QuranHub.DAL.Migrations.IdentityData
                         column: x => x.VerseId,
                         principalTable: "Verses",
                         principalColumn: "VerseId");
+                    table.ForeignKey(
+                        name: "FK_Comments_VideosInfo_VideoInfoId",
+                        column: x => x.VideoInfoId,
+                        principalTable: "VideosInfo",
+                        principalColumn: "VideoInfoId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -304,6 +355,9 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     PostCommentReactNotification_PostId = table.Column<int>(type: "int", nullable: true),
                     PostCommentReactId = table.Column<int>(type: "int", nullable: true),
                     PostCommentCommentId = table.Column<int>(type: "int", nullable: true),
+                    VideoInfoId = table.Column<int>(type: "int", nullable: true),
+                    VideoInfoCommentReactId = table.Column<int>(type: "int", nullable: true),
+                    VideoInfoCommentCommentId = table.Column<int>(type: "int", nullable: true),
                     PostReactNotification_PostId = table.Column<int>(type: "int", nullable: true),
                     PostReactId = table.Column<int>(type: "int", nullable: true),
                     ShareId = table.Column<int>(type: "int", nullable: true),
@@ -330,6 +384,11 @@ namespace QuranHub.DAL.Migrations.IdentityData
                         principalTable: "Comments",
                         principalColumn: "CommentId");
                     table.ForeignKey(
+                        name: "FK_Notifications_Comments_VideoInfoCommentCommentId",
+                        column: x => x.VideoInfoCommentCommentId,
+                        principalTable: "Comments",
+                        principalColumn: "CommentId");
+                    table.ForeignKey(
                         name: "FK_Notifications_Follows_FollowId",
                         column: x => x.FollowId,
                         principalTable: "Follows",
@@ -350,6 +409,11 @@ namespace QuranHub.DAL.Migrations.IdentityData
                         column: x => x.TargetUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_VideoInfoCommentReactNotification_VideoInfo_VideoInfoId",
+                        column: x => x.VideoInfoId,
+                        principalTable: "VideosInfo",
+                        principalColumn: "VideoInfoId");
                 });
 
             migrationBuilder.CreateTable(
@@ -398,7 +462,10 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     CommentId = table.Column<int>(type: "int", nullable: true),
                     PostCommentReact_PostId = table.Column<int>(type: "int", nullable: true),
                     PostCommentCommentId = table.Column<int>(type: "int", nullable: true),
-                    PostId = table.Column<int>(type: "int", nullable: true)
+                    VideoInfoId = table.Column<int>(type: "int", nullable: true),
+                    VideoInfoCommentCommentId = table.Column<int>(type: "int", nullable: true),
+                    PostId = table.Column<int>(type: "int", nullable: true),
+                    VideoInfoReact_VideoInfoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -424,11 +491,27 @@ namespace QuranHub.DAL.Migrations.IdentityData
                         principalTable: "Comments",
                         principalColumn: "CommentId");
                     table.ForeignKey(
+                        name: "FK_Reacts_Comments_VideoInfoCommentCommentId",
+                        column: x => x.VideoInfoCommentCommentId,
+                        principalTable: "Comments",
+                        principalColumn: "CommentId");
+                    table.ForeignKey(
                         name: "FK_Reacts_Posts_PostCommentReact_PostId",
                         column: x => x.PostCommentReact_PostId,
                         principalTable: "Posts",
                         principalColumn: "PostId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reacts_VideosInfo_VideoInfoId",
+                        column: x => x.VideoInfoId,
+                        principalTable: "VideosInfo",
+                        principalColumn: "VideoInfoId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VideoInfoReact_VideoInfo_VideoInfoId",
+                        column: x => x.VideoInfoReact_VideoInfoId,
+                        principalTable: "VideosInfo",
+                        principalColumn: "VideoInfoId");
                 });
 
             migrationBuilder.CreateTable(
@@ -512,6 +595,11 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 name: "IX_Comments_VerseId",
                 table: "Comments",
                 column: "VerseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_VideoInfoId",
+                table: "Comments",
+                column: "VideoInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Follows_FollowedId",
@@ -632,6 +720,23 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 column: "TargetUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_VideoInfoCommentCommentId",
+                table: "Notifications",
+                column: "VideoInfoCommentCommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_VideoInfoCommentReactId",
+                table: "Notifications",
+                column: "VideoInfoCommentReactId",
+                unique: true,
+                filter: "[VideoInfoCommentReactId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_VideoInfoId",
+                table: "Notifications",
+                column: "VideoInfoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_PostShareId",
                 table: "Posts",
                 column: "PostShareId",
@@ -680,6 +785,21 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 column: "QuranHubUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reacts_VideoInfoCommentCommentId",
+                table: "Reacts",
+                column: "VideoInfoCommentCommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reacts_VideoInfoId",
+                table: "Reacts",
+                column: "VideoInfoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reacts_VideoInfoReact_VideoInfoId",
+                table: "Reacts",
+                column: "VideoInfoReact_VideoInfoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Shares_QuranHubUserId",
                 table: "Shares",
                 column: "QuranHubUserId");
@@ -688,6 +808,11 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 name: "IX_Shares_ShareablePostPostId",
                 table: "Shares",
                 column: "ShareablePostPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VideosInfo_PlayListInfoId",
+                table: "VideosInfo",
+                column: "PlayListInfoId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Comments_Posts_PostId",
@@ -722,6 +847,13 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 name: "FK_ReactNotification_React_ReactId",
                 table: "Notifications",
                 column: "ReactId",
+                principalTable: "Reacts",
+                principalColumn: "ReactId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_VideoInfoCommentReactNotification_VideoInfoCommentReact_VideoInfoCommentReactId",
+                table: "Notifications",
+                column: "VideoInfoCommentReactId",
                 principalTable: "Reacts",
                 principalColumn: "ReactId");
 
@@ -825,6 +957,12 @@ namespace QuranHub.DAL.Migrations.IdentityData
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "VideosInfo");
+
+            migrationBuilder.DropTable(
+                name: "PlayListsInfo");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

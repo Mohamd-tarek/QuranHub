@@ -7,17 +7,17 @@ public class VideoSeedData
     static string videosDir = Directory.GetParent(baseDir) + @"\QuranHub.Web\wwwroot\files";
     public static async Task  SeedDatabaseAsync(IServiceProvider provider)
     {
-        provider.GetRequiredService<VideoContext>().Database.Migrate();
+        provider.GetRequiredService<IdentityDataContext>().Database.Migrate();
 
-        VideoContext VideoContext = provider.GetRequiredService<VideoContext>();
+        IdentityDataContext IdentityDataContext = provider.GetRequiredService<IdentityDataContext>();
 
-        if (VideoContext.PlayListsInfo.Count() == 0 )
+        if (IdentityDataContext.PlayListsInfo.Count() == 0 )
         {
-            await SeedPlayListsInfoAsync(VideoContext);
+            await SeedPlayListsInfoAsync(IdentityDataContext);
         }
     } 
 
-    public static async Task SeedPlayListsInfoAsync(VideoContext videoContext )
+    public static async Task SeedPlayListsInfoAsync(IdentityDataContext IdentityDataContext )
     {
 
         var thumbnailsfiles = Directory.GetFiles(videosDir + "/thumbnails");
@@ -28,24 +28,24 @@ public class VideoSeedData
             NumberOfVideos = thumbnailsfiles.Length
         };
 
-        await videoContext.PlayListsInfo.AddAsync(playListInfo);
+        await IdentityDataContext.PlayListsInfo.AddAsync(playListInfo);
 
-        await videoContext.SaveChangesAsync();
+        await IdentityDataContext.SaveChangesAsync();
 
 
         var files = Directory.GetFiles(videosDir);
 
         foreach (var file in files)
         {
-            await SeedVideoInfoAsync(videoContext, playListInfo, file);
+            await SeedVideoInfoAsync(IdentityDataContext, playListInfo, file);
         }
 
-        await videoContext.SaveChangesAsync();
+        await IdentityDataContext.SaveChangesAsync();
 
 
     }
 
-    public static async Task  SeedVideoInfoAsync(VideoContext VideoContext, PlayListInfo playListInfo, string path ) 
+    public static async Task  SeedVideoInfoAsync(IdentityDataContext IdentityDataContext, PlayListInfo playListInfo, string path ) 
     {
 
          var mediaInfo = new MediaInfo();
@@ -67,7 +67,7 @@ public class VideoSeedData
             PlayListInfoId = playListInfo.PlayListInfoId
         };
 
-       await VideoContext.VideosInfo.AddAsync(videoInfo);
+       await IdentityDataContext.VideosInfo.AddAsync(videoInfo);
         
     } 
     

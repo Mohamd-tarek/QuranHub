@@ -60,11 +60,11 @@ public class PostController : ControllerBase
     }
 
     [HttpGet("LoadMorePostReacts/{PostId}/{Offset}/{Size}")]
-    public async Task<IEnumerable<PostReactViewModel>> LoadMorePostReacts(int PostId, int Offset, int Size)
+    public async Task<IEnumerable<ReactViewModel>> LoadMorePostReacts(int PostId, int Offset, int Size)
     {
         List<PostReact> postReacts = await _postRepository.GetMorePostReactsAsync(PostId, Offset, Size);
 
-        List<PostReactViewModel> postReactsModels =  _postViewModelsFactory.BuildPostReactsViewModel(postReacts);
+        List<ReactViewModel> postReactsModels =  _postViewModelsFactory.BuildPostReactsViewModel(postReacts);
 
         return postReactsModels;
     }
@@ -72,7 +72,7 @@ public class PostController : ControllerBase
     [HttpGet("LoadMoreComments/{PostId}/{Offset}/{Size}")]
     public async Task<IEnumerable<CommentViewModel>> LoadMoreCommentsAsync(int PostId, int Offset, int Size) 
     {
-        List<PostComment> comments = await _postRepository.GetMoreCommentsAsync(PostId, Offset, Size);
+        List<PostComment> comments = await _postRepository.GetMorePostCommentsAsync(PostId, Offset, Size);
 
         List<CommentViewModel> commentViewModels = await _postViewModelsFactory.BuildCommentsViewModelAsync(comments);
 
@@ -80,11 +80,11 @@ public class PostController : ControllerBase
     }
 
     [HttpGet("LoadMoreCommentReacts/{PostId}/{Offset}/{Size}")]
-    public async Task<IEnumerable<CommentReactViewModel>> LoadMoreCommentReactsAsync(int PostId, int Offset, int Size)
+    public async Task<IEnumerable<ReactViewModel>> LoadMoreCommentReactsAsync(int PostId, int Offset, int Size)
     {
-        List<PostCommentReact> comments = await _postRepository.GetMoreCommentReactsAsync(PostId, Offset, Size);
+        List<PostCommentReact> comments = await _postRepository.GetMorePostCommentReactsAsync(PostId, Offset, Size);
 
-        List<CommentReactViewModel> commentReactViewModels =  _postViewModelsFactory.BuildCommentReactsViewModel(comments);
+        List<ReactViewModel> commentReactViewModels =  _postViewModelsFactory.BuildCommentReactsViewModel(comments);
 
         return commentReactViewModels;
     }
@@ -92,15 +92,15 @@ public class PostController : ControllerBase
     [HttpGet("LoadMoreShares/{PostId}/{Offset}/{Size}")]
     public async Task<IEnumerable<ShareViewModel>> LoadMoreSharesAsync(int PostId, int Offset, int Size)
     {
-        List<PostShare> shares = await _postRepository.GetMoreSharesAsync(PostId, Offset, Size);
+        List<PostShare> shares = await _postRepository.GetMorePostSharesAsync(PostId, Offset, Size);
 
-        List<ShareViewModel> ShareViewModels =  _postViewModelsFactory.BuildSharesViewModel(shares);
+        List<PostShareViewModel> ShareViewModels =  _postViewModelsFactory.BuildSharesViewModel(shares);
 
         return ShareViewModels;
     }
 
     [HttpPost("AddPostReact")]
-    public async Task<PostReactViewModel> AddPostReactAsync([FromBody] PostReact postReact) 
+    public async Task<ReactViewModel> AddPostReactAsync([FromBody] PostReact postReact) 
     {
         Tuple<PostReact, PostReactNotification>  result = await _postRepository.AddPostReactAsync(postReact, _currentUser);
 
@@ -137,7 +137,7 @@ public class PostController : ControllerBase
     [HttpPost("AddComment")]
     public async Task<CommentViewModel> AddCommentAsync([FromBody] PostComment comment)
     {
-        Tuple<PostComment, PostCommentNotification> result = await _postRepository.AddCommentAsync(comment, _currentUser);
+        Tuple<PostComment, PostCommentNotification> result = await _postRepository.AddPostCommentAsync(comment, _currentUser);
 
         var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 
@@ -154,13 +154,13 @@ public class PostController : ControllerBase
     [HttpDelete("RemoveComment")]
     public async Task<Boolean> RemoveCommentAsync(int commentId)
     {
-        return await _postRepository.RemoveCommentAsync(commentId);
+        return await _postRepository.RemovePostCommentAsync(commentId);
     }
 
     [HttpPost("AddCommentReact")]
-    public async Task<CommentReactViewModel> AddCommentReactAsync([FromBody] PostCommentReact commentReact) 
+    public async Task<ReactViewModel> AddCommentReactAsync([FromBody] PostCommentReact commentReact) 
     {
-        Tuple<PostCommentReact, PostCommentReactNotification> result = await _postRepository.AddCommentReactAsync(commentReact, _currentUser);
+        Tuple<PostCommentReact, PostCommentReactNotification> result = await _postRepository.AddPostCommentReactAsync(commentReact, _currentUser);
 
         var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 
@@ -179,7 +179,7 @@ public class PostController : ControllerBase
     {
         try
         {
-            if (await _postRepository.RemoveCommentReactAsync(commentId, _currentUser))
+            if (await _postRepository.RemovePostCommentReactAsync(commentId, _currentUser))
             {
                 return Ok();
             }

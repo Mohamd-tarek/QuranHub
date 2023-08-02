@@ -1,9 +1,9 @@
 import { UserBasicInfo } from "../user/userBasicInfo.model";
 
 
-export class PostReact {
+export class React {
     constructor(
-      public postReactId : number,
+      public ReactId : number,
       public dateTime : string,
       public type : number,
       public quranHubUser: UserBasicInfo,

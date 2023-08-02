@@ -35,7 +35,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
     public async Task<ShareablePostViewModel> BuildShareablePostViewModelAsync(ShareablePost post) 
     {
 
-        ShareablePostViewModel postViewModel = new ShareablePostViewModel()
+        ShareablePostViewModel postViewModel = new ()
         {
             PostId = post.PostId,
             DateTime = post.DateTime,
@@ -55,7 +55,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
     public async Task<SharedPostViewModel> BuildSharedPostViewModelAsync(SharedPost sharedPost)
     {
 
-        SharedPostViewModel sharedPostViewModel = new SharedPostViewModel()
+        SharedPostViewModel sharedPostViewModel = new ()
         {
             PostId = sharedPost.PostId,
             DateTime = sharedPost.DateTime,
@@ -76,7 +76,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
 
     public VerseViewModel BuildVerseViewModel(Verse Verse)
     {
-        VerseViewModel quranPostViewModel = new VerseViewModel()
+        VerseViewModel quranPostViewModel = new ()
         {
             Index = Verse.Index,
             Sura = Verse.Sura,
@@ -87,24 +87,24 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return quranPostViewModel;
     }
 
-    public  List<PostReactViewModel> BuildPostReactsViewModel(List<PostReact> postReacts)
+    public  List<ReactViewModel> BuildPostReactsViewModel(List<PostReact> postReacts)
     {
-        List<PostReactViewModel> postReactViewModels = new List<PostReactViewModel>();
+        List<ReactViewModel> postReactViewModels = new ();
 
         foreach (var postReact in postReacts)
         {
-            PostReactViewModel postReactViewModel = this.BuildPostReactViewModel(postReact);
+            ReactViewModel postReactViewModel = this.BuildPostReactViewModel(postReact);
             postReactViewModels.Add(postReactViewModel);
         } 
 
         return postReactViewModels;
     }
 
-    public PostReactViewModel BuildPostReactViewModel(PostReact postReact) 
+    public ReactViewModel BuildPostReactViewModel(PostReact postReact) 
     { 
-        PostReactViewModel postReactViewModel = new PostReactViewModel()
+        ReactViewModel postReactViewModel = new ()
         {
-            PostReactId = postReact.ReactId,
+            ReactId = postReact.ReactId,
             DateTime = postReact.DateTime,
             QuranHubUser = this._userViewModelsFactory.BuildPostUserViewModel(postReact.QuranHubUser),
             Type = postReact.Type
@@ -134,7 +134,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
 
     public async Task<List<CommentViewModel>> BuildCommentsViewModelAsync(List<PostComment> comments)
     {
-        List<CommentViewModel> commentsViewModels = new List<CommentViewModel>();
+        List<CommentViewModel> commentsViewModels = new ();
 
         foreach (var comment in comments)
         {
@@ -147,7 +147,7 @@ public class PostViewModelsFactory :IPostViewModelsFactory
 
     public  async Task<CommentViewModel> BuildCommentViewModelAsync(PostComment comment) 
     {
-        CommentViewModel commentViewModel = new CommentViewModel()
+        CommentViewModel commentViewModel = new ()
         {
             CommentId = comment.CommentId,
             DateTime = comment.DateTime,
@@ -161,25 +161,25 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return commentViewModel;
     }
 
-    public List<CommentReactViewModel> BuildCommentReactsViewModel(List<PostCommentReact> commentReacts) 
+    public List<ReactViewModel> BuildCommentReactsViewModel(List<PostCommentReact> commentReacts) 
     {
-        List<CommentReactViewModel> commentReactsViewMdoel = new List<CommentReactViewModel>();
+        List<ReactViewModel> commentReactsViewMdoel = new ();
 
         foreach (var commentReact in commentReacts)
         {
-            CommentReactViewModel commentReactViewModel = this.BuildCommentReactViewModel(commentReact);
+            ReactViewModel commentReactViewModel = this.BuildCommentReactViewModel(commentReact);
             commentReactsViewMdoel.Add(commentReactViewModel);
         }
 
         return commentReactsViewMdoel;
      } 
 
-    public CommentReactViewModel BuildCommentReactViewModel(PostCommentReact commentReact)
+    public ReactViewModel BuildCommentReactViewModel(PostCommentReact commentReact)
     {
 
-        CommentReactViewModel commentReactViewModel = new CommentReactViewModel()
+        ReactViewModel commentReactViewModel = new ()
         {
-            CommentReactId = commentReact.ReactId,
+            ReactId = commentReact.ReactId,
             DateTime = commentReact.DateTime,
             Type = commentReact.Type,
             QuranHubUser = this._userViewModelsFactory.BuildPostUserViewModel(commentReact.QuranHubUser)
@@ -206,22 +206,22 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return false;
     }     
 
-    public  List<ShareViewModel> BuildSharesViewModel(List<PostShare> shares) 
+    public  List<PostShareViewModel> BuildSharesViewModel(List<PostShare> shares) 
     {
-        List<ShareViewModel> shareViewModels = new List<ShareViewModel>();
+        List<PostShareViewModel> shareViewModels = new ();
 
         foreach (var share in shares)
         {
-            ShareViewModel shareViewModel = this.BuildShareViewModel(share);
+            PostShareViewModel shareViewModel = this.BuildShareViewModel(share);
             shareViewModels.Add(shareViewModel);
         }  
 
         return shareViewModels;
     }
 
-    public ShareViewModel BuildShareViewModel(PostShare share)
+    public PostShareViewModel BuildShareViewModel(PostShare share)
     {
-        ShareViewModel shareViewModel = new ShareViewModel()
+        PostShareViewModel shareViewModel = new ()
         {
             ShareId = share.ShareId,
             DateTime = share.DateTime,
@@ -232,9 +232,9 @@ public class PostViewModelsFactory :IPostViewModelsFactory
         return shareViewModel;
     }
 
-    public async Task<ShareViewModel> BuildSharedPostShareViewModelAsync(PostShare share)
+    public async Task<PostShareViewModel> BuildSharedPostShareViewModelAsync(PostShare share)
     {
-        ShareViewModel shareViewModel = new ShareViewModel()
+        PostShareViewModel shareViewModel = new ()
         {
             ShareId = share.ShareId,
             DateTime = share.DateTime,

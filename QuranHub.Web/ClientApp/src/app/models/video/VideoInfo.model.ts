@@ -1,7 +1,10 @@
+import { React } from "../post/react.model";
+import { Comment } from "../post/comment.model";
+
 
 export class VideoInfo {
   constructor(
-    public id: string,
+    public videoInfoId: number,
     public thumbnailImage: any,
     public name: string,
     public type: string,
@@ -11,5 +14,10 @@ export class VideoInfo {
     public height: string,
     public path: number,
     public views: number,
+    public reactedTo: boolean,
+    public reactsCount: number,
+    public commentsCount: number,
+    public reacts: React[],
+    public comments: Comment[],
     ) { }  
   }

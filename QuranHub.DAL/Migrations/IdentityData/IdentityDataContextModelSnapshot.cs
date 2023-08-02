@@ -168,8 +168,8 @@ namespace QuranHub.DAL.Migrations.IdentityData
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("QuranHubUserId")
                         .HasColumnType("nvarchar(450)");
@@ -311,6 +311,30 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.HasDiscriminator<string>("Discriminator").HasValue("Notification");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.PlayListInfo", b =>
+                {
+                    b.Property<int>("PlayListInfoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayListInfoId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfVideos")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("ThumbnailImage")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("PlayListInfoId");
+
+                    b.ToTable("PlayListsInfo");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.Post", b =>
@@ -568,6 +592,58 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.ToTable("Verses");
                 });
 
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfo", b =>
+                {
+                    b.Property<int>("VideoInfoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideoInfoId"));
+
+                    b.Property<int>("CommentsCount")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlayListInfoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReactsCount")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("ThumbnailImage")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Views")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
+
+                    b.HasKey("VideoInfoId");
+
+                    b.HasIndex("PlayListInfoId");
+
+                    b.ToTable("VideosInfo");
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.PostComment", b =>
                 {
                     b.HasBaseType("QuranHub.Domain.Models.Comment");
@@ -578,6 +654,18 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.HasIndex("PostId");
 
                     b.HasDiscriminator().HasValue("PostComment");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoComment", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.Comment");
+
+                    b.Property<int>("VideoInfoId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("VideoInfoId");
+
+                    b.HasDiscriminator().HasValue("VideoInfoComment");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.CommentNotification", b =>
@@ -695,6 +783,26 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.HasIndex("QuranHubUserId");
 
                     b.HasDiscriminator().HasValue("PostReact");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoReact", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.React");
+
+                    b.Property<int>("VideoInfoId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("QuranHubUserId");
+
+                    b.HasIndex("VideoInfoId");
+
+                    b.ToTable("Reacts", t =>
+                        {
+                            t.Property("VideoInfoId")
+                                .HasColumnName("VideoInfoReact_VideoInfoId");
+                        });
+
+                    b.HasDiscriminator().HasValue("VideoInfoReact");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.PostShare", b =>
@@ -829,6 +937,23 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.HasDiscriminator().HasValue("PostCommentReact");
                 });
 
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoCommentReact", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.CommentReact");
+
+                    b.Property<int?>("VideoInfoCommentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoInfoId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("VideoInfoCommentCommentId");
+
+                    b.HasIndex("VideoInfoId");
+
+                    b.HasDiscriminator().HasValue("VideoInfoCommentReact");
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.PostCommentReactNotification", b =>
                 {
                     b.HasBaseType("QuranHub.Domain.Models.CommentReactNotification");
@@ -857,6 +982,30 @@ namespace QuranHub.DAL.Migrations.IdentityData
                         });
 
                     b.HasDiscriminator().HasValue("PostCommentReactNotification");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoCommentReactNotification", b =>
+                {
+                    b.HasBaseType("QuranHub.Domain.Models.CommentReactNotification");
+
+                    b.Property<int?>("VideoInfoCommentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoInfoCommentReactId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoInfoId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("VideoInfoCommentCommentId");
+
+                    b.HasIndex("VideoInfoCommentReactId")
+                        .IsUnique()
+                        .HasFilter("[VideoInfoCommentReactId] IS NOT NULL");
+
+                    b.HasIndex("VideoInfoId");
+
+                    b.HasDiscriminator().HasValue("VideoInfoCommentReactNotification");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1009,6 +1158,17 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("QuranHubUser");
                 });
 
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfo", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.PlayListInfo", "PlayListInfo")
+                        .WithMany()
+                        .HasForeignKey("PlayListInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayListInfo");
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.PostComment", b =>
                 {
                     b.HasOne("QuranHub.Domain.Models.Post", "Post")
@@ -1018,6 +1178,17 @@ namespace QuranHub.DAL.Migrations.IdentityData
                         .IsRequired();
 
                     b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoComment", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.VideoInfo", "VideoInfo")
+                        .WithMany("VideoInfoComments")
+                        .HasForeignKey("VideoInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("VideoInfo");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.CommentNotification", b =>
@@ -1107,6 +1278,24 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("Post");
 
                     b.Navigation("QuranHubUser");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoReact", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.QuranHubUser", "QuranHubUser")
+                        .WithMany()
+                        .HasForeignKey("QuranHubUserId");
+
+                    b.HasOne("QuranHub.Domain.Models.VideoInfo", "VideoInfo")
+                        .WithMany("VideoInfoReacts")
+                        .HasForeignKey("VideoInfoId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_VideoInfoReact_VideoInfo_VideoInfoId");
+
+                    b.Navigation("QuranHubUser");
+
+                    b.Navigation("VideoInfo");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.PostShare", b =>
@@ -1219,6 +1408,21 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("Post");
                 });
 
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoCommentReact", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.VideoInfoComment", null)
+                        .WithMany("VideoInfoCommentReacts")
+                        .HasForeignKey("VideoInfoCommentCommentId");
+
+                    b.HasOne("QuranHub.Domain.Models.VideoInfo", "VideoInfo")
+                        .WithMany()
+                        .HasForeignKey("VideoInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("VideoInfo");
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.PostCommentReactNotification", b =>
                 {
                     b.HasOne("QuranHub.Domain.Models.PostComment", null)
@@ -1242,6 +1446,31 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("Post");
 
                     b.Navigation("PostCommentReact");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoCommentReactNotification", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.VideoInfoComment", null)
+                        .WithMany("VideoInfoCommentReactNotifications")
+                        .HasForeignKey("VideoInfoCommentCommentId");
+
+                    b.HasOne("QuranHub.Domain.Models.VideoInfoCommentReact", "VideoInfoCommentReact")
+                        .WithOne("VideoInfoCommentReactNotification")
+                        .HasForeignKey("QuranHub.Domain.Models.VideoInfoCommentReactNotification", "VideoInfoCommentReactId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_VideoInfoCommentReactNotification_VideoInfoCommentReact_VideoInfoCommentReactId");
+
+                    b.HasOne("QuranHub.Domain.Models.VideoInfo", "VideoInfo")
+                        .WithMany("VideoInfoCommentReactNotifications")
+                        .HasForeignKey("VideoInfoId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_VideoInfoCommentReactNotification_VideoInfo_VideoInfoId");
+
+                    b.Navigation("VideoInfo");
+
+                    b.Navigation("VideoInfoCommentReact");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.Comment", b =>
@@ -1318,6 +1547,15 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("Posts");
                 });
 
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfo", b =>
+                {
+                    b.Navigation("VideoInfoCommentReactNotifications");
+
+                    b.Navigation("VideoInfoComments");
+
+                    b.Navigation("VideoInfoReacts");
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.PostComment", b =>
                 {
                     b.Navigation("PostCommentNotification")
@@ -1326,6 +1564,13 @@ namespace QuranHub.DAL.Migrations.IdentityData
                     b.Navigation("PostCommentReactNotifications");
 
                     b.Navigation("PostCommentReacts");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoComment", b =>
+                {
+                    b.Navigation("VideoInfoCommentReactNotifications");
+
+                    b.Navigation("VideoInfoCommentReacts");
                 });
 
             modelBuilder.Entity("QuranHub.Domain.Models.ShareablePost", b =>
@@ -1359,6 +1604,12 @@ namespace QuranHub.DAL.Migrations.IdentityData
             modelBuilder.Entity("QuranHub.Domain.Models.PostCommentReact", b =>
                 {
                     b.Navigation("PostCommentReactNotification")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.VideoInfoCommentReact", b =>
+                {
+                    b.Navigation("VideoInfoCommentReactNotification")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

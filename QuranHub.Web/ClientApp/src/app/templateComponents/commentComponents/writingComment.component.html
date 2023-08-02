@@ -4,8 +4,9 @@
             <textarea class="form-control" [(ngModel)]="comment" 
             placeholder="Leave a comment here" id="floatingTextarea"></textarea>
             <label for="floatingTextarea"></label>
-            <chooseAya *ngIf="addAya" [chosenSura]="post.verse.sura"
-              [chosenAya]="post.verse.aya"
+            <chooseAya *ngIf="addAya"
+              [chosenSura]="chosenSura"
+              [chosenAya]="chosenAya"
             (chooseAyaEvent)="onChooseAyaEvent($event)"></chooseAya>
         </div>
         <div class="col-2">

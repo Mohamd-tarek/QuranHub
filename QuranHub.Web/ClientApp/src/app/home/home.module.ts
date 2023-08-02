@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from "./home.component";
 import { AddPostComponent } from "./addPostComponent/addPost.component";
 import { TemplateModule } from "../templateComponents/template.module";
-import { PostModule } from "../post/post.module";
 import { PostViewerComponent } from "./PostViewerComponent/PostViewer.component";
 import { AuthenticationGuard } from "../services/authentication.guard";
 
@@ -22,7 +21,6 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     TemplateModule,
-    PostModule
   ],
   declarations: [
     HomeComponent,

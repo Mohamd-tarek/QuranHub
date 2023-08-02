@@ -16,16 +16,14 @@ namespace QuranHub.DAL.Database
         public DbSet<SharedPost> SharedPosts { get; set; }
         public DbSet<React> Reacts { get; set; }
         public DbSet<PostReact> PostReacts { get; set; }
-        public DbSet<CommentReact> CommentReacts { get; set; }
         public DbSet<PostCommentReact> PostCommentReacts { get; set; }
+        public DbSet<CommentReact> CommentReacts { get; set; }
         public DbSet<PostReactNotification> PostReactNotifications { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<CommentNotification> CommentNotifications { get; set; }
         public DbSet<PostCommentNotification> PostCommentNotifications { get; set; }
-      
-        public DbSet<CommentReactNotification> CommentReactNotifications { get; set; }
-        
+        public DbSet<CommentReactNotification> CommentReactNotifications { get; set; } 
         public DbSet<PostCommentReactNotification> PostCommentReactNotifications { get; set; }
         public DbSet<Share> Shares { get; set; }
         public DbSet<ShareNotification> ShareNotifications { get; set; }
@@ -34,6 +32,13 @@ namespace QuranHub.DAL.Database
         public DbSet<Follow> Follows { get; set; }
         public DbSet<FollowNotification> FollowNotifications { get; set; }
         public DbSet<PrivacySetting> PrivacySettings {get; set; }
+        public DbSet<PlayListInfo> PlayListsInfo { get; set; }
+        public DbSet<VideoInfo> VideosInfo { get; set; }
+        public DbSet<VideoInfoReact> VideoInfoReacts { get; set; }
+        public DbSet<VideoInfoComment> VideoInfoComments { get; set; }
+        public DbSet<VideoInfoCommentReact> VideoInfoCommentReacts { get; set; }
+        public DbSet<VideoInfoCommentReactNotification> VideoInfoCommentReactNotifications { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,7 +69,16 @@ namespace QuranHub.DAL.Database
                       .HasConstraintName("FK_PostReact_Post_PostId");
             });
 
-           
+            modelBuilder.Entity<VideoInfoReact>(entity =>
+            {
+                entity.HasOne(d => d.VideoInfo)
+                      .WithMany(p => p.VideoInfoReacts)
+                      .HasForeignKey(d => d.VideoInfoId)
+                      .OnDelete(DeleteBehavior.ClientCascade) // to avoid  multiple cascade paths
+                      .HasConstraintName("FK_VideoInfoReact_VideoInfo_VideoInfoId");
+            });
+
+
 
             modelBuilder.Entity<Notification>(entity =>
             {
@@ -136,7 +150,8 @@ namespace QuranHub.DAL.Database
                       .HasConstraintName("FK_PostCommentNotification_Post_PostId");
             });
 
-            
+
+
             modelBuilder.Entity<ReactNotification>(entity =>
             {
                 entity.HasOne(d => d.React)
@@ -198,6 +213,24 @@ namespace QuranHub.DAL.Database
                       .HasForeignKey<PostCommentReactNotification>(d => d.PostCommentReactId)
                       .OnDelete(DeleteBehavior.ClientCascade) // to avoid  multiple cascade paths
                       .HasConstraintName("FK_PostCommentReactNotification_PostCommentReact_PostCommentReactId");
+            });
+
+            modelBuilder.Entity<VideoInfoCommentReactNotification>(entity =>
+            {
+                entity.HasOne(d => d.VideoInfo)
+                      .WithMany(p => p.VideoInfoCommentReactNotifications)
+                      .HasForeignKey(d => d.VideoInfoId)
+                      .OnDelete(DeleteBehavior.ClientCascade) // to avoid  multiple cascade paths
+                      .HasConstraintName("FK_VideoInfoCommentReactNotification_VideoInfo_VideoInfoId");
+            });
+
+            modelBuilder.Entity<VideoInfoCommentReactNotification>(entity =>
+            {
+                entity.HasOne(d => d.VideoInfoCommentReact)
+                      .WithOne(p => p.VideoInfoCommentReactNotification)
+                      .HasForeignKey<VideoInfoCommentReactNotification>(d => d.VideoInfoCommentReactId)
+                      .OnDelete(DeleteBehavior.ClientCascade) // to avoid  multiple cascade paths
+                      .HasConstraintName("FK_VideoInfoCommentReactNotification_VideoInfoCommentReact_VideoInfoCommentReactId");
             });
 
         }

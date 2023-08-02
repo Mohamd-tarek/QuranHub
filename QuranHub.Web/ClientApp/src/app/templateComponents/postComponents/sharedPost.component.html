@@ -15,7 +15,7 @@
   <div class="row m-2">
     <div class="col-10">
       <likeCount [addYou]="post.reactedTo" [count]="post.reactsCount" (showLikesEvent)="showLikesEvent()"></likeCount>
-      <likesModal *ngIf="showLikes" [postId]="post.postId" (hideLikesEvent)="hideLikesEvent()"></likesModal>
+      <likesModal *ngIf="showLikes" [repository]="postDataRepository" [postId]="post.postId" (hideLikesEvent)="hideLikesEvent()"></likesModal>
     </div>
     <div class="col-1">
       <commentCount [count]="post.commentsCount"></commentCount>
@@ -34,6 +34,9 @@
   </div>
 
   <hr class="m-2">
-  <commentContainer [post]="post" [writingComment]="writingComment"
-                    (cancelWritingCommentEvent)="cancelWritingComment()"></commentContainer>
+  <commentContainer
+      [post]="post"
+      [repository]="postDataRepository"
+      [writingComment]="writingComment"
+      (cancelWritingCommentEvent)="cancelWritingComment()"></commentContainer>
 </div>

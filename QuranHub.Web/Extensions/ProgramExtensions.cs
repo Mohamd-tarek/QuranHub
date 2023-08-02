@@ -16,8 +16,6 @@ public static class ProgramExtensions
         builder.Services.AddDbContext<IdentityDataContext>(options =>
                         options.UseSqlServer(identityConnectionString));
 
-        builder.Services.AddDbContext<VideoContext>(options =>
-                       options.UseSqlServer(videoConnectionString));
     }
 
     public static void AddCustomIdentity(this WebApplicationBuilder builder)
@@ -126,6 +124,8 @@ public static class ProgramExtensions
         builder.Services.AddTransient<IUserViewModelsFactory, UserViewModelsFactory>();
 
         builder.Services.AddTransient<IPostViewModelsFactory, PostViewModelsFactory>();
+
+        builder.Services.AddTransient<IVideoInfoViewModelsFactory, VideoInfoViewModelsFactory>();
 
         builder.Services.AddTransient<INotificationViewModelsFactory, NotificationViewModelsFactory>();
 

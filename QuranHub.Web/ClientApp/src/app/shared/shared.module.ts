@@ -14,7 +14,6 @@ import { NotificationsContainerComponent } from './notificationComponents/notifi
 import { NotificationComponent } from './notificationComponents/notification/notification.component';
 import { ViewMoreNotificationsComponent } from './notificationComponents/viewMoreNotifications/viewMoreNotifications.component';
 import { CommonModule } from '@angular/common';
-import { PostModule } from "../post/post.module";
 
 const routes: Routes = [
   {
@@ -35,7 +34,6 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     TemplateModule,
-    PostModule
   ],
 
   declarations: [

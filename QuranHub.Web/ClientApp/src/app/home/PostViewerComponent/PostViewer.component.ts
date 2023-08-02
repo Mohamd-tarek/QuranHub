@@ -1,25 +1,23 @@
-import { Component, ViewChild, AfterContentInit} from '@angular/core';
+import { Component} from '@angular/core';
 import { Post } from 'src/app/models/post/post.model';
 import { ActivatedRoute } from '@angular/router';
 import { PostRepository } from "../../abstractions/repositories/postRepository";
 import { NotificationRepository } from '../../abstractions/repositories/notificationRepository';
 import { Notification } from 'src/app/models/notification.model';
-import { PostComponent } from 'src/app/post/postComponents/post.component';
 
 @Component({
   selector: "postViewer",
   templateUrl: "postViewer.component.html"
 })
 
-export class PostViewerComponent implements AfterContentInit{
+export class PostViewerComponent {
   
   notificationId:number;
   notification!:Notification;
   post!:Post;
   dataLoaded:boolean = false;
 
-  @ViewChild("postComponent")
-  postView!: PostComponent; 
+ 
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -52,7 +50,5 @@ export class PostViewerComponent implements AfterContentInit{
       
     }
 
-    ngAfterContentInit(): void {
-      console.log(this.postView);
-    }     
+        
 }

@@ -6,8 +6,7 @@ import { DataWraper } from "../dataWraper.model";
 import { Quran } from "../quran/quran.model";
 import { postPaths } from "../../constants/post.constants";
 import { Post } from "../post/post.model";
-import { PostReact } from "../post/postReact.model";
-import { CommentReact } from "../post/commentReact.model";
+import { React } from "../post/react.model";
 import { Share } from "../post/share.model";
 import { Comment } from "../post/comment.model";
 import { CommonFuntionality } from "../commonFunctionality.service";
@@ -16,7 +15,7 @@ import { CommonFuntionality } from "../commonFunctionality.service";
   providedIn: 'root',
 })    
 
-export class PostDataRepository extends PostRepository { 
+export class PostDataRepository extends PostRepository  { 
 
   constructor(private http: HttpClient, private commonFunctionality: CommonFuntionality) {
     super();
@@ -36,20 +35,21 @@ export class PostDataRepository extends PostRepository {
    return  this.http.get<Comment[]>(postPaths.LoadMoreComments + postId + '/' + offset + '/' + size); 
   }
 
-  loadMorePostReacts(postId: number, offset: number, size: number = 50): Observable<PostReact[]> {
-    return this.http.get<PostReact[]>(postPaths.LoadMorePostReacts + postId + '/' + offset + '/' + size);
+
+  loadMorePostReacts(postId: number, offset: number, size: number = 50): Observable<React[]> {
+    return this.http.get<React[]>(postPaths.LoadMorePostReacts + postId + '/' + offset + '/' + size);
   }
 
-  loadMoreCommentReacts(CommentId: number, offset: number, size: number = 50): Observable <CommentReact[]> {
-    return this.http.get<CommentReact[]>(postPaths.LoadMoreCommentReacts + CommentId + '/' + offset + '/' + size);
+  loadMoreCommentReacts(CommentId: number, offset: number, size: number = 50): Observable <React[]> {
+    return this.http.get<React[]>(postPaths.LoadMoreCommentReacts + CommentId + '/' + offset + '/' + size);
   }
 
   loadMoreShares(postId: number, offset: number, size: number = 50): Observable <Share[]> {
     return this.http.get<Share[]>(postPaths.LoadMoreShares + postId + '/' + offset + '/' + size);
   }
 
-  addPostReact(type : number, postId: number): Observable<PostReact> {
-    return this.http.post<PostReact>(postPaths.AddPostReact, {
+  addPostReact(type : number, postId: number): Observable<React> {
+    return this.http.post<React>(postPaths.AddPostReact, {
       Type : type,
       PostId : postId
     });
@@ -78,8 +78,8 @@ export class PostDataRepository extends PostRepository {
     return this.http.delete(postPaths.RemoveComment, options);
   }
 
-  addCommentReact(type: number, CommentId: number, quranHubUserId: string): Observable<CommentReact> {
-    return this.http.post<CommentReact>(postPaths.AddCommentReact, {
+  addCommentReact(type: number, CommentId: number, quranHubUserId: string): Observable<React> {
+    return this.http.post<React>(postPaths.AddCommentReact, {
       Type : type,
       CommentId: CommentId,
       quranHubUserId: quranHubUserId,
@@ -99,7 +99,7 @@ export class PostDataRepository extends PostRepository {
       quranHubUserId: QuranHubUserId,
       text: text,
       privacy: Number(privacy),
-      postShare: {
+      share: {
         postId: postId,
       }
     });

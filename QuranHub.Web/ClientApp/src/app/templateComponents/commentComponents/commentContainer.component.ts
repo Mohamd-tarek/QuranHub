@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Comment } from 'src/app/models/post/comment.model';
-import { Post } from 'src/app/models/post/post.model';
+import { CommentRepository } from '../../abstractions/repositories/CommentRepository';
 import { UserService } from '../../abstractions/services/userService';
 import { UserBasicInfo } from "../../models/user/userBasicInfo.model";
-import { PostRepository } from '../../abstractions/repositories/postRepository';
 
 @Component({
   selector: "commentContainer",
@@ -15,7 +14,10 @@ export class CommentContainerComponent implements OnInit {
   user: UserBasicInfo;
 
   @Input()
-  post!: Post;
+  post!: any;
+
+  @Input()
+  repository!: CommentRepository;
 
   @Input()
   writingComment!: boolean;
@@ -29,8 +31,7 @@ export class CommentContainerComponent implements OnInit {
   viewedComments: Comment[] = [];
 
   constructor(
-    public userService: UserService,
-    public postDataRepository: PostRepository) {
+    public userService: UserService) {
     this.user = userService.getUser() as UserBasicInfo;
   }
 
@@ -53,8 +54,10 @@ export class CommentContainerComponent implements OnInit {
     this.verseId = verseId;
   }
 
-  addingCommentEvent(comment: any){
-    this.postDataRepository.addComment(comment, this.user.id, this.post.postId, this.verseId).subscribe((comment:any) => {
+  addingCommentEvent(comment: any) {
+    let id: number = this.findValueBySuffix(this.post, "Id");
+
+    this.repository.addComment(comment, this.user.id, id, this.verseId).subscribe((comment:any) => {
       this.commentAdded = comment !== null;
       this.writingComment = false;
       this.cancelWritingCommentEvent.emit();
@@ -68,11 +71,19 @@ export class CommentContainerComponent implements OnInit {
   }
 
   commentRemoveEvent(commentId: any){
-     let commentIndex = this.post.comments.findIndex(comment => comment.commentId == commentId);
+     let commentIndex = this.post.comments.findIndex((comment:any) => comment.commentId == commentId);
      this.post.comments.splice(commentIndex, 1);
      this.post.commentsCount--;
      this.updateViewedComments();
   }
 
+  findValueBySuffix(object:any, key:any) {
+  for (var property in object) {
+    if (object.hasOwnProperty(property) &&
+      property.toString().endsWith(key)) {
+      return object[property];
+    }
+  }
+}
 }
 

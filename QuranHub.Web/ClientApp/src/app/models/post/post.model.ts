@@ -1,6 +1,6 @@
 import { PostUser } from "../user/postUser.model";
 import { Quran } from "../quran/quran.model";
-import { PostReact } from "./postReact.model";
+import { React } from "./react.model";
 import { Share } from "./share.model";
 import { Comment } from "./comment.model";
 
@@ -23,7 +23,7 @@ export class Post {
       public commentsCount: number,
       public sharesCount: number,
       public share: Share,
-      public reacts : PostReact [] ,
+      public reacts : React [] ,
       public comments: Comment[] ,
       public shares : Share [] ) { }
   }

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Comment } from 'src/app/models/post/comment.model';
+import { CommentRepository } from '../../abstractions/repositories/CommentRepository';
 import { UserService } from '../../abstractions/services/userService';
 import { UserBasicInfo } from "../../models/user/userBasicInfo.model";
-import { PostRepository } from '../../abstractions/repositories/postRepository';
 
 @Component({
   selector: "comment",
@@ -14,6 +14,9 @@ export class CommentComponent implements OnInit {
   @Input()
   comment!: Comment;
 
+  @Input()
+  repository!: CommentRepository;
+
   isOwner:boolean = false;
   submitDelete:boolean = false;
   showLikes: boolean = false;
@@ -24,8 +27,7 @@ export class CommentComponent implements OnInit {
   commentRemoveEvent = new EventEmitter<number>();
 
   constructor(
-    public userService: UserService,
-    public postDataRepository: PostRepository) {
+    public userService: UserService) {
     this.user = userService.getUser() as UserBasicInfo;
   }
 
@@ -35,7 +37,7 @@ export class CommentComponent implements OnInit {
 
   deleteComment(){
      this.submitDelete = true;
-    this.postDataRepository.removeComment(this.comment.commentId).subscribe((response: any) => {
+    this.repository.removeComment(this.comment.commentId).subscribe((response: any) => {
         this.commentRemoveEvent.emit(this.comment.commentId);
         this.submitDelete = false;
         
@@ -44,7 +46,7 @@ export class CommentComponent implements OnInit {
 
   likeEvent(){
     this.comment.reactedTo = true;
-    this.postDataRepository.addCommentReact(1, this.comment.commentId, this.user.id).subscribe((response:any) => {
+    this.repository.addCommentReact(1, this.comment.commentId, this.user.id).subscribe((response:any) => {
        this.comment.reactedTo = true;
        this.comment.reactsCount++;
       
@@ -57,7 +59,7 @@ export class CommentComponent implements OnInit {
 
   unlikeEvent(){
     this.comment.reactedTo = false;
-    this.postDataRepository.removeCommentReact(this.comment.commentId).subscribe((response: any) => {
+    this.repository.removeCommentReact(this.comment.commentId).subscribe((response: any) => {
         this.comment.reactedTo = false;
         this.comment.reactsCount--; 
     },

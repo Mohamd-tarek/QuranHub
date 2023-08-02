@@ -9,7 +9,10 @@ import { Post } from 'src/app/models/post/post.model';
 export class WritingCommentComponent {
 
   @Input()
-  post!: Post;
+  chosenSura: number = 1;
+
+  @Input()
+  chosenAya: number = 1;
 
   verseId! :number;
   comment: string = "";

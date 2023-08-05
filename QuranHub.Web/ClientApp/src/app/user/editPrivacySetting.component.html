@@ -1,0 +1,32 @@
+
+<div *ngIf="dataLoaded; else nodata">
+  <h4 *ngIf="showMessage" class="p-2 bg-danger text-white">
+    {{message}}
+  </h4>
+
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" id="allowFollow" [(ngModel)]="privacySetting.allowFollow" >
+      <label class="form-check-label" for="allowFollow">Allow Follow </label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" id="allowComment" [(ngModel)]="privacySetting.allowComment">
+      <label class="form-check-label" for="allowComment">Allow Comment</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" id="allowShare" [(ngModel)]="privacySetting.allowShare" >
+      <label class="form-check-label" for="allowShare">Allow Share</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" id="appearInSearch" [(ngModel)]="privacySetting.appearInSearch"  >
+      <label class="form-check-label" for="appearInSearch">Appear In Search</label>
+    </div>
+
+    <button class="btn btn-primary mt-2" (click)="submit()">
+      <spinner *ngIf="loading"></spinner>
+      <span *ngIf="!loading">Edit</span>
+    </button>
+</div>
+
+<ng-template #nodata>
+  <h4 class="m-2">Loading Data...</h4>
+</ng-template>

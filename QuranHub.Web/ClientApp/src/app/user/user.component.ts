@@ -14,7 +14,8 @@ export class UserComponent {
     links :any[] = [{name :"login Info", url : "./loginInfo"},
                     {name :"edit login Info", url : "./editLoginInfo"},
                     {name :"change password", url : "./changePassword"},
-                    {name :"about", url : "./aboutInfo"},
+                    {name: "about", url: "./aboutInfo" },
+                    {name: "edit privacy", url: "./editPrivacy" },
                     {name :"delete", url : "./deleteAccount"}]  
 
   constructor(public userService: UserService) {

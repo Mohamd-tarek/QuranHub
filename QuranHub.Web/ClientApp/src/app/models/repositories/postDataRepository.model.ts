@@ -36,7 +36,7 @@ export class PostDataRepository extends PostRepository  {
   }
 
 
-  loadMorePostReacts(postId: number, offset: number, size: number = 50): Observable<React[]> {
+  loadMoreReacts(postId: number, offset: number, size: number = 50): Observable<React[]> {
     return this.http.get<React[]>(postPaths.LoadMorePostReacts + postId + '/' + offset + '/' + size);
   }
 
@@ -48,14 +48,14 @@ export class PostDataRepository extends PostRepository  {
     return this.http.get<Share[]>(postPaths.LoadMoreShares + postId + '/' + offset + '/' + size);
   }
 
-  addPostReact(type : number, postId: number): Observable<React> {
+  addReact(type : number, postId: number): Observable<React> {
     return this.http.post<React>(postPaths.AddPostReact, {
       Type : type,
       PostId : postId
     });
   }
 
-  removePostReact(postId: number): Observable<any> {
+  removeReact(postId: number): Observable<any> {
     let httpParams = new HttpParams().set('postId', postId);
     let options = { params: httpParams };
 

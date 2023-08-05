@@ -52,7 +52,7 @@ export class SharedPostComponent implements OnInit{
 
   likeEvent(){
     this.post.reactedTo = true;
-    this.postDataRepository.addPostReact(1, this.post.postId).subscribe(like => {
+    this.postDataRepository.addReact(1, this.post.postId).subscribe(like => {
        this.post.reactedTo = true;
        this.post.reactsCount++;
     },
@@ -64,7 +64,7 @@ export class SharedPostComponent implements OnInit{
 
   unlikeEvent(){
     this.post.reactedTo = false;
-    this.postDataRepository.removePostReact(this.post.postId).subscribe(response => {
+    this.postDataRepository.removeReact(this.post.postId).subscribe(response => {
         this.post.reactedTo = false;
         this.post.reactsCount--;
     },

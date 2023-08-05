@@ -250,9 +250,9 @@ namespace QuranHub.DAL.Migrations.IdentityData
                 {
                     PrivacySettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FollowResolution = table.Column<int>(type: "int", nullable: false),
-                    CommentResolution = table.Column<int>(type: "int", nullable: false),
-                    ShareResolution = table.Column<int>(type: "int", nullable: false),
+                    AllowFollow = table.Column<bool>(type: "bit", nullable: false),
+                    AllowComment = table.Column<bool>(type: "bit", nullable: false),
+                    AllowShare = table.Column<bool>(type: "bit", nullable: false),
                     AppearInSearch = table.Column<bool>(type: "bit", nullable: false),
                     QuranHubUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },

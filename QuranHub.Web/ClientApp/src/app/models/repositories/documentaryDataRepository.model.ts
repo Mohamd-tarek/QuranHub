@@ -46,7 +46,7 @@ export class DocumentaryDataRepository extends DocumentaryRepository  {
     return this.http.get<Comment[]>(documentaryPaths.LoadMoreComments + VideoInfoId + '/' + offset + '/' + size);
   }
 
-  loadMoreVideoInfoReacts(VideoInfoId: number, offset: number, size: number = 50): Observable<React[]> {
+  loadMoreReacts(VideoInfoId: number, offset: number, size: number = 50): Observable<React[]> {
     return this.http.get<React[]>(documentaryPaths.LoadMoreVideoInfoReacts + VideoInfoId + '/' + offset + '/' + size);
   }
 
@@ -55,14 +55,14 @@ export class DocumentaryDataRepository extends DocumentaryRepository  {
   }
 
 
-  addVideoInfoReact(type: number, VideoInfoId: number): Observable<React> {
+  addReact(type: number, VideoInfoId: number): Observable<React> {
     return this.http.post<React>(documentaryPaths.AddVideoInfoReact, {
       Type: type,
       VideoInfoId: VideoInfoId
     });
   }
 
-  removeVideoInfoReact(VideoInfoId: number): Observable<any> {
+  removeReact(VideoInfoId: number): Observable<any> {
     let httpParams = new HttpParams().set('VideoInfoId', VideoInfoId);
     let options = { params: httpParams };
 

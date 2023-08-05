@@ -12,13 +12,13 @@ export abstract class PostRepository extends CommentRepository {
 
   abstract getPostByIdWithSpecificComment(postId: number, commentId:number): Observable<Post>;
 
-  abstract loadMorePostReacts(postId: number, offset: number, size: number): Observable<React[]>;
+  abstract loadMoreReacts(postId: number, offset: number, size: number): Observable<React[]>;
 
   abstract loadMoreShares(postId: number, offset: number, size: number): Observable<Share[]>;
 
-  abstract addPostReact(type : number, postId: number): Observable<React>;
+  abstract addReact(type : number, postId: number): Observable<React>;
 
-  abstract removePostReact(postId: number): Observable<any>;
+  abstract removeReact(postId: number): Observable<any>;
 
   abstract sharePost(verseId: number, QuranHubUserId: string, text: string, privacy: string, postId: number): Observable<Share>;
 

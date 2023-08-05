@@ -18,9 +18,9 @@ export abstract class DocumentaryRepository extends CommentRepository {
 
   abstract getVideoInfoByIdWithSpecificComment(VideoInfoId: number, commentId: number): Observable<VideoInfo>;
 
-  abstract loadMoreVideoInfoReacts(VideoInfoId: number, offset: number, size: number): Observable<React[]>;
+  abstract loadMoreReacts(VideoInfoId: number, offset: number, size: number): Observable<React[]>;
 
-  abstract addVideoInfoReact(type: number, VideoInfoId: number): Observable<React>;
+  abstract addReact(type: number, VideoInfoId: number): Observable<React>;
 
-  abstract removeVideoInfoReact(VideoInfoId: number): Observable<any>;
+  abstract removeReact(VideoInfoId: number): Observable<any>;
 }

@@ -25,7 +25,7 @@ export class LikesModalComponent  implements OnInit{
   postReacts: React[] = [];
 
   ngOnInit(): void {
-    this.repository.loadMorePostReacts(this.postId, this.users.length, 50).subscribe((postReacts: React[]) => {
+    this.repository.loadMoreReacts(this.postId, this.users.length, 50).subscribe((postReacts: React[]) => {
       this.postReacts = postReacts;
       console.log(postReacts);
       postReacts.forEach(postReact => this.users.push(postReact.quranHubUser));

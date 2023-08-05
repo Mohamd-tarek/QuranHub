@@ -4,7 +4,7 @@
     <div class="row m-2">
       <div class="col-10">
         <likeCount [addYou]="info.reactedTo" [count]="info.reactsCount" (showLikesEvent)="showLikesEvent()"></likeCount>
-        <likesModal *ngIf="showLikes" [postId]="info.videoInfoId" (hideLikesEvent)="hideLikesEvent()"></likesModal>
+        <likesModal *ngIf="showLikes" [postId]="info.videoInfoId"  [repository]="documentaryRepository" (hideLikesEvent)="hideLikesEvent()"></likesModal>
       </div>
       <div class="col-1">
         <commentCount [count]="info.commentsCount"></commentCount>

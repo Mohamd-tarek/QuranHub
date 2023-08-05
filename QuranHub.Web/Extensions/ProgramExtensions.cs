@@ -117,6 +117,8 @@ public static class ProgramExtensions
 
         builder.Services.AddTransient<IFollowRepository, FollowRepository>();
 
+        builder.Services.AddTransient<IPrivacySettingRepository, PrivacySettingRepository>();
+
         builder.Services.AddTransient<IHomeService, HomeService>();
 
         builder.Services.AddTransient<IProfileService, ProfileService>();

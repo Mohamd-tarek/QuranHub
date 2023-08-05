@@ -12,7 +12,8 @@ interface UserPathsType {
   readonly EditAboutInfo: string;
   readonly DeleteAccount: string,
   readonly EditUserInfo: string,
-  readonly UserInfo: string
+  readonly UserInfo: string,
+  readonly PrivacySetting: string
 }
 
 export const userPaths: UserPathsType = {
@@ -22,6 +23,7 @@ export const userPaths: UserPathsType = {
     DeleteAccount: `${UserUrl}/DeleteAccount`,
     EditUserInfo: `${UserUrl}/EditUserInfo`,
     UserInfo: `${UserUrl}/UserInfo`,
+    PrivacySetting: `${UserUrl}/PrivacySetting`,
 };
 
 

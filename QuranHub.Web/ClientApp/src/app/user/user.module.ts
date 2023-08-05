@@ -8,6 +8,7 @@ import { AboutInfoComponent } from "./aboutInfo.component";
 import { DeleteAccountComponent } from "./deleteAccount.component";
 import { LoginInfoComponent } from "./loginInfo.component";
 import { EditLoginInfoComponent } from "./editLoginInfo.component";
+import { EditPrivacySettingComponent } from "./editPrivacySetting.component";
 import { TemplateModule } from "../templateComponents/template.module";
 
 const routes: Routes = [ { path: "user" ,
@@ -16,7 +17,8 @@ const routes: Routes = [ { path: "user" ,
                                 {path: "loginInfo", component: LoginInfoComponent},
                                 {path: "editLoginInfo", component: EditLoginInfoComponent},
                                 {path: "changePassword", component: ChangePasswordComponent},
-                                {path: "aboutInfo", component: AboutInfoComponent},
+                                {path: "aboutInfo", component: AboutInfoComponent },
+                                {path: "editPrivacy", component: EditPrivacySettingComponent },
                                 {path: "deleteAccount" , component: DeleteAccountComponent},
                             ]
                         } ]
@@ -36,6 +38,7 @@ const routes: Routes = [ { path: "user" ,
     EditLoginInfoComponent,
     ChangePasswordComponent,
     AboutInfoComponent,
+    EditPrivacySettingComponent,
     DeleteAccountComponent
   ],
 

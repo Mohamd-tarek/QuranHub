@@ -6,6 +6,7 @@ import { HttpClient } from "@angular/common/http";
 import { UserService, Gender, Religion, IAboutInfo } from "../abstractions/services/userService";
 import { UserBasicInfo } from "../models/user/userBasicInfo.model";
 import { userPaths } from "../constants/user.constants";
+import { PrivacySetting } from "../models/user/privacySetting.model";
 
 @Injectable({
   providedIn: 'root',
@@ -65,6 +66,20 @@ export class UserDataService extends UserService {
         gender: Number(gender),
         religion : Number(religion),
         aboutMe: aboutMe});
+  }
+
+  getPrivacySetting(): Observable<PrivacySetting> {
+    return this.http.get<PrivacySetting>(userPaths.PrivacySetting);
+  }
+
+  editPrivacySetting(privacySetting: PrivacySetting): Observable<any> {
+    return this.http.post<any>(userPaths.PrivacySetting,
+      {
+        allowFollow: privacySetting.allowFollow,
+        allowComment: privacySetting.allowComment,
+        allowShare: privacySetting.allowShare,
+        appearInSearch: privacySetting.appearInSearch
+      });
   }
 
   deleteAccount() {

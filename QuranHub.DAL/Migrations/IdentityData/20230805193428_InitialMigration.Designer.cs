@@ -12,7 +12,7 @@ using QuranHub.DAL.Database;
 namespace QuranHub.DAL.Migrations.IdentityData
 {
     [DbContext(typeof(IdentityDataContext))]
-    [Migration("20230730120452_InitialMigration")]
+    [Migration("20230805193428_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -396,21 +396,21 @@ namespace QuranHub.DAL.Migrations.IdentityData
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PrivacySettingId"));
 
-                    b.Property<bool>("AppearInSearch")
+                    b.Property<bool>("AllowComment")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CommentResolution")
-                        .HasColumnType("int");
+                    b.Property<bool>("AllowFollow")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("FollowResolution")
-                        .HasColumnType("int");
+                    b.Property<bool>("AllowShare")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AppearInSearch")
+                        .HasColumnType("bit");
 
                     b.Property<string>("QuranHubUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ShareResolution")
-                        .HasColumnType("int");
 
                     b.HasKey("PrivacySettingId");
 

@@ -1,5 +1,6 @@
 import { Observable } from "rxjs";
 import { UserBasicInfo } from "../../models/user/userBasicInfo.model";
+import { PrivacySetting } from "../../models/user/privacySetting.model";
 
 export enum Gender{
   Male = "0",
@@ -37,7 +38,11 @@ export abstract class UserService{
 
   abstract updateUser(user: UserBasicInfo) :void;
 
-  abstract editUserData(email:string, username:string): Observable<any>;
+  abstract editUserData(email: string, username: string): Observable<any>;
+
+  abstract getPrivacySetting(): Observable<PrivacySetting>;
+
+  abstract editPrivacySetting(privacySetting: PrivacySetting): Observable<any>;
 
   abstract editAboutData(dateOfBirth:string, gender:string, religion: string, aboutMe: string): Observable<any>;
 

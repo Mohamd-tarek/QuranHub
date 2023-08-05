@@ -3,9 +3,9 @@
 public class PrivacySetting
 {
     public int PrivacySettingId { get; set; }
-    public int FollowResolution { get; set; }
-    public int CommentResolution { get; set; }
-    public int ShareResolution { get; set; }
+    public bool AllowFollow { get; set; }
+    public bool AllowComment { get; set; }
+    public bool AllowShare { get; set; }
     public bool AppearInSearch { get; set; }
     public string QuranHubUserId { get; set; }
     public QuranHubUser QuranHubUser { get; set; }

@@ -12,6 +12,7 @@ public partial class  AccountController : ControllerBase
     private SignInManager<QuranHubUser> _signInManager;
     private IEmailService _emailService;
     private TokenUrlEncoderService _tokenUrlEncoder;
+    private IPrivacySettingRepository _privacySettingRepository;
 
     public AccountController(
         ILogger<AccountController> logger,
@@ -19,6 +20,7 @@ public partial class  AccountController : ControllerBase
         IEmailService emailService,
         SignInManager<QuranHubUser> signInManager,
         IPostRepository postRepository,
+        IPrivacySettingRepository privacySettingRepository,
         TokenUrlEncoderService tokenUrlEncoder,
         IUserViewModelsFactory userViewModelsFactory)
     {
@@ -29,6 +31,8 @@ public partial class  AccountController : ControllerBase
         _tokenUrlEncoder = tokenUrlEncoder ?? throw new ArgumentNullException(nameof(tokenUrlEncoder));
         _userViewModelsFactory = userViewModelsFactory ?? throw new ArgumentNullException(nameof(userViewModelsFactory));
         _postRepository = postRepository ?? throw new ArgumentNullException(nameof(postRepository));
+        _privacySettingRepository = privacySettingRepository ?? throw new ArgumentNullException(nameof(privacySettingRepository));
+
     }
 
     [HttpGet("userInfo")]
@@ -68,6 +72,28 @@ public partial class  AccountController : ControllerBase
         AboutInfoViewModel aboutInfoViewModel = _userViewModelsFactory.BuildAboutInfoViewModel(user);
 
         return aboutInfoViewModel;   
+    }
+
+    [HttpGet("privacySetting")]
+    public async Task<PrivacySetting> GetPrivacySettingAsync()
+    {
+        QuranHubUser user = await _userManager.GetUserAsync(User);
+
+        PrivacySetting privacySetting = await this._privacySettingRepository.GetPrivacySettingByUserIdAsync(user.Id);
+
+        return privacySetting;
+    }
+
+    [HttpPost("privacySetting")]
+    public async Task<IActionResult> PostEditAboutInfoAsync([FromBody] PrivacySetting privacySetting)
+    {
+        QuranHubUser user = await _userManager.GetUserAsync(User);
+
+        if (await this._privacySettingRepository.EditPrivacySettingByUserIdAsync(privacySetting, user.Id))
+        {
+            return Ok();
+        }
+        return BadRequest();
     }
 
     [HttpPost("editAboutInfo")]

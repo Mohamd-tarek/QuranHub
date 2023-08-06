@@ -1,13 +1,18 @@
 <div *ngIf="dataLoaded; else nodata">
-    <div class="row border  border-3 rounded-3 justify-content-end m-2 p-2" [style.background-color]="'papayawhip'">
+    <div class="row border  border-3 rounded-3 justify-content-end m-2 p-2"
+         [style.background-color]="'papayawhip'">
       <button class=" col p-2 me-2 btn btn-primary"
-      (click)="addAya()">
+              (click)="addAya()">
        Add aya
       </button> 
-      <select class="col p-2 ms-2 me-2 form-select" aria-label="Default select example" [(ngModel)]="curAya" >
+      <select class="col p-2 ms-2 me-2 form-select"
+              aria-label="Default select example"
+              [(ngModel)]="curAya" >
         <option  *ngFor="let aya of currentSuraAyas" value={{aya}} > {{aya}}</option>
       </select> 
-      <select class="col p-2 ms-2 form-select " aria-label="Default select example" [(ngModel)]="curSura" >
+      <select class="col p-2 ms-2 form-select "
+              aria-label="Default select example"
+              [(ngModel)]="curSura" >
         <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
       </select>
     </div>

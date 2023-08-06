@@ -7,22 +7,30 @@
         <form novalidate #authForm="ngForm" >
             <div class="form-group">
                 <label>Email:</label>
-                <input #email="ngModel" name="email" class="form-control"
-                        [(ngModel)]="authService.email" required />
+                <input class="form-control"
+                       #email="ngModel"
+                       name="email" 
+                       [(ngModel)]="authService.email".
+                       required />
                 <div *ngIf="email.invalid" class="text-danger">
                     Please enter your email
                 </div>
             </div>
             <div class="form-group">
                 <label>Password:</label>
-                <input type="password" #password="ngModel" name="password" 
-                        class="form-control" [(ngModel)]="authService.password" required />
-                <div *ngIf="password.invalid" class="text-danger">
+                <input class="form-control"
+                       type="password"
+                       #password="ngModel"
+                       name="password" 
+                       [(ngModel)]="authService.password"
+                       required />
+                <div class="text-danger" *ngIf="password.invalid" >
                     Please enter your password
                 </div>
             </div>    
             <div class="text-center pt-2">
-                <button class="btn btn-primary" [disabled]="authForm.invalid || loading"
+                <button class="btn btn-primary"
+                        [disabled]="authForm.invalid || loading"
                         (click)="login()">
                         <spinner *ngIf="loading"></spinner>
                         <span *ngIf="!loading">Login</span>

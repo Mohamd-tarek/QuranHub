@@ -7,7 +7,11 @@
        </div>
        <div class="col flex-row-reverse">
          <label for="currentSearch" class="">  </label>
-         <input id="currentSearch" placeholder="enter a word" type="text" class="border border-3 rounded-3" [formControl]="currentSearch">
+         <input class="border border-3 rounded-3"
+                id="currentSearch"
+                placeholder="enter a word"
+                type="text"
+                [formControl]="currentSearch">
        </div>
     </div>
     </div>
@@ -21,7 +25,11 @@
            [class.bg-primary]="odd"
            [class.text-white]="odd"
            [class.bg-light]="!odd" >
-           <button type="button" class="d-inline float-start btn-close" aria-label="Close" (click)='removeItem(i)'></button>
+           <button class="d-inline float-start btn-close"
+                   type="button"
+                   aria-label="Close"
+                   (click)='removeItem(i)'>
+           </button>
             <div>
               <p >{{aya[0]}}</p>
               <p >{{aya[1]}}</p>

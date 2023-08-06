@@ -1,8 +1,8 @@
 <div  class="rounded-3" *ngFor="let comment of viewedComments">
     <comment
     [repository]="repository"
-    (commentRemoveEvent)="commentRemoveEvent($event)"
-    [comment]="comment">
+    [comment]="comment"
+    (commentRemoveEvent)="commentRemoveEvent($event)">
     </comment>
 </div>
 <div class="row m-1">
@@ -11,7 +11,8 @@
      [repository]="repository"
      [totalComments]="post.commentsCount"
      [loadedComments]="post.comments.length" 
-     (moreCommentLoadedEvent)="updateViewedComments()"></viewMoreComments>
+     (moreCommentLoadedEvent)="updateViewedComments()">
+    </viewMoreComments>
 </div>
 
 <div *ngIf="writingComment" class="row m-1">
@@ -20,5 +21,6 @@
     [chosenAya]="post?.verse?.aya ?? 1"
     (cancelWritingCommentEvent)="cancelWritingComment()"
     (addingCommentEvent)="addingCommentEvent($event)"
-    (choosingAyaEvent)="choosingAyaEvent($event)" ></writingComment>
+    (choosingAyaEvent)="choosingAyaEvent($event)" >
+    </writingComment>
 </div>

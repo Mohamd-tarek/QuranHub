@@ -4,7 +4,8 @@
     </div>
 </h4>
 
-<h4 *ngIf="verified && confirmEnded" class="p-2 bg-danger text-white">
+<h4 class="p-2 bg-danger text-white"
+    *ngIf="verified && confirmEnded" >
     <div class="text-center">
         <h6 class="p-2">{{message}}</h6>
         <button  class="btn btn-sm btn-primary" [routerLink]="['/auth/login']" >
@@ -15,12 +16,12 @@
 
 <h4 *ngIf="!verified && confirmEnded" class="p-2 bg-danger text-white">
   <div class="text-center">
-    <h4 *ngIf="resended" class="p-2 bg-danger text-white">
+    <h4 class="p-2 bg-danger text-white" *ngIf="resended" >
       <div class="text-center">
         <h6 class="p-2">confirmation email has been resended</h6>
       </div>
     </h4>
-    <button (click)="resend()" class="btn btn-primary">Resend Email</button>
+    <button class="btn btn-primary" (click)="resend()" >Resend Email</button>
   </div>
 </h4>   
 

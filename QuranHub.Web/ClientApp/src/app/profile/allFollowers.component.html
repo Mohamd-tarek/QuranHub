@@ -1,5 +1,7 @@
 
-<div *ngIf="dataLoaded" [style.background-color]="'wheat'" class="border border-3 rounded-3 p-2  "> 
+<div class="border border-3 rounded-3 p-2"
+     *ngIf="dataLoaded"
+     [style.background-color]="'wheat'" > 
   <div class="row">
     <p class="col m-2 p-2 "> Followers :  {{users.length}} </p> 
     <div class="col flex-row-reverse m-2 p-2">

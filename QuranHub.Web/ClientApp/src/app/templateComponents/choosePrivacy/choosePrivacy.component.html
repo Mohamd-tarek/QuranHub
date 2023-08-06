@@ -3,7 +3,10 @@
     <label for="privacySelect " class="form-label fw-bold p-2">Privacy :</label>
   </div>
   <div class="col-6">
-    <select id="privacySelect" class="form-select p-2 me-2" aria-label="Default select example" [(ngModel)]="curPrivacy" >
+    <select class="form-select p-2 me-2"
+            id="privacySelect"
+            aria-label="Default select example"
+            [(ngModel)]="curPrivacy" >
       <option  *ngFor="let privacy of Privacy | keyvalue" value={{privacy.value}}  > {{privacy.key}}</option>
     </select> 
   </div>

@@ -1,17 +1,21 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { UserBasicInfo } from "../../models/user/userBasicInfo.model";
+
 import { React } from "../../models/post/react.model";
-import { faL } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: "likesModal",
-  templateUrl: "likesModal.component.html"
+  selector: "commentLikesModal",
+  templateUrl: "commentLikesModal.component.html"
 })
 
-export class LikesModalComponent  implements OnInit{
+export class CommentLikesModalComponent implements OnInit {
  
+  ngOnInit(): void {
+    this.loadMoreLikes();
+  }
+
   @Input()
-  postId!: any;
+  commentId!: any;
 
   @Input()
   repository!: any;
@@ -22,26 +26,22 @@ export class LikesModalComponent  implements OnInit{
   @Output()
   hideLikesEvent = new EventEmitter();
 
+  commentReacts: React[] = [];
+
   loading: boolean = false;
 
   users: UserBasicInfo[] = [];
 
-  postReacts: React[] = [];
-
-  ngOnInit(): void {
-    this.loadMoreLikes();
-  }
 
   hideLikes() {
     this.hideLikesEvent.emit();
   }
-
   loadMoreLikes() {
     this.loading = true;
-    this.repository.loadMoreReacts(this.postId, this.users.length, 50).subscribe((postReacts: React[]) => {
-      this.postReacts = postReacts;
-      console.log(postReacts);
-      postReacts.forEach(postReact => this.users.push(postReact.quranHubUser));
+    this.repository.loadMoreCommentReacts(this.commentId, this.users.length, 50).subscribe((commentReacts: React[]) => {
+      this.commentReacts = commentReacts;
+      console.log(commentReacts);
+      commentReacts.forEach(commentReact => this.users.push(commentReact.quranHubUser));
       this.loading = false;
     })
   }

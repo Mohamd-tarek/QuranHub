@@ -1,13 +1,19 @@
 <div *ngIf="dataLoaded; else nodata">
   <div class="p-2 m-2 border border-3 rounded-3" [style.background-color]="'papayawhip'">
     <div class="row  justify-content-end m-2">
-      <select class="col p-2 me-2 form-select" id="tafseer" aria-label="Default select example" [(ngModel)]="curTafseer">
+      <select class="col p-2 me-2 form-select"
+              id="tafseer" aria-label="Default select example"
+              [(ngModel)]="curTafseer">
         <option *ngFor="let tafseer of getTafseers()" value={{tafseer}}> {{tafseer}}</option>
       </select>
-      <select class="col p-2 ms-2 me-2 form-select" aria-label="Default select example" [(ngModel)]="curAya">
+      <select class="col p-2 ms-2 me-2 form-select"
+              aria-label="Default select example"
+              [(ngModel)]="curAya">
         <option *ngFor="let aya of ayas" value={{aya}}> {{aya}}</option>
       </select>
-      <select class="col p-2 ms-2 form-select " aria-label="Default select example" [(ngModel)]="curSura">
+      <select class="col p-2 ms-2 form-select "
+              aria-label="Default select example"
+              [(ngModel)]="curSura">
         <option *ngFor="let sura of suras" value={{sura.index}}> {{sura.name}} - {{sura.index }}</option>
       </select>
     </div>

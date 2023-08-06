@@ -9,11 +9,28 @@
     </div>
   </div>
   <div class="col">
-    <like  [liked]="comment.reactedTo" (likeEvent)="likeEvent()" (unlikeEvent)="unlikeEvent()" [style.cursor]="'pointer'"></like>
-    <likeCount  [addYou]="false" [count]="comment.reactsCount" (showLikesEvent)="showLikesEvent()"></likeCount>
+    <like [liked]="comment.reactedTo"
+          [style.cursor]="'pointer'"
+          (likeEvent)="likeEvent()"
+          (unlikeEvent)="unlikeEvent()">
+    </like>
+    <likeCount [addYou]="false"
+               [count]="comment.reactsCount"
+               (showLikesEvent)="showLikesEvent()">
+
+    </likeCount>
+    <commentLikesModal *ngIf="showLikes"
+                      [repository]="repository"
+                      [commentId]="comment.commentId"
+                      [totalLikes]="comment.reactsCount"
+                      (hideLikesEvent)="hideLikesEvent()">
+
+    </commentLikesModal>
   </div>
 
-  <div *ngIf="isOwner" class="col" style="cursor: pointer;" (click)="deleteComment()">
+  <div class="col" *ngIf="isOwner"
+                   [style.cursor]="'pointer'"
+                   (click)="deleteComment()">
     <span *ngIf="!submitDelete">
       X
     </span>

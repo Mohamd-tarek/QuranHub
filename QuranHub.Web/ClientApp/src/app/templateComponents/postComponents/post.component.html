@@ -1,40 +1,91 @@
 
-<div *ngIf="show" class="border  border-3 rounded-3 mt-2 mb-2" [@fadeOut] [style.background-color]="'papayawhip'" [id]="post.postId">
+<div  class="border  border-3 rounded-3 mt-2 mb-2"
+     *ngIf="show"
+     [@fadeOut]
+     [style.background-color]="'papayawhip'"
+     [id]="post.postId">
 
     <div class="row align-items-center">
-      <postOwnerInfo class="col-8" [user]="post.quranHubUser" [post]="post"></postOwnerInfo>
-      <postOwnerOptions *ngIf="isOwner"  class="col-4" (editEvent)="editEvent()" (deleteEvent)="deleteEvent()" [post]="post"></postOwnerOptions>
+      <postOwnerInfo class="col-8"
+                     [user]="post.quranHubUser"
+                     [post]="post">
+
+      </postOwnerInfo>
+      <postOwnerOptions  class="col-4"
+                        *ngIf="isOwner"
+                        [post]="post"
+                        (editEvent)="editEvent()"
+                        (deleteEvent)="deleteEvent()" >
+
+      </postOwnerOptions>
     </div>
 
-    <textAndAya *ngIf="!editPost" [post]="post" > </textAndAya>
-    <editPost *ngIf="editPost" (postEditedEvent)="editedEvent()" [post]="post"> </editPost>
+    <textAndAya *ngIf="!editPost"
+                [post]="post" >
+
+    </textAndAya>
+    <editPost *ngIf="editPost"
+              [post]="post"
+              (postEditedEvent)="editedEvent()" >
+
+    </editPost>
 
     <div class="row m-2">
         <div class="col-10">
-            <likeCount [addYou]="post.reactedTo" [count]="post.reactsCount" (showLikesEvent)="showLikesEvent()"  ></likeCount>
-            <likesModal  *ngIf="showLikes" [repository]="postDataRepository" [postId]="post.postId" (hideLikesEvent)="hideLikesEvent()"></likesModal>
+            <likeCount [addYou]="post.reactedTo"
+                       [count]="post.reactsCount"
+                       (showLikesEvent)="showLikesEvent()"  >
+
+            </likeCount>
+            <likesModal *ngIf="showLikes"
+                        [repository]="postDataRepository"
+                        [postId]="post.postId"
+                        [totalLikes]="post.reactsCount"
+                        (hideLikesEvent)="hideLikesEvent()">
+
+            </likesModal>
         </div>
         <div class="col-1">
             <commentCount [count]="post.commentsCount"></commentCount>        
         </div>
         <div class="col-1">
-            <shareCount [count]="post.sharesCount"></shareCount>        
+          <shareCount [count]="post.sharesCount"
+                      (showSharesEvent)="showSharesEvent()" >
+
+          </shareCount>
+          <sharesModal *ngIf="showShares"
+                       [repository]="postDataRepository"
+                       [postId]="post.postId"
+                       [totalShares]="post.sharesCount"
+                       (hideSharesEvent)="hideSharesEvent()">
+
+          </sharesModal>
         </div>
     </div>
 
     <hr class="m-2">
 
     <div class="row m-2">
-            <like class="col-4" [liked]="post.reactedTo" (likeEvent)="likeEvent()" (unlikeEvent)="unlikeEvent()" ></like>
+            <like class="col-4"
+                  [liked]="post.reactedTo"
+                  (likeEvent)="likeEvent()"
+                  (unlikeEvent)="unlikeEvent()" >
+
+            </like>
         <div class="col-4">
             <addComment (writingCommentEvent)="startWritingComment()" ></addComment>        
         </div>
         <div class="col-4">
-            <share  (shareStartEvent)="shareStartEvent()" ></share>        
+          <share (shareStartEvent)="shareStartEvent()"></share>
         </div>
     </div>
 
-    <shareModal *ngIf="shareStarted"  [repository]="postDataRepository" (shareDoneEvent)="shareDoneEvent()" [post]="post"></shareModal>
+    <shareModal *ngIf="shareStarted"
+                [repository]="postDataRepository"
+                [post]="post"
+                (shareDoneEvent)="shareDoneEvent()">
+
+    </shareModal>
 
 <hr class="m-2">
 
@@ -42,5 +93,7 @@
        [post]="post"
        [repository]="postDataRepository"
        [writingComment]="writingComment"
-       (cancelWritingCommentEvent)="cancelWritingComment()"></commentContainer>
+       (cancelWritingCommentEvent)="cancelWritingComment()">
+
+    </commentContainer>
 </div>

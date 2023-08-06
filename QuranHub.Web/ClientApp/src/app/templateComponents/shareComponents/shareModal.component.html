@@ -2,23 +2,44 @@
     <div class="modal-body">
           <choosePrivacy  (choosePrivacyEvent)="choosePrivacyEvent($event)"></choosePrivacy>
         <div class="row  align-items-start m-2">
-                <textarea class="form-control" [(ngModel)]="text" 
-                    placeholder="write your thoughts" id="floatingTextarea"></textarea>
-                <label for="floatingTextarea"></label>
+                <textarea class="form-control"
+                          [(ngModel)]="text" 
+                          placeholder="write your thoughts"
+                          id="floatingTextarea">
+    
+                </textarea>
+                <label for="floatingTextarea">
+                </label>
         </div>
-        <button *ngIf="!addAya" type="button" class="offset-4 col-4 btn btn-primary d-inline" (click)="addingAya()">Add Aya</button>
-                <chooseAya *ngIf="addAya" [chosenSura]="post.verse.sura"
-                [chosenAya]="post.verse.aya"
-                 (chooseAyaEvent)="chooseAyaEvent($event)" ></chooseAya>
+        <button class="offset-4 col-4 btn btn-primary d-inline"
+                *ngIf="!addAya"
+                type="button"
+                (click)="addingAya()">Add Aya
+        </button>
+                <chooseAya *ngIf="addAya"
+                           [chosenSura]="post.verse.sura"
+                           [chosenAya]="post.verse.aya"
+                           (chooseAyaEvent)="chooseAyaEvent($event)" >
+
+                </chooseAya>
         <post [post]="post"></post>
      
     </div>
     <div class="modal-footer">
         <div>
-            <button type="button" class="btn btn-secondary me-2" (click)="shareDone()" data-bs-dismiss="modal">Close</button>
-            <button type="button" [disabled]="submitted" class="btn btn-primary" (click)="sharingPost()">               
-                <spinner *ngIf="submitted"></spinner>
-                <span *ngIf="!submitted">Share</span></button>
+            <button class="btn btn-secondary me-2"
+                    type="button"
+                    (click)="shareDone()"
+                    data-bs-dismiss="modal">Close
+            </button>
+            <button class="btn btn-primary"
+                    type="button"
+                    [disabled]="submitted"
+                    (click)="sharingPost()">               
+                <spinner *ngIf="submitted">
+                </spinner>
+                <span *ngIf="!submitted">Share</span>
+            </button>
         </div>
   </div>
 </modal>

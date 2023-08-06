@@ -1,5 +1,12 @@
 <div class="row align-items-center pe-2">
-  <profilePicture class="col-8" *ngIf ="authService.isAuthenticated" (click)="togglePanel($event)"  [diamter]="60" [picture]="userService.getUser()?.profilePicture" [style.cursor]="'pointer'" ></profilePicture>
+  <profilePicture class="col-8"
+                  *ngIf ="authService.isAuthenticated"
+                  (click)="togglePanel($event)"
+                  [diamter]="60"
+                  [picture]="userService.getUser()?.profilePicture"
+                  [style.cursor]="'pointer'" >
+
+  </profilePicture>
   <notificationsContainer class="col-4 mt-3" *ngIf ="authService.isAuthenticated" ></notificationsContainer>  
   <a *ngIf ="!authService.isAuthenticated" 
     class="col btn btn-sm btn-primary  p-2 me-1"
@@ -15,4 +22,7 @@
     Sign Up
   </a>
 </div>
-<miniUserPanel *ngIf="showUserPanel" (clickOutside)="showUserPanel=false"  (click)="hidePanel($event)" ></miniUserPanel>
+<miniUserPanel *ngIf="showUserPanel"
+               (clickOutside)="showUserPanel=false"
+               (click)="hidePanel($event)" >
+</miniUserPanel>

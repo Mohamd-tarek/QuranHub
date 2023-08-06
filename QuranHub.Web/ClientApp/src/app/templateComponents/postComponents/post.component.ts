@@ -21,6 +21,7 @@ export class PostComponent implements OnInit {
   commentAdded: boolean = false;
   shareStarted: boolean = false;
   showLikes: boolean = false;
+  showShares: boolean = false;
   isOwner: boolean = false;
   show: boolean = true;
   editPost: boolean = false;
@@ -68,6 +69,14 @@ export class PostComponent implements OnInit {
 
   hideLikesEvent() {
     this.showLikes = false;
+  }
+
+  showSharesEvent() {
+    this.showShares = true;
+  }
+
+  hideSharesEvent() {
+    this.showShares = false;
   }
 
   shareStartEvent(){

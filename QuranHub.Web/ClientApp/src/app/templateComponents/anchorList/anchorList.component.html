@@ -1,5 +1,9 @@
 <ul class="nav nav-pills flex-column">
     <li *ngFor="let link of links" class="nav-item">
-      <a class="nav-link" [routerLink]="['/' + link.url]"  routerLinkActive="active">{{link.name | titlecase}}</a>
+      <a class="nav-link"
+         [routerLink]="['/' + link.url]"
+         routerLinkActive="active">
+         {{link.name | titlecase}}
+      </a>
     </li>
   </ul>

@@ -1,14 +1,19 @@
 <choosePrivacy [chosenPrivacy]="post.privacy"
                (choosePrivacyEvent)="choosePrivacyEvent($event)">
 </choosePrivacy>
-<chooseAya [chosenSura]="post.verse.sura" [chosenAya]="post.verse.aya"
-            (chooseAyaEvent)="chooseAyaEvent($event)">
+<chooseAya [chosenSura]="post.verse.sura"
+           [chosenAya]="post.verse.aya"
+           (chooseAyaEvent)="chooseAyaEvent($event)">
 </chooseAya>
 
 
 <div class="row  align-items-start m-2 ">
-  <textarea class="form-control" [(ngModel)]="post.text"
-            placeholder="write your thoughts" id="floatingTextarea"></textarea>
+  <textarea class="form-control"
+            [(ngModel)]="post.text"
+            placeholder="write your thoughts"
+            id="floatingTextarea">
+
+</textarea>
   <label for="floatingTextarea"></label>
 </div>
 <div class="row m-2">

@@ -1,7 +1,9 @@
 <div *ngIf="dataLoaded; else nodata">
   <div class="  m-2 border border-3 rounded-3" [style.background-color]="'papayawhip'">
     <div class="row  justify-content-end m-2">
-      <select class="col p-2 me-2 form-select " aria-label="Default select example" [(ngModel)]="curAya">
+      <select class="col p-2 me-2 form-select "
+              aria-label="Default select example"
+              [(ngModel)]="curAya">
         <option *ngFor="let aya of ayas" value={{aya}}> {{aya}}</option>
       </select>
       <select class="col p-2 ms-2 form-select " aria-label="Default select example" [(ngModel)]="curSura">

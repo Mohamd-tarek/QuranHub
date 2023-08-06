@@ -1,8 +1,9 @@
 <div [dragula]="'DRAGULA_ITEMS'">
         <ayaCard  *ngFor="let aya of ayaSet; index as i; let odd = odd"
-        [class.text-white]="odd"
-        [backgroundColor]="odd ? '#0366d6' : 'white'"
-        [closable]="true"  
-        [aya]="aya"
-        (removeAyaEvent)='removeAya(i)'></ayaCard>
+                  [class.text-white]="odd"
+                  [backgroundColor]="odd ? '#0366d6' : 'white'"
+                  [closable]="true"  
+                  [aya]="aya"
+                  (removeAyaEvent)='removeAya(i)'>
+        </ayaCard>
  </div>   

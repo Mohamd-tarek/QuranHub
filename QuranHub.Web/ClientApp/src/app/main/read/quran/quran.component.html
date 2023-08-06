@@ -1,6 +1,8 @@
     <div *ngIf="dataLoaded; else nodata" >
       <div class="row  justify-content-end m-2" >
-        <select class="form-select " aria-label="Default select example" [(ngModel)]="curSura" >
+        <select class="form-select "
+                aria-label="Default select example"
+                [(ngModel)]="curSura" >
           <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
         </select> 
       </div>

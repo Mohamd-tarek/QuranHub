@@ -1,6 +1,12 @@
-<span *ngIf="!focused" [id]="'aya' + aya.aya" class="text-end" >{{aya.text}}
+<span  class="text-end"
+       *ngIf="!focused"
+       [id]="'aya' + aya.aya" >
+       {{aya.text}}
     <span  class="text-primary "  > ({{aya.aya}}) </span>
 </span>
-<span *ngIf="focused" [id]="'aya' + aya.aya" class="text-end" [@backgroundHighlight] >{{aya.text}}
+<span  class="text-end"
+       *ngIf="focused"
+       [id]="'aya' + aya.aya"
+       [@backgroundHighlight] >{{aya.text}}
     <span  class="text-primary "  > ({{aya.aya}}) </span>
 </span>

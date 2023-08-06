@@ -1,4 +1,9 @@
 <div >
     <spinner *ngIf="loading"></spinner>
-    <span *ngIf="!loading" class="text-decoration-underline" (click)="onLoadMoreComment()" [style.cursor]="'pointer'" >view more comments</span>
+    <span  class="text-decoration-underline"
+           *ngIf="!loading"
+           [style.cursor]="'pointer'"
+           (click)="onLoadMoreComment()">
+           view more comments
+    </span>
 </div> 

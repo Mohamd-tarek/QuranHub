@@ -46,8 +46,10 @@ import { WritingCommentComponent } from "./commentComponents/writingComment.comp
 import { AddCommentComponent } from "./commentComponents/addComment.component";
 import { LikeCountComponent } from "./likeComponents/likeCount.component";
 import { LikesModalComponent } from "./likeComponents/likesModal.component";
+import { CommentLikesModalComponent } from "./commentComponents/commentLikesModal.component";
 import { LikeComponent } from "./likeComponents/like.component";
 import { ShareCountComponent } from "./shareComponents/shareCount.component";
+import { SharesModalComponent } from "./shareComponents/sharesModal.component";
 import { ShareComponent } from "./shareComponents/share.component";
 import { PostOwnerInfoComponent } from "./postComponents/postOwnerInfo.component";
 import { PostOwnerOptionsComponent } from "./postComponents/postOwnerOptions.component";
@@ -112,8 +114,10 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     WritingCommentComponent,
     LikeCountComponent,
     LikesModalComponent,
+    CommentLikesModalComponent,
     CommentCountComponent,
     ShareCountComponent,
+    SharesModalComponent,
     LikeComponent,
     AddCommentComponent,
     ShareComponent,
@@ -172,8 +176,10 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     WritingCommentComponent,
     LikeCountComponent,
     LikesModalComponent,
+    CommentLikesModalComponent,
     CommentCountComponent,
     ShareCountComponent,
+    SharesModalComponent,
     LikeComponent,
     AddCommentComponent,
     ShareComponent,

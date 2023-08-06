@@ -1,8 +1,17 @@
-<div class="row align-items-center border-bottom border-dark ms-1 me-1 rounded-3" [@fadeOut]
-   [style.background-color]="!notification.seen ? 'wheat' : 'gray'"
-   [style.cursor]="'pointer'">
-    <profilePicture  (click)="viewNotification()" class="col-2" [diamter]="40" [picture]="notification.sourceUser?.profilePicture"></profilePicture>
-    <span  (click)="viewNotification()" class="col-8 ">{{notification.message}}</span>
+<div class="row align-items-center border-bottom border-dark ms-1 me-1 rounded-3"
+     [@fadeOut]
+     [style.background-color]="!notification.seen ? 'wheat' : 'gray'"
+     [style.cursor]="'pointer'">
+    <profilePicture class="col-2"
+                    [diamter]="40"
+                    [picture]="notification.sourceUser?.profilePicture"
+                    (click)="viewNotification()">
+    </profilePicture>
+    <span class="col-8 " (click)="viewNotification()" >{{notification.message}}</span>
     <spinner *ngIf="submitted"></spinner>
-    <i *ngIf="!submitted" (click)="deleteNotification($event)" [style.scale]="1.8"    class="fa-solid fa-trash  col-2"></i>
+    <i   class="fa-solid fa-trash  col-2"
+         *ngIf="!submitted"
+         [style.scale]="1.8"
+         (click)="deleteNotification($event)" >
+    </i>
 </div>

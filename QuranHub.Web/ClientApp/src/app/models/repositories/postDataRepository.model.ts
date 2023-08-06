@@ -99,7 +99,7 @@ export class PostDataRepository extends PostRepository  {
       quranHubUserId: QuranHubUserId,
       text: text,
       privacy: Number(privacy),
-      share: {
+      postShare: {
         postId: postId,
       }
     });

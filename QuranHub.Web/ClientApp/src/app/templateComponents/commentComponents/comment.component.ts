@@ -17,8 +17,10 @@ export class CommentComponent implements OnInit {
   @Input()
   repository!: CommentRepository;
 
-  isOwner:boolean = false;
-  submitDelete:boolean = false;
+  isOwner: boolean = false;
+
+  submitDelete: boolean = false;
+
   showLikes: boolean = false;
 
   user: UserBasicInfo;

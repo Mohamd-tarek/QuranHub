@@ -1,5 +1,7 @@
 <div *ngIf="dataLoaded; else nodata" #element>
-  <post *ngIf="!post.hasOwnProperty('share')" [post]="post" #postComponent></post>
+  <post *ngIf="!post.hasOwnProperty('share')"
+        [post]="post"
+        #postComponent></post>
   <sharedPost *ngIf="post.hasOwnProperty('share')" [post]="post"></sharedPost>
 </div>
 

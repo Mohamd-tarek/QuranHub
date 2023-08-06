@@ -1,10 +1,20 @@
 <div *ngIf="dataLoaded; else nodata">
-  <div *ngIf="show" [style.background-color]="'wheat'" [@fadeOut] class="border border-3 rounded-3 m-2 p-2">
+  <div class="border border-3 rounded-3 m-2 p-2"
+       *ngIf="show"
+       [style.background-color]="'wheat'" >
     <videoViewer [info]="info" [textEnd]="true"></videoViewer>
     <div class="row m-2">
       <div class="col-10">
-        <likeCount [addYou]="info.reactedTo" [count]="info.reactsCount" (showLikesEvent)="showLikesEvent()"></likeCount>
-        <likesModal *ngIf="showLikes" [postId]="info.videoInfoId"  [repository]="documentaryRepository" (hideLikesEvent)="hideLikesEvent()"></likesModal>
+        <likeCount [addYou]="info.reactedTo"
+                   [count]="info.reactsCount"
+                   (showLikesEvent)="showLikesEvent()">
+
+        </likeCount>
+        <likesModal *ngIf="showLikes"
+                    [postId]="info.videoInfoId"
+                    [repository]="documentaryRepository"
+                    (hideLikesEvent)="hideLikesEvent()">
+        </likesModal>
       </div>
       <div class="col-1">
         <commentCount [count]="info.commentsCount"></commentCount>
@@ -15,10 +25,12 @@
 
     <div class="row m-2">
       <div class="col-6">
-        <like [liked]="info.reactedTo" (likeEvent)="likeEvent()" (unlikeEvent)="unlikeEvent()" style="cursor: pointer;"></like>
+        <like [liked]="info.reactedTo"
+              (likeEvent)="likeEvent()"
+              (unlikeEvent)="unlikeEvent()" ></like>
       </div>
       <div class="col-6">
-        <addComment (writingCommentEvent)="startWritingComment()" style="cursor: pointer;"></addComment>
+        <addComment (writingCommentEvent)="startWritingComment()" ></addComment>
       </div>
     </div>
 

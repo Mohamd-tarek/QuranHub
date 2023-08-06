@@ -1,11 +1,11 @@
-<modal [title]="'Likes'" (hideModalEvent)="hideLikes()">
+<modal [title]="'Likes'" (hideModalEvent)="hideShares()">
   <userSetContainer [users]="users"></userSetContainer>
-  <div *ngIf="totalLikes > users.length">
+  <div *ngIf="totalShares > users.length">
     <spinner *ngIf="loading"></spinner>
     <span class="text-decoration-underline"
           *ngIf="!loading"
           [style.cursor]="'pointer'"
-          (click)="loadMoreLikes()">
+          (click)="loadMoreShares()">
       view more likes
     </span>
   </div>

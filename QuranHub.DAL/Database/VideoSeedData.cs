@@ -4,7 +4,9 @@ using MediaInfo;
 public class VideoSeedData
 {
     static string baseDir = Directory.GetCurrentDirectory();
+    static string thumbnailsDir = Directory.GetParent(baseDir) + @"\QuranHub.DAL\Database\SeedData\Thumbnails";
     static string videosDir = Directory.GetParent(baseDir) + @"\QuranHub.Web\wwwroot\files";
+
     public static async Task  SeedDatabaseAsync(IServiceProvider provider)
     {
         provider.GetRequiredService<IdentityDataContext>().Database.Migrate();
@@ -20,7 +22,7 @@ public class VideoSeedData
     public static async Task SeedPlayListsInfoAsync(IdentityDataContext IdentityDataContext )
     {
 
-        var thumbnailsfiles = Directory.GetFiles(videosDir + "/thumbnails");
+        var thumbnailsfiles = Directory.GetFiles(thumbnailsDir);
         PlayListInfo playListInfo = new PlayListInfo
         {
             Name = "العلم والايمان ",
@@ -32,10 +34,9 @@ public class VideoSeedData
 
         await IdentityDataContext.SaveChangesAsync();
 
+        var videosFiles = Directory.GetFiles(videosDir);
 
-        var files = Directory.GetFiles(videosDir);
-
-        foreach (var file in files)
+        foreach (var file in videosFiles)
         {
             await SeedVideoInfoAsync(IdentityDataContext, playListInfo, file);
         }
@@ -48,8 +49,9 @@ public class VideoSeedData
     public static async Task  SeedVideoInfoAsync(IdentityDataContext IdentityDataContext, PlayListInfo playListInfo, string path ) 
     {
 
-         var mediaInfo = new MediaInfo();
-         mediaInfo.Open(path);
+        var mediaInfo = new MediaInfo();
+
+        mediaInfo.Open(path);
 
         string name = Path.GetFileNameWithoutExtension(path);
 
@@ -57,7 +59,7 @@ public class VideoSeedData
 
         var videoInfo = new VideoInfo
         {
-            ThumbnailImage = File.ReadAllBytes(dirctory + @"\thumbnails\" + name + ".jpeg" ),
+            ThumbnailImage = File.ReadAllBytes(thumbnailsDir + @"\" + name + ".jpeg" ),
             Name = name,
             Type = mediaInfo.Get(StreamKind.Video, 0, "Format"),
             Duration = TimeSpan.FromMilliseconds(int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Duration"))),

@@ -4,7 +4,7 @@
    [style.scale]="1.8"  >
 
 </i>
-<span  class="text-info   count">{{ notificationRepository.notifications.length}} </span>
+<span  [style.visibility]="viewed ? 'hidden' : 'visible'" class="text-info count">{{ notificationRepository.notifications.length}} </span>
 <div class="miniNotificationPanel m-2 p-2 rounded-3 bg-dark"
      *ngIf="showNotificationPanel"
      (clickOutside)="showNotificationPanel=false"

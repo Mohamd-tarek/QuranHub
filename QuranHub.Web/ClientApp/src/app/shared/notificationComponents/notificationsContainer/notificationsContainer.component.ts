@@ -18,6 +18,7 @@ export class NotificationsContainerComponent {
   togglePanel(event:any) {
     event.stopPropagation();
     this.showNotificationPanel = !this.showNotificationPanel;
+    this.viewed = true;
   }
 
   hidePanel(event:any) {

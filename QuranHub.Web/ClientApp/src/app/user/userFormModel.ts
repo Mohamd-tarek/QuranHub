@@ -53,7 +53,7 @@ export class UserFormModel extends FormGroup {
 
                 userName: new UserControl("User Name", "userName", userName,
                     Validators.compose([Validators.required,
-                        Validators.pattern("^[A-Za-z ]+$")])),
+                        Validators.pattern("^[A-Za-z0-9_-]{8,30}$")])),
 
             });
 

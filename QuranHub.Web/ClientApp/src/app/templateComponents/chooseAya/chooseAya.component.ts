@@ -54,11 +54,15 @@ export class ChooseAyaComponent implements OnInit  {
   }
 
   get ayas(): number[] {
+    
     let ayas = [];
 
-    for (let i = 1; i <= this.suras[this.curSura - 1].ayas; ++i){
-      ayas.push(i);
-    }
+   if(this.suras[this.curSura - 1])
+   {
+     for (let i = 1; i <= this.suras[this.curSura - 1].ayas; ++i){
+       ayas.push(i);
+     }
+   }
     return ayas;
   }
 

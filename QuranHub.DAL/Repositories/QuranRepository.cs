@@ -100,10 +100,20 @@ public class QuranRepository : IQuranRepository
     }
     public async Task<byte[]> GetMindMap(long id)
     {
-        return await _quranContext.MindMaps
-                                  .Where(d => d.Index == id)
-                                  .Select(m => m.MapImage)
-                                  .SingleAsync();
+        try
+        {
+
+          return await _quranContext.MindMaps
+                                    .Where(d => d.Index == id)
+                                    .Select(m => m.MapImage)
+                                    .SingleAsync();
+
+        } 
+        catch (Exception ex)
+        {
+            return new byte[0];
+        }
+
     }
 
     public async Task EditWeightVectorAsync(Dictionary<string, double> values)

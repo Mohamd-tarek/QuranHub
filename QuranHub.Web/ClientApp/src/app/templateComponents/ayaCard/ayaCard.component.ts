@@ -1,10 +1,12 @@
 import { Component, Input, Output,EventEmitter } from '@angular/core';
 import { Quran } from 'src/app/models/quran/quran.model';
+import { FadeOutTrigger } from 'src/app/animations/FadeOut.animation';
 
 
 @Component({
   selector: "ayaCard",
-  templateUrl: "ayaCard.component.html"
+  templateUrl: "ayaCard.component.html",
+  animations: [FadeOutTrigger]
 })
 
 export class AyaCardComponent  {

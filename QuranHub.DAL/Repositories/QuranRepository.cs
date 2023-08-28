@@ -78,7 +78,13 @@ public class QuranRepository : IQuranRepository
         if (this.Notes.Any((d => d.Index == note.Index && d.QuranHubUserId ==user.Id)))
         {
             Note cur = await this.GetNote(note.Index,user);
+            
             cur.Text = note.Text;
+
+            if(cur.QuranHubUser == null)
+            {
+                cur.QuranHubUser = user;
+            }
         }
         else
         {

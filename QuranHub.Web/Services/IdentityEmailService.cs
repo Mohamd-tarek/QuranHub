@@ -40,8 +40,9 @@ public class IdentityEmailService :IEmailService
 
         string url = GetUrl(user.Email, token, confirmationURL);
 
-        await _emailSender.SendEmailAsync(user.Email, "Set Your Password",
-            $"Please set your password by <a href={url}>clicking here</a>.");
+        MailData mailData = new MailData(new List<string>{user.Email}, "Set Your Password", $"Please set your password by <a href={url}>clicking here</a>." );
+
+        await _emailSender.SendEmailAsync(mailData);
     }
 
     public async Task SendAccountConfirmEmail(QuranHubUser user, string confirmationURL)
@@ -50,9 +51,9 @@ public class IdentityEmailService :IEmailService
 
         string url = GetUrl(user.Email, token, confirmationURL);
 
-        await _emailSender.SendEmailAsync(user.Email,
-            "Complete Your Account Setup",
-            $"Please set up your account by <a href={url}>clicking here</a>.");
+        MailData mailData = new MailData(new List<string>{user.Email}, "Complete Your Account Setup",  $"Please set up your account by <a href={url}>clicking here</a>." );
+
+        await _emailSender.SendEmailAsync(mailData);
     }
 
     public async Task SendChangeEmailConfirmEmail(QuranHubUser user, string newEmail, string confirmationURL)
@@ -61,9 +62,9 @@ public class IdentityEmailService :IEmailService
 
         string url = GetUrl(user.Email, token, confirmationURL);
 
-        await _emailSender.SendEmailAsync(user.Email,
-            "Confirm Your Email Change ",
-            $"Please confirm your new email by <a href={url}>clicking here</a>.");
+        MailData mailData = new MailData(new List<string>{user.Email}, "Confirm Your Email Change ", $"Please confirm your new email by <a href={url}>clicking here</a>." );
+
+        await _emailSender.SendEmailAsync(mailData);
     }
 
 }

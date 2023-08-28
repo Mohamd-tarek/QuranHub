@@ -25,6 +25,9 @@ builder.Services.AddSignalR();
 
 builder.AddCustomApplicationServices();
 
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
+
+
 
 var app = builder.Build();
 

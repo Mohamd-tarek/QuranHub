@@ -1,51 +1,106 @@
 ﻿using MimeKit;
 using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
+using Microsoft.Extensions.Options;
 
 namespace QuranHub.Web.Services;
 
 public class SMTPEmailSenderUsingMailKit: IEmailSender {
 
     private IConfiguration _configuration;
-    public SMTPEmailSenderUsingMailKit(IConfiguration configuration) 
+    private MailSettings _settings;
+
+    public SMTPEmailSenderUsingMailKit(IOptions<MailSettings> settings, IConfiguration configuration) 
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        _settings =  settings.Value;
+        
+        _settings.UserName = _configuration["EmailService:Account"];
+        _settings.From = _configuration["EmailService:Account"];
+        _settings.Password =  _configuration["EmailService:Password"];
+
     }
 
-    public async Task SendEmailAsync(string emailAddress, string subject, string htmlMessage)
+    public async Task<bool> SendEmailAsync(MailData mailData, CancellationToken ct = default)
     {
-        try{
-            var emailMessage = new MimeMessage();
-
-            emailMessage.From.Add(new MailboxAddress(_configuration["EmailService:Account"], _configuration["EmailService:Account"]));
-
-            emailMessage.To.Add(new MailboxAddress(emailAddress, emailAddress));
-
-            emailMessage.Subject = subject;
-
-            emailMessage.Body = new TextPart("plain") { Text = htmlMessage };
-
-
-            using (var client = new SmtpClient())
-            {
-                Console.WriteLine("start to send email ...");
-
-                await client.ConnectAsync(_configuration["EmailService:Server"], int.Parse(_configuration["EmailService:Port"]), false);
-
-                await client.AuthenticateAsync(_configuration["EmailService:Account"], _configuration["EmailService:Password"]);
-
-                await client.SendAsync(emailMessage);
-
-                await client.DisconnectAsync(true);
-
-                Console.WriteLine("email was sent successfully!");
-            }
-        }
-        catch (Exception ep)
+        try
         {
-            Console.WriteLine("failed to send email with the following error:");
+            // Initialize a new instance of the MimeKit.MimeMessage class
+            var mail = new MimeMessage();
 
-            Console.WriteLine(ep.Message);
+            #region Sender / Receiver
+            // Sender
+            mail.From.Add(new MailboxAddress(_settings.DisplayName, mailData.From ?? _settings.From));
+            mail.Sender = new MailboxAddress(mailData.DisplayName ?? _settings.DisplayName, mailData.From ?? _settings.From);
+
+            // Receiver
+            foreach (string mailAddress in mailData.To)
+            {
+                Console.WriteLine(mailAddress );
+                mail.To.Add(MailboxAddress.Parse(mailAddress));
+
+            }
+
+            // Set Reply to if specified in mail data
+            if(!string.IsNullOrEmpty(mailData.ReplyTo))
+                mail.ReplyTo.Add(new MailboxAddress(mailData.ReplyToName, mailData.ReplyTo));
+
+            // BCC
+            // Check if a BCC was supplied in the request
+            if (mailData.Bcc != null)
+            {
+                // Get only addresses where value is not null or with whitespace. x = value of address
+                foreach (string mailAddress in mailData.Bcc.Where(x => !string.IsNullOrWhiteSpace(x)))
+                    mail.Bcc.Add(MailboxAddress.Parse(mailAddress.Trim()));
+            }
+
+            // CC
+            // Check if a CC address was supplied in the request
+            if (mailData.Cc != null)
+            {
+                foreach (string mailAddress in mailData.Cc.Where(x => !string.IsNullOrWhiteSpace(x)))
+                    mail.Cc.Add(MailboxAddress.Parse(mailAddress.Trim()));
+            }
+            #endregion
+
+            #region Content
+
+            // Add Content to Mime Message
+            var body = new BodyBuilder();
+            Console.WriteLine(mailData.Subject);
+            mail.Subject = mailData.Subject;
+            body.HtmlBody = mailData.Body;
+            mail.Body = body.ToMessageBody();
+
+            #endregion
+
+            #region Send Mail
+
+            using var smtp = new SmtpClient();
+
+            if (_settings.UseSSL)
+            {
+                await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.SslOnConnect, ct);
+            }
+            else if (_settings.UseStartTls)
+            {
+                await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.StartTls, ct);
+            }
+            await smtp.AuthenticateAsync(_settings.UserName, _settings.Password, ct);
+            await smtp.SendAsync(mail, ct);
+            await smtp.DisconnectAsync(true, ct);
+            
+            #endregion
+
+            return true;
+
         }
-        
+        catch (Exception)
+        {
+            return false;
+        }
     }
 }
+
+

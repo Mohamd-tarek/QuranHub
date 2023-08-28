@@ -10,8 +10,15 @@
         <option *ngFor="let sura of suras" value={{sura.index}}> {{sura.name}} - {{sura.index }}</option>
       </select>
     </div>
-
   </div>
+
+  <div class="row">
+    <span class="m-auto w-auto">
+      <previousPointer (previousEvent)="prev()"></previousPointer>
+      <nextPointer (nextEvent)="next()"></nextPointer>
+    </span>
+  </div>
+
     <div class="row align-items-start   p-2">
       <noteText></noteText>
     </div>

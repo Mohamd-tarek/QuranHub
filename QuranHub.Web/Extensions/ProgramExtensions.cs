@@ -135,7 +135,7 @@ public static class ProgramExtensions
 
         builder.Services.AddScoped<TokenUrlEncoderService>();
 
-        builder.Services.AddScoped<IEmailSender, ConsoleEmailSender>();
+        builder.Services.AddScoped<IEmailSender, SMTPEmailSenderUsingMailKit>();
 
         builder.Services.AddScoped<IEmailService, IdentityEmailService>();
     }

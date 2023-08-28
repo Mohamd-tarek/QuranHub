@@ -4,13 +4,13 @@ namespace QuranHub.Web.Services;
 public class ConsoleEmailSender :IEmailSender
 {
 
-    public Task SendEmailAsync(string emailAddress, string subject, string htmlMessage)
+    public Task<bool> SendEmailAsync(MailData mailData, CancellationToken ct = default)
     {
         System.Console.WriteLine("---New Email----");
-        System.Console.WriteLine($"To: {emailAddress}");
-        System.Console.WriteLine($"Subject: {subject}");
-        System.Console.WriteLine(HttpUtility.HtmlDecode(htmlMessage));
+        System.Console.WriteLine($"To: {mailData.To[0]}");
+        System.Console.WriteLine($"Subject: {mailData.Subject}");
+        System.Console.WriteLine(HttpUtility.HtmlDecode(mailData.Body));
         System.Console.WriteLine("-------");
-        return Task.CompletedTask;
+        return  Task.FromResult<bool>(true);
     }
 }

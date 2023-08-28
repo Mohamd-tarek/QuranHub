@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: "profilePicture",
   templateUrl: "profilePicture.component.html"
 })
-export class ProfilePictureComponent {
+export class ProfilePictureComponent implements OnInit  {
 
   @Input()
   diamter!: number;
@@ -13,5 +13,9 @@ export class ProfilePictureComponent {
   picture!: any;
   
   constructor() {}
+
+  ngOnInit(): void {
+    console.log(this.picture.length);
+  }
 
 }

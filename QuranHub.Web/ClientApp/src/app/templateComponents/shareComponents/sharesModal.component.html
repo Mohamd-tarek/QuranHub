@@ -1,4 +1,4 @@
-<modal [title]="'Likes'" (hideModalEvent)="hideShares()">
+<modal [title]="'Shares'" (hideModalEvent)="hideShares()">
   <userSetContainer [users]="users"></userSetContainer>
   <div *ngIf="totalShares > users.length">
     <spinner *ngIf="loading"></spinner>

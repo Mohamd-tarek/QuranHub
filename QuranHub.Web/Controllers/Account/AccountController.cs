@@ -53,7 +53,9 @@ public partial class  AccountController : ControllerBase
 
         if (!result.Process(ModelState))
         {
-            return BadRequest("invalid user name");
+            string errors = ModelState.ConcatError();
+
+            return BadRequest(errors);
         }
 
         if (user.Email != data.Email)
@@ -64,6 +66,7 @@ public partial class  AccountController : ControllerBase
         return Ok("true");
     }
 
+   
     [HttpGet("aboutInfo")]
     public async Task<AboutInfoViewModel> GetAboutInfoAsync()
     {
@@ -107,10 +110,13 @@ public partial class  AccountController : ControllerBase
 
         IdentityResult result =  await _userManager.UpdateAsync(user);  
 
-        if (!result.Succeeded)
+        if (!result.Process(ModelState))
         {
-            return BadRequest();
+            string errors = ModelState.ConcatError();
+
+            return BadRequest(errors);
         }
+
         return Ok();   
     }
 
@@ -135,7 +141,9 @@ public partial class  AccountController : ControllerBase
 
                 if (!result.Process(ModelState)) 
                 {
-                    return BadRequest();
+                    string errors = ModelState.ConcatError();
+                    
+                    return BadRequest(errors);
                 }
             }
         }
@@ -154,7 +162,9 @@ public partial class  AccountController : ControllerBase
 
             if (!result.Process(ModelState))
             {
-                return BadRequest();
+                string errors = ModelState.ConcatError();
+                
+                return BadRequest(errors);
             }
         }
 
@@ -195,7 +205,9 @@ public partial class  AccountController : ControllerBase
 
             if (!result.Process(ModelState)) 
             {
-                return BadRequest();
+                string errors = ModelState.ConcatError();
+                
+                return BadRequest(errors);
             }
         }
 
@@ -212,7 +224,9 @@ public partial class  AccountController : ControllerBase
         
         if (!result.Process(ModelState))
         {
-            return BadRequest();
+            string errors = ModelState.ConcatError();
+            
+            return BadRequest(errors);
             
         }
 

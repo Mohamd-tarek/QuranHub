@@ -1,4 +1,6 @@
-<div class="border  border-3 rounded-3 p-2 m-2 " [style.backgroundColor]="backgroundColor">
+<div class="border  border-3 rounded-3 p-2 m-2 "
+[@fadeOut]
+[style.backgroundColor]="backgroundColor">
   <button class="d-inline float-start btn-close"
           *ngIf="closable"
           type="button"

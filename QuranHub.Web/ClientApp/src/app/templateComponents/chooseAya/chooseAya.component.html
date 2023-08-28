@@ -1,9 +1,9 @@
 <div class="row  justify-content-end m-2" >
-    <select class="col form-select p-2 me-2" aria-label="Default select example" [(ngModel)]="curAya" >
+    <select *ngIf="suras" class="col form-select p-2 me-2" aria-label="Default select example" [(ngModel)]="curAya" >
       <option  *ngFor="let aya of ayas" value={{aya}} > {{aya}}</option>
     </select> 
-    <select class="col form-select p-2 ms-2" aria-label="Default select example" [(ngModel)]="curSura" >
-      <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
+    <select *ngIf="suras" class="col form-select p-2 ms-2" aria-label="Default select example" [(ngModel)]="curSura" >
+      <option   *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
     </select> 
 </div>
-  <ayaCard  [aya]="aya"></ayaCard>
+  <ayaCard *ngIf="aya" [aya]="aya"></ayaCard>

@@ -120,11 +120,15 @@ public partial class  AuthenticationController : ControllerBase
 
                 IdentityResult result = await _userManager.ConfirmEmailAsync(user, decodedToken);
 
-                if (result.Process(ModelState))
+                if (!result.Process(ModelState))
                 {
-                    return Ok("true");
+                    string errors = ModelState.ConcatError();
+
+                     return BadRequest(errors);
                 }
             }
+
+            return Ok(new { message = "Sign Up Confirmed" });
         }
 
         return BadRequest();

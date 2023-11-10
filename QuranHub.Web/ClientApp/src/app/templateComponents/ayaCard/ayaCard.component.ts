@@ -20,6 +20,9 @@ export class AyaCardComponent  {
   @Input()
   backgroundColor: string = "white"
 
+  @Input()
+  highLightText!: string;
+
   @Output() removeAyaEvent = new EventEmitter();
 
   removeAya(): void{

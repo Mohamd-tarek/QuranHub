@@ -11,6 +11,9 @@ export class AyaSetContainerComponent  {
   @Input()
   ayaSet: Quran[] = [];
 
+  @Input()
+  highLightText!: string;
+
   @Output() removeAyaEvent = new EventEmitter<Quran>();
 
   removeAya(index: number): void{

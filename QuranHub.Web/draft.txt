@@ -2,7 +2,7 @@ dotnet ef database drop --force --context QuranContext
 dotnet ef database drop --force --context IdentityDataContext
 
 dotnet ef database update --context QuranContext
-dotnet sql-cache create "Server=DESKTOP-HCCSKDL;TrustServerCertificate=True;Database=QuranHub;Trusted_Connection=True" "dbo" "SessionData"
+dotnet sql-cache create "Server=DESKTOP-27AKN8V;TrustServerCertificate=True;Database=QuranHub;Trusted_Connection=True" "dbo" "SessionData"
 dotnet ef database update --context IdentityDataContext
 
 

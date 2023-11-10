@@ -1,8 +1,14 @@
-<p class="text-end rounded p-2 lh-lg" [style.backgroundColor]="backgroundColor" >   
+<p  *ngIf="seeMore" class="text-end rounded p-2 lh-lg" [style.backgroundColor]="backgroundColor" >   
     {{textToView ?? "loading..."}}
     <span class="text-decoration-underline text-primary"
           *ngIf="seeMore"
           (click)="seeAll()"
           [style.cursor]="'pointer'">See More ...
     </span>
+</p>
+<p *ngIf="!seeMore"
+   class="p-2 rounded-3 lh-lg text-end"
+   [style.background-color]="'#0dcaf099'"
+   [innerHTML]="textToView">
+  {{textToView ?? "loading..."}}
 </p>

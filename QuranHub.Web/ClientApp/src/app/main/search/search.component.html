@@ -18,7 +18,7 @@
     
     <div class="border  border-3 rounded-3  p-2 m-2 text-end" [style.background-color]="'papayawhip'">
       <p >total result : {{result.length}}</p>
-      <ayaSetContainer *ngIf="!searchForWord.value; else wordBlock" [ayaSet]="result"></ayaSetContainer>  
+      <ayaSetContainer [highLightText]="currentSearch.value" *ngIf="!searchForWord.value; else wordBlock" [ayaSet]="result"></ayaSetContainer>  
       <ng-template #wordBlock>
       <div [dragula]="'DRAGULA_ITEMS'">
         <div *ngFor="let aya of result; index as i; let odd = odd" class="border  border-3 rounded-3 p-2 m-2"

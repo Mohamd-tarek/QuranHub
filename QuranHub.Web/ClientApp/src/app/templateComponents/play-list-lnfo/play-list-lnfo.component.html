@@ -1,0 +1,12 @@
+<div  (click)='navigateToPlayList()' class="m-1 row  border  border-3 rounded-3 " [style.cursor]="'pointer'"  [style.background-color]="'papayawhip'" >
+    <div class="col d-inline  p-1 ">
+      <rectangle-picture [width]="90" [height]="90" 
+                class=" m-1 rounded-3" [picture]="info?.thumbnailImage" ></rectangle-picture>
+      <div class="">
+        <a 
+        [routerLink]="['./playList' , info.name]"  
+        class="" >{{info.name}}
+      </a>
+    </div>
+   </div>
+  </div>

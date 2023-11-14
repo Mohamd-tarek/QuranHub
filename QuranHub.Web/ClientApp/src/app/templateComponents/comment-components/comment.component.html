@@ -1,0 +1,40 @@
+<div class="row m-1 rounded-3 align-items-center" [id]="comment.commentId">
+  <div class="p-1 m-1 col-9 rounded-3" style="background-color: #0dcaf099 ">
+    <div>
+      <comment-owner-info [user]="comment.quranHubUser" [comment]="comment"></comment-owner-info>
+    </div>
+    <comment-text [text]="comment.text"></comment-text>
+    <div *ngIf="comment.verse"  >
+      <aya-card [aya]="comment.verse"></aya-card>
+    </div>
+  </div>
+  <div class="col">
+    <like [liked]="comment.reactedTo"
+          [style.cursor]="'pointer'"
+          (likeEvent)="likeEvent()"
+          (unlikeEvent)="unlikeEvent()">
+    </like>
+    <like-count [addYou]="false"
+               [count]="comment.reactsCount"
+               (showLikesEvent)="showLikesEvent()">
+
+    </like-count>
+    <comment-likes-modal *ngIf="showLikes"
+                      [repository]="repository"
+                      [commentId]="comment.commentId"
+                      [totalLikes]="comment.reactsCount"
+                      (hideLikesEvent)="hideLikesEvent()">
+
+    </comment-likes-modal>
+  </div>
+
+  <div class="col" *ngIf="isOwner"
+                   [style.cursor]="'pointer'"
+                   (click)="deleteComment()">
+    <span *ngIf="!submitDelete">
+      X
+    </span>
+    <spinner *ngIf="submitDelete"></spinner>
+  </div>
+
+</div>

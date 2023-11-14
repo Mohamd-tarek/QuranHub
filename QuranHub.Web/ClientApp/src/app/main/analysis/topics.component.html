@@ -9,14 +9,14 @@
 
     <div class="row">
       <span class="m-auto w-auto">
-        <previousPointer (previousEvent)="prev()"></previousPointer>
-        <nextPointer (nextEvent)="next()"></nextPointer>
+        <previous-pointer (previousEvent)="prev()"></previous-pointer>
+        <next-pointer (nextEvent)="next()"></next-pointer>
       </span>
     </div>  
     
     <div class="border  border-3 rounded-3  p-2 m-2 text-end" [style.background-color]="'papayawhip'">
         <p> topic aya : {{topic.length}}</p>
-        <ayaSetContainer [ayaSet]="topic"></ayaSetContainer>  
+        <aya-set-container [ayaSet]="topic"></aya-set-container>  
       </div>
 </div>
 

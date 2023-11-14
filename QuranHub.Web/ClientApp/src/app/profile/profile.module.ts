@@ -6,17 +6,17 @@ import { CommonModule } from '@angular/common';
 import { TemplateModule } from "../templateComponents/template.module";
 import { ProfileComponent } from "./profile.component";
 import { CoverComponent } from "./cover.component";
-import { MainInfoComponent } from "./mainInfo.component"
-import { OtherInfoComponent } from "./otherInfo.component";
-import { ProfileDetailsComponent } from "./profileDetails.component";
+import { MainInfoComponent } from "./main-info.component"
+import { OtherInfoComponent } from "./other-info.component";
+import { ProfileDetailsComponent } from "./profile-details.component";
 import { AboutComponent } from "./about.component";
-import { AllFollowersComponent } from "./allFollowers.component";
-import { AllFollowingsComponent } from "./allFollowings.component";
-import { FollowInfoComponent } from "./followInfo.component";
+import { AllFollowersComponent } from "./all-followers.component";
+import { AllFollowingsComponent } from "./all-followings.component";
+import { FollowInfoComponent } from "./follow-info.component";
 import { FollowersComponent } from "./followers.component";
 import { FollowingsComponent } from "./followings.component";
 import { PostsComponent } from "./posts.component";
-import { FollowOrUnfollowButtonComponent } from "./followOrUnfollowButton.component";
+import { FollowOrUnfollowButtonComponent } from "./follow-or-unfollow-button.component";
 import { AuthenticationGuard } from "../services/authentication.guard";
 
 const routes: Routes = [

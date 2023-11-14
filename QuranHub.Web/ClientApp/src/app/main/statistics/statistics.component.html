@@ -3,10 +3,10 @@
             <input id="word" type="checkbox" [formControl]="showLetters">
             <label for="word" class="m-2"> show letters </label>
         </div>
-        <tabledContainer [tableData]="getData()"
+        <tabled-container [tableData]="getData()"
                          [numOfCol]="6"
                          [bordered]="true">
-        </tabledContainer>
+        </tabled-container>
         <pagination *ngIf="!showLetters.value"
                     [numOfLinks]="numOfLinks" 
                     [linksPerPage]="10"

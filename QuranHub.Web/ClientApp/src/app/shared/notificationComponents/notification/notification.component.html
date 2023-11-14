@@ -2,11 +2,11 @@
      [@fadeOut]
      [style.background-color]="!notification.seen ? 'wheat' : 'gray'"
      [style.cursor]="'pointer'">
-    <profilePicture class="col-2"
+    <profile-picture class="col-2"
                     [diamter]="40"
                     [picture]="notification.sourceUser?.profilePicture"
                     (click)="viewNotification()">
-    </profilePicture>
+    </profile-picture>
     <span class="col-8 " (click)="viewNotification()" >{{notification.message}}</span>
     <spinner *ngIf="submitted"></spinner>
     <i   class="fa-solid fa-trash  col-2"

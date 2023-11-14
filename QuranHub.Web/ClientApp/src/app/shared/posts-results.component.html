@@ -1,0 +1,13 @@
+<div class="row  mt-2  p-2">
+
+  <div *ngIf="dataLoaded; else nodata">
+    <div *ngFor="let post of posts">
+      <post *ngIf="!post.hasOwnProperty('share')" [post]="post"></post>
+      <shared-post *ngIf="post.hasOwnProperty('share')" [post]="post"></shared-post>
+    </div>
+  </div>
+</div>
+
+<ng-template #nodata>
+  <loading></loading>
+</ng-template>

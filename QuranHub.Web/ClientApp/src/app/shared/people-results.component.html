@@ -1,0 +1,4 @@
+<div class="row  mt-2  p-2">
+    <user-set-container *ngIf="dataLoaded" [users]="users"></user-set-container>
+    <loading *ngIf="!dataLoaded"></loading>
+</div>

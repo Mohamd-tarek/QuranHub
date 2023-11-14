@@ -12,22 +12,22 @@
         <option *ngFor="let sura of suras" value={{sura.index}}> {{sura.name}} - {{sura.index }}</option>
       </select>
     </div>
-      <ayaCard [aya]="aya"></ayaCard>
+      <aya-card [aya]="aya"></aya-card>
   </div>
     <div class="row">
       <span class="m-auto w-auto">
-        <previousPointer  (previousEvent)="prev()" ></previousPointer>
-        <nextPointer (nextEvent)="next()"></nextPointer>
+        <previous-pointer  (previousEvent)="prev()" ></previous-pointer>
+        <next-pointer (nextEvent)="next()"></next-pointer>
       </span>
     </div>  
     <div class="border  border-3 rounded-3  p-2 m-2 text-end" [style.background-color]="'papayawhip'">
         <p>total result : {{result.length}}</p>
-        <ayaSetContainer [ayaSet]="result"></ayaSetContainer>  
+        <aya-set-container [ayaSet]="result"></aya-set-container>  
       </div>
     <div class="row">
       <span class="m-auto w-auto">
-        <previousPointer (previousEvent)="prev()"></previousPointer>
-        <nextPointer (nextEvent)="next()"></nextPointer>
+        <previous-pointer (previousEvent)="prev()"></previous-pointer>
+        <next-pointer (nextEvent)="next()"></next-pointer>
       </span>
     </div>  
     

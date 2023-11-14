@@ -1,0 +1,9 @@
+<div *ngIf="dataLoaded; else nodata">
+  <play-lists-info [infos]="playListsInfo"  [numOfCol]="6"></play-lists-info>
+</div>
+
+
+<ng-template #nodata>
+  <loading></loading>
+</ng-template>
+

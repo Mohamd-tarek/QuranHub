@@ -1,0 +1,27 @@
+<choose-privacy [chosenPrivacy]="post.privacy"
+               (choosePrivacyEvent)="choosePrivacyEvent($event)">
+</choose-privacy>
+<choose-aya [chosenSura]="post.verse.sura"
+           [chosenAya]="post.verse.aya"
+           (chooseAyaEvent)="chooseAyaEvent($event)">
+</choose-aya>
+
+
+<div class="row  align-items-start m-2 ">
+  <textarea class="form-control"
+            [(ngModel)]="post.text"
+            placeholder="write your thoughts"
+            id="floatingTextarea">
+
+</textarea>
+  <label for="floatingTextarea"></label>
+</div>
+<div class="row m-2">
+  <button type="button" class=" col p-2 m-4 btn btn-info" (click)="CancelEditingPost()">Cancel</button>
+  <button type="button" [disabled]="submitted" class=" col p-2 m-4 btn btn-primary " (click)="savePost()">
+    <loading *ngIf="submitted"></loading>
+    <span *ngIf="!submitted">Save</span>
+  </button>
+</div>
+
+

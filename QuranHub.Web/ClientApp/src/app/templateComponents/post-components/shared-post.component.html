@@ -1,0 +1,77 @@
+<div class="border border-3 rounded-3 mt-2 mb-2"
+     *ngIf="show"
+     [@fadeOut]
+     [style.background-color]="'wheat'"
+     [id]="post.postId">
+
+  <div class="row align-items-center">
+    <post-owner-nfo class="col-8"
+                   [user]="post.quranHubUser"
+                   [post]="post">
+
+    </post-owner-nfo>
+    <post-owner-options class="col-4"
+                      *ngIf="isOwner"
+                      [post]="post"
+                      (editEvent)="editEvent()"
+                      (deleteEvent)="deleteEvent()" >
+
+    </post-owner-options>
+  </div>
+
+  <text-and-aya *ngIf="!editPost"
+              [viewAya]="viewAya"
+              [post]="post">
+
+  </text-and-aya>
+  <edit-post *ngIf="editPost"
+            [post]="post"
+            (postEditedEvent)="editedEvent()" >
+
+  </edit-post>
+
+  <div class="px-2">
+    <post [post]="post.share.post"></post>
+  </div>
+
+  <div class="row m-2">
+    <div class="col-10">
+      <like-count [addYou]="post.reactedTo"
+                 [count]="post.reactsCount"
+                 (showLikesEvent)="showLikesEvent()">
+
+      </like-count>
+      <likes-modal *ngIf="showLikes"
+                  [repository]="postDataRepository"
+                  [postId]="post.postId"
+                  [totalLikes]="post.reactsCount"
+                  (hideLikesEvent)="hideLikesEvent()">
+
+      </likes-modal>
+    </div>
+    <div class="col-1">
+      <comment-count [count]="post.commentsCount"></comment-count>
+    </div>
+  </div>
+
+  <hr class="m-2">
+
+  <div class="row m-2">
+    <div class="col-6">
+      <like [liked]="post.reactedTo"
+            (likeEvent)="likeEvent()"
+            (unlikeEvent)="unlikeEvent()">
+      </like>
+    </div>
+    <div class="col-6">
+      <add-comment (writingCommentEvent)="startWritingComment()" ></add-comment>
+    </div>
+  </div>
+
+  <hr class="m-2">
+  <comment-container
+      [post]="post"
+      [repository]="postDataRepository"
+      [writingComment]="writingComment"
+      (cancelWritingCommentEvent)="cancelWritingComment()"></comment-container>
+</div>

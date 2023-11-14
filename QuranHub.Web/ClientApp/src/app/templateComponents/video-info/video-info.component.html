@@ -1,0 +1,15 @@
+<div (click)='navigateToVideo()' class="m-1 row  border  border-3 rounded-3 " [style.cursor]="'pointer'"  [style.background-color]="'papayawhip'" >
+    <div class="col d-inline  p-1 ">
+      <rectangle-picture class=" m-1 rounded-3"
+                        [width]="90"
+                        [height]="90" 
+                        [picture]="info?.thumbnailImage" >
+
+      </rectangle-picture>
+      <div class="">
+        <a  [routerLink]="['../videoViewer' , info.name]" >
+          {{info.name}}
+        </a>
+    </div>
+   </div>
+  </div>

@@ -1,11 +1,14 @@
 
-<p  *ngIf="!wrap"  class="p-2 rounded-3 lh-lg text-end"  [style.background-color]="'#0dcaf099'">
+<p  *ngIf="!wrap"
+    class="p-2 rounded-3 lh-lg text-end"
+    [style.background-color]="'#0dcaf099'"
+    [innerHTML]="text">
     {{text ?? "loading..."}}
 </p>
-<textWraper *ngIf="wrap"
+<text-wraper *ngIf="wrap"
             [length]="250"
             [text]="text"
             [style.overflow]="'auto'"
             [backgroundColor]="'#0dcaf099'" >
 
-</textWraper>
+</text-wraper>

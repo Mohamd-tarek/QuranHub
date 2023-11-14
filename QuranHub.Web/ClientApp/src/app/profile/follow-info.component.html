@@ -1,0 +1,12 @@
+<div class="m-1 border  border-3 rounded-3 " [style.background-color]="'papayawhip'" [style.max-width]="'130px'" >
+  <div class="row justify-content-center p-1 ">
+    <rectangle-picture [width]="105" [height]="105" 
+              class="col m-1 rounded-3" [picture]="user?.profilePicture" ></rectangle-picture>
+    <div class="col">
+      <a 
+      [routerLink]="['/profile' ,user.id, 'profileDetails']"  
+      class="" >{{user.userName}}
+    </a>
+  </div>
+ </div>
+</div>

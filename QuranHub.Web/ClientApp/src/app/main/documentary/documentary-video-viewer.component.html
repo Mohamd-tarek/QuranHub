@@ -1,0 +1,48 @@
+<div *ngIf="dataLoaded; else nodata">
+  <div class="border border-3 rounded-3 m-2 p-2"
+       *ngIf="show"
+       [style.background-color]="'wheat'" >
+    <video-viewer [info]="info" [textEnd]="true"></video-viewer>
+    <div class="row m-2">
+      <div class="col-10">
+        <like-count [addYou]="info.reactedTo"
+                   [count]="info.reactsCount"
+                   (showLikesEvent)="showLikesEvent()">
+
+        </like-count>
+        <likes-modal *ngIf="showLikes"
+                    [postId]="info.videoInfoId"
+                    [repository]="documentaryRepository"
+                    (hideLikesEvent)="hideLikesEvent()">
+        </likes-modal>
+      </div>
+      <div class="col-1">
+        <comment-count [count]="info.commentsCount"></comment-count>
+      </div>
+    </div>
+
+    <hr class="m-2">
+
+    <div class="row m-2">
+      <div class="col-6">
+        <like [liked]="info.reactedTo"
+              (likeEvent)="likeEvent()"
+              (unlikeEvent)="unlikeEvent()" ></like>
+      </div>
+      <div class="col-6">
+        <add-comment (writingCommentEvent)="startWritingComment()" ></add-comment>
+      </div>
+    </div>
+
+    <hr class="m-2">
+    <comment-container [post]="info"
+                      [repository]="documentaryRepository"
+                      [writingComment]="writingComment"
+                      (cancelWritingCommentEvent)="cancelWritingComment()"></comment-container>
+  </div>
+ </div>
+
+
+  <ng-template #nodata>
+    <loading></loading>
+  </ng-template>

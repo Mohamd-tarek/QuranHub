@@ -1,0 +1,9 @@
+
+<div *ngIf="dataLoaded; else nodata">
+  <play-list [playListInfo]="playListInfo" [repository]="documentaryRepository"></play-list>
+</div>
+
+
+<ng-template #nodata>
+  <loading></loading>
+</ng-template>

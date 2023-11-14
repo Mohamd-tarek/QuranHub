@@ -1,0 +1,28 @@
+<div class="row align-items-center pe-2">
+  <profile-picture class="col-8"
+                  *ngIf ="authService.isAuthenticated"
+                  (click)="togglePanel($event)"
+                  [diamter]="60"
+                  [picture]="userService.getUser()?.profilePicture"
+                  [style.cursor]="'pointer'" >
+
+  </profile-picture>
+  <notifications-container class="col-4 mt-3" *ngIf ="authService.isAuthenticated" ></notifications-container>  
+  <a *ngIf ="!authService.isAuthenticated" 
+    class="col btn btn-sm btn-primary  p-2 me-1"
+    routerLink="/auth/login"
+    routerLinkActive="btn-info" >
+    Login
+  </a>
+  
+  <a *ngIf ="!authService.isAuthenticated"
+    class="col btn btn-sm btn-primary p-2 ms-1" 
+    routerLink="/auth/signup" 
+    routerLinkActive="btn-info">
+    Sign Up
+  </a>
+</div>
+<mini-user-panel *ngIf="showUserPanel"
+               (clickOutside)="showUserPanel=false"
+               (click)="hidePanel($event)" >
+</mini-user-panel>

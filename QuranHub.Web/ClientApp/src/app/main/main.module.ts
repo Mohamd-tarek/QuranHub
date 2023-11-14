@@ -6,24 +6,24 @@ import { AuthenticationGuard } from "../services/authentication.guard";
 import { CommonModule } from '@angular/common';
 import { ReadComponent } from "./read/read.component";
 import { QuranComponent } from "./read/quran/quran.component";
-import { TafseerAndTransComponent } from "./read/tafseerAndTrans/tafseerAndTrans.component";
+import { TafseerAndTransComponent } from "./read/tafseer-and-trans/tafseer-and-trans.component";
 import { SearchComponent } from "./search/search.component";
 import { TafseerComponent } from "./tafseer/tafseer.component";
 import { StatisticsComponent } from "./statistics/statistics.component";
 import { NoteComponent } from "./note/note.component";
-import { NoteTextComponent } from "./note/noteText/noteText.component";
+import { NoteTextComponent } from "./note/note-text/note-text.component";
 import { AnalysisComponent } from "./analysis/analysis.component";
 import { SimilarComponent } from "./analysis/similar.component";
 import { UniquesComponent } from "./analysis/uniques.component";
 import { TopicsComponent } from "./analysis/topics.component";
 import { CompareComponent } from "./analysis/compare.component";
-import { MindMapComponent } from "./mindMap/mindMap.component";
+import { MindMapComponent } from "./mind-map/mind-map.component";
 import { DragulaModule } from 'ng2-dragula'
 import { TemplateModule } from "../templateComponents/template.module";
 import { DocumentaryComponent } from "./documentary/documentary.component";
-import { DocumentaryPlayListsComponent } from "./documentary/documentaryPlayLists.component";
-import { DocumentaryPlayListComponent } from "./documentary/documentaryPlayList.component";
-import { DocumentaryVideoViewerComponent } from "./documentary/documentaryVideoViewer.component"
+import { DocumentaryPlayListsComponent } from "./documentary/documentary-play-lists.component";
+import { DocumentaryPlayListComponent } from "./documentary/documentary-play-list.component";
+import { DocumentaryVideoViewerComponent } from "./documentary/documentary-video-viewer.component"
 
 const routes: Routes = [
   { path: "read/:ayaIndex", component: ReadComponent },

@@ -8,8 +8,8 @@
       </div>
       <div class="row">
         <span class="m-auto w-auto">
-          <previousPointer (previousEvent)="prev()"></previousPointer>
-          <nextPointer (nextEvent)="next()"></nextPointer>
+          <previous-pointer (previousEvent)="prev()"></previous-pointer>
+          <next-pointer (nextEvent)="next()"></next-pointer>
         </span>
       </div> 
       <div class="row align-items-start mt-2" id="1000">
@@ -17,14 +17,14 @@
             <p 
             [ngClass]=" (currentLanguage == 'arabic' ? 'text-end' : '') + ' rounded lh-lg p-2 contents '"
             (scroll)="savePosition()" style="overflow: auto; height: 69vh; background-color: #0dcaf099;" >
-                <inlineAya  *ngFor="let aya of sura" [aya]="aya" [focused]="aya.aya == ayaIndex" ></inlineAya>
+                <inline-aya  *ngFor="let aya of sura" [aya]="aya" [focused]="aya.aya == ayaIndex" ></inline-aya>
             </p>
         </div>
       </div>
       <div class="row">
         <span class="m-auto w-auto">
-          <previousPointer (previousEvent)="prev()" #targetAya></previousPointer>
-          <nextPointer (nextEvent)="next()"></nextPointer>
+          <previous-pointer (previousEvent)="prev()" #targetAya></previous-pointer>
+          <next-pointer (nextEvent)="next()"></next-pointer>
         </span>
       </div> 
     </div>

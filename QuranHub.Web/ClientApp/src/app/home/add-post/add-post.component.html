@@ -1,0 +1,40 @@
+<div class="row  justify-content-center">
+  <div class="col-4 d-flex justify-content-center">
+    <button  class="btn btn-primary m-2"
+             *ngIf="user!== null && !WritingPost"
+             type="button"
+             (click)="startWritingPost()">Add New Thought</button>
+  </div>
+</div>
+
+<div class="border  border-2 rounded-3 mt-2"
+     *ngIf="WritingPost"
+     [style.background-color]="'wheat'">
+  <choose-privacy  (choosePrivacyEvent)="choosePrivacyEvent($event)"></choose-privacy>
+
+    <div class="row  align-items-start m-2 mb-4 ">
+            <textarea class="form-control"
+                      [(ngModel)]="text" 
+                      placeholder="write your thoughts"
+                      id="floatingTextarea">
+
+            </textarea>
+            <label for="floatingTextarea"></label>
+    </div>
+    <choose-aya (chooseAyaEvent)="chooseAyaEvent($event)" ></choose-aya>
+    <div class="row m-2">
+            <button  class=" col p-2 m-4 btn btn-info"
+                     type="button"
+                     (click)="CancelWritingPost()">
+                     Cancel
+            </button>
+            <button class=" col p-2 m-4 btn btn-primary "
+                    type="button"
+                    [disabled]="submitted"
+                    (click)="AddingPost()">               
+                <loading *ngIf="submitted"></loading>
+                <span *ngIf="!submitted">Post</span></button>
+    </div>      
+</div>
+
+

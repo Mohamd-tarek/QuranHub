@@ -1,0 +1,99 @@
+
+<div  class="border  border-3 rounded-3 mt-2 mb-2"
+     *ngIf="show"
+     [@fadeOut]
+     [style.background-color]="'papayawhip'"
+     [id]="post.postId">
+
+    <div class="row align-items-center">
+      <post-owner-nfo class="col-8"
+                     [user]="post.quranHubUser"
+                     [post]="post">
+
+      </post-owner-nfo>
+      <post-owner-options  class="col-4"
+                        *ngIf="isOwner"
+                        [post]="post"
+                        (editEvent)="editEvent()"
+                        (deleteEvent)="deleteEvent()" >
+
+      </post-owner-options>
+    </div>
+
+    <text-and-aya *ngIf="!editPost"
+                [post]="post" >
+
+    </text-and-aya>
+    <edit-post *ngIf="editPost"
+              [post]="post"
+              (postEditedEvent)="editedEvent()" >
+
+    </edit-post>
+
+    <div class="row m-2">
+        <div class="col-10">
+            <like-count [addYou]="post.reactedTo"
+                       [count]="post.reactsCount"
+                       (showLikesEvent)="showLikesEvent()"  >
+
+            </like-count>
+            <likes-modal *ngIf="showLikes"
+                        [repository]="postDataRepository"
+                        [postId]="post.postId"
+                        [totalLikes]="post.reactsCount"
+                        (hideLikesEvent)="hideLikesEvent()">
+
+            </likes-modal>
+        </div>
+        <div class="col-1">
+            <comment-count [count]="post.commentsCount"></comment-count>        
+        </div>
+        <div class="col-1">
+          <share-count [count]="post.sharesCount"
+                      (showSharesEvent)="showSharesEvent()" >
+
+          </share-count>
+          <shares-modal *ngIf="showShares"
+                       [repository]="postDataRepository"
+                       [postId]="post.postId"
+                       [totalShares]="post.sharesCount"
+                       (hideSharesEvent)="hideSharesEvent()">
+
+          </shares-modal>
+        </div>
+    </div>
+
+    <hr class="m-2">
+
+    <div class="row m-2">
+            <like class="col-4"
+                  [liked]="post.reactedTo"
+                  (likeEvent)="likeEvent()"
+                  (unlikeEvent)="unlikeEvent()" >
+
+            </like>
+        <div class="col-4">
+            <add-comment (writingCommentEvent)="startWritingComment()" ></add-comment>        
+        </div>
+        <div class="col-4">
+          <share (shareStartEvent)="shareStartEvent()"></share>
+        </div>
+    </div>
+
+    <share-modal *ngIf="shareStarted"
+                [repository]="postDataRepository"
+                [post]="post"
+                (shareDoneEvent)="shareDoneEvent()">
+
+    </share-modal>
+
+<hr class="m-2">
+
+    <comment-container
+       [post]="post"
+       [repository]="postDataRepository"
+       [writingComment]="writingComment"
+       (cancelWritingCommentEvent)="cancelWritingComment()">
+
+    </comment-container>
+</div>

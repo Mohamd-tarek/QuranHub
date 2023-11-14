@@ -1,0 +1,33 @@
+    <div *ngIf="dataLoaded; else nodata">
+      <div class="row  border  border-3 rounded-3 justify-content-end m-2 p-2 "
+           [style.background-color]="'papayawhip'" >
+        <select class="col p-2 m-2  form-select  "
+                aria-label="Default select example"
+                [(ngModel)]="curSura" >
+          <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
+        </select> 
+      </div>
+      <div class="row">
+        <span class="m-auto w-auto">
+          <previous-pointer (previousEvent)="prev()"></previous-pointer>
+          <next-pointer (nextEvent)="next()"></next-pointer>
+        </span>
+      </div> 
+      <div class="row m-2 align-items-start mt-2">
+        <div class="col  border  border-3 rounded-3"  >
+            <img  id="mindmap"   class="img-fluid" alt="no map for this sura" src=""  />
+        </div>
+      </div>
+      <div class="row">
+        <span class="m-auto w-auto">
+          <previous-pointer (previousEvent)="prev()"></previous-pointer>
+          <next-pointer (nextEvent)="next()"></next-pointer>
+        </span>
+      </div> 
+    </div>
+  
+    <ng-template #nodata>
+      <loading></loading>
+    </ng-template> 
+  
+  

@@ -1,0 +1,10 @@
+<div class="m-2 ">
+    <profile-picture  [diamter]="profilePictureDiamter"
+                     [picture]="user?.profilePicture">
+
+    </profile-picture>
+    <a  class="p-2  text-truncate"
+    [routerLink]="['/profile' ,user.id, 'profileDetails']" 
+    >{{user.userName}}
+    </a>
+</div>

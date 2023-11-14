@@ -1,0 +1,10 @@
+<div *ngIf="dataLoaded; else nodata" #element>
+  <post *ngIf="!post.hasOwnProperty('share')"
+        [post]="post"
+        #postComponent></post>
+  <shared-post *ngIf="post.hasOwnProperty('share')" [post]="post"></shared-post>
+</div>
+
+<ng-template #nodata>
+  <loading></loading>
+</ng-template>

@@ -1,0 +1,11 @@
+<p  *ngIf="!wrap" class="m-1 rounded-3 text-end" >
+    {{text}}
+</p>
+
+<text-wraper *ngIf="wrap"
+            [text]="text"
+            [length]="250"
+            [backgroundColor]="'#0dcaf099'" >
+
+</text-wraper>
+

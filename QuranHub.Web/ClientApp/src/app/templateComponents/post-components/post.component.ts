@@ -1,9 +1,14 @@
-import { Component, Input, OnInit, ViewContainerRef} from '@angular/core';
+import { Component, Input, OnInit, ViewContainerRef, inject} from '@angular/core';
 import { Post } from 'src/app/models/post/post.model';
 import { PostRepository } from '../../abstractions/repositories/postRepository';
 import { UserService } from '../../abstractions/services/userService';
 import { UserBasicInfo } from "../../models/user/userBasicInfo.model";
 import { FadeOutTrigger } from 'src/app/animations/FadeOut.animation';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ShareModalComponent } from '../share-components/share-modal.component';
+import { SharesModalComponent } from '../share-components/shares-modal.component';
+import { LikesModalComponent } from '../like-components/likes-modal.component';
+
 
 @Component({
   selector: "post",
@@ -13,9 +18,10 @@ import { FadeOutTrigger } from 'src/app/animations/FadeOut.animation';
 
 export class PostComponent implements OnInit {
 
-  @Input()
-  post!: Post;
+  private modalService = inject(NgbModal);
 
+  @Input()
+  post!: Post;  
   user: UserBasicInfo;
   writingComment: boolean = false;
   commentAdded: boolean = false;
@@ -64,14 +70,24 @@ export class PostComponent implements OnInit {
   }
 
   showLikesEvent() {
+    const modalRef = this.modalService.open(LikesModalComponent);
+    modalRef.componentInstance.repository = this.postDataRepository;
+    modalRef.componentInstance.postId = this.post.postId;
+    modalRef.componentInstance.totalLikes = this.post.reactsCount;
     this.showLikes = true;
+    
   }
 
   hideLikesEvent() {
+    
     this.showLikes = false;
   }
 
   showSharesEvent() {
+    const modalRef = this.modalService.open(SharesModalComponent);
+    modalRef.componentInstance.repository = this.postDataRepository;
+    modalRef.componentInstance.postId = this.post.postId;
+    modalRef.componentInstance.totalShares = this.post.sharesCount;
     this.showShares = true;
   }
 
@@ -80,6 +96,9 @@ export class PostComponent implements OnInit {
   }
 
   shareStartEvent(){
+    const modalRef = this.modalService.open(ShareModalComponent);
+    modalRef.componentInstance.repository = this.postDataRepository;
+    modalRef.componentInstance.post = this.post;
     this.shareStarted = true;
   }
 

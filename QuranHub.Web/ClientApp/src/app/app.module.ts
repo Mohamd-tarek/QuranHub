@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { DragulaModule } from 'ng2-dragula';
 import { ModelModule } from './models/model.module';
 import { MainModule } from "./main/main.module";
@@ -28,14 +28,27 @@ import { AuthenticationGuard } from "./services/authentication.guard";
 import { WithCredentialsInterceptor } from './WithCredentialsInterceptor';
 import { AuthenticationTokenInterceptor } from './AuthenticationTokenInterceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
 
 const routes: Routes = []  
-
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 @NgModule({
   
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     RouterModule.forRoot(routes),
+    TranslateModule.forRoot({
+      defaultLanguage: 'ar',
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+    }),
     BrowserAnimationsModule,
     HttpClientModule,
     HttpClientXsrfModule,

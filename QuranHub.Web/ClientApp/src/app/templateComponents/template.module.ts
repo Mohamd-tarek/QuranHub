@@ -60,6 +60,8 @@ import { ShareModalComponent } from "./share-components/share-modal.component";
 import { onClickOutsideHideDirective } from "./onClickOutsideHide.directive";
 import { DragulaModule } from 'ng2-dragula';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { TranslateModule } from '@ngx-translate/core';
+
 
 @NgModule({   
   imports: [
@@ -67,7 +69,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     RouterModule,
     DragulaModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule
   ],
 
   declarations: [

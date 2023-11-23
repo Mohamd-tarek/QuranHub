@@ -1,8 +1,10 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import {Privacy } from 'src/app/models/post/post.model';
 import { PostRepository } from '../../abstractions/repositories/postRepository';
 import { UserService } from '../../abstractions/services/userService';
 import { UserBasicInfo } from "../../models/user/userBasicInfo.model";
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: "share-modal",
@@ -17,6 +19,7 @@ export class ShareModalComponent  implements OnInit{
   submitted:boolean = false;
   privacy: Privacy = Privacy.Public;
   addAya:boolean = false;
+  activeModal = inject(NgbActiveModal);
 
   @Input()
   post!: any;
@@ -52,6 +55,7 @@ export class ShareModalComponent  implements OnInit{
 
   shareDone(){
     this.shareDoneEvent.emit();
+    this.activeModal.dismiss('Cross click');
   }
 
   sharingPost(){

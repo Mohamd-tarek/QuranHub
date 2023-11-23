@@ -37,13 +37,6 @@
                        (showLikesEvent)="showLikesEvent()"  >
 
             </like-count>
-            <likes-modal *ngIf="showLikes"
-                        [repository]="postDataRepository"
-                        [postId]="post.postId"
-                        [totalLikes]="post.reactsCount"
-                        (hideLikesEvent)="hideLikesEvent()">
-
-            </likes-modal>
         </div>
         <div class="col-1">
             <comment-count [count]="post.commentsCount"></comment-count>        
@@ -51,15 +44,7 @@
         <div class="col-1">
           <share-count [count]="post.sharesCount"
                       (showSharesEvent)="showSharesEvent()" >
-
           </share-count>
-          <shares-modal *ngIf="showShares"
-                       [repository]="postDataRepository"
-                       [postId]="post.postId"
-                       [totalShares]="post.sharesCount"
-                       (hideSharesEvent)="hideSharesEvent()">
-
-          </shares-modal>
         </div>
     </div>
 
@@ -80,12 +65,6 @@
         </div>
     </div>
 
-    <share-modal *ngIf="shareStarted"
-                [repository]="postDataRepository"
-                [post]="post"
-                (shareDoneEvent)="shareDoneEvent()">
-
-    </share-modal>
 
 <hr class="m-2">
 

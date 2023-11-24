@@ -34,13 +34,11 @@ export class SearchComponent implements OnDestroy {
     this.searchForWord.valueChanges.subscribe(()=> { 
       let state: any = {"searchForWord": this.searchForWord.value}
       this.stateService.next(state);
-      this.setResult(this.currentSearch.value);
       }); 
 
     this.currentSearch.valueChanges.subscribe(()=> { 
       let state: any  = {"currentSearch": this.currentSearch.value}
       this.stateService.next(state);
-      this.setResult(this.currentSearch.value);
       });    
   }
 
@@ -61,11 +59,11 @@ export class SearchComponent implements OnDestroy {
    
 
   setResult(word :string){ 
-    if(this.searchForWord.value === true){
+   if(this.searchForWord.value === true){
       this.repo.trie.subscribe((data:any) => this.result = word.length > 1 ? data.find(word) : [])
     }
     else{
-      if(word.length > 1){
+      if(word.length > 2){
         this.repo.quranClean.subscribe((data:any) =>this.result = data.filter((q:any) => q.text.includes(word)));                                              
       }
       else

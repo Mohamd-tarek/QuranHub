@@ -9,7 +9,7 @@
     <div class="text-center">
         <h6 class="p-2">{{message}}</h6>
         <button  class="btn btn-sm btn-primary" [routerLink]="['/auth/login']" >
-          Login
+          {{'LOGIN' |translate}}
         </button>
     </div>
 </h4>
@@ -18,10 +18,10 @@
   <div class="text-center">
     <h4 class="p-2 bg-danger text-white" *ngIf="resended" >
       <div class="text-center">
-        <h6 class="p-2">confirmation email has been resended</h6>
+        <h6 class="p-2">{{'CONFIRMATION_EMAILS_SENT' | translate}}</h6>
       </div>
     </h4>
-    <button class="btn btn-primary" (click)="resend()" >Resend Email</button>
+    <button class="btn btn-primary" (click)="resend()" >{{'RESEND_EMAIL' |translate}}</button>
   </div>
 </h4>   
 

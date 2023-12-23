@@ -1,7 +1,7 @@
     <div *ngIf="dataLoaded; else nodata" >
         <div>
             <input id="word" type="checkbox" [formControl]="showLetters">
-            <label for="word" class="m-2"> show letters </label>
+            <label for="word" class="m-2"> {{'SHOW_LETTERS' | translate}} </label>
         </div>
         <tabled-container [tableData]="getData()"
                          [numOfCol]="6"

@@ -7,12 +7,12 @@ import { Component } from '@angular/core';
 
 export class AnalysisComponent {
 
-  links :any[] = [{name :"similar", url : "./similar"},
-                  {name :"uniques", url : "./uniques"},
-                  {name :"topics", url : "./topics"},
-                  {name :"compare", url : "./compare"},
-                  {name :"lexical analysis", url : "./lexicalAnalysis"},
-                  {name :"syntax analysis", url : "./syntaxAnalysis"},
+  links :any[] = [{name :"SIMIALR", url : "./similar"},
+                  {name :"UNIQUES", url : "./uniques"},
+                  {name :"TOPICS", url : "./topics"},
+                  {name :"COMPARE", url : "./compare"},
+                  {name :"LEXICAL_ANALUYSIS", url : "./lexicalAnalysis"},
+                  {name :"SYNTAX_ANALYSIS", url : "./syntaxAnalysis"},
   ]
 
    constructor() {}

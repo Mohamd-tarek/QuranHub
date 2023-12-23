@@ -10,6 +10,9 @@ import { LoginInfoComponent } from "./login-info.component";
 import { EditLoginInfoComponent } from "./edit-login-info.component";
 import { EditPrivacySettingComponent } from "./edit-privacy-setting.component";
 import { TemplateModule } from "../templateComponents/template.module";
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageSettingComponent } from "./languageSetting.component";
+
 
 const routes: Routes = [ { path: "user" ,
                         component : UserComponent,
@@ -20,6 +23,7 @@ const routes: Routes = [ { path: "user" ,
                                 {path: "aboutInfo", component: AboutInfoComponent },
                                 {path: "editPrivacy", component: EditPrivacySettingComponent },
                                 {path: "deleteAccount" , component: DeleteAccountComponent},
+                                {path: "languageSetting" , component: LanguageSettingComponent},
                             ]
                         } ]
 
@@ -29,7 +33,8 @@ const routes: Routes = [ { path: "user" ,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    TemplateModule
+    TemplateModule,
+    TranslateModule
   ],
 
   declarations: [
@@ -39,7 +44,8 @@ const routes: Routes = [ { path: "user" ,
     ChangePasswordComponent,
     AboutInfoComponent,
     EditPrivacySettingComponent,
-    DeleteAccountComponent
+    DeleteAccountComponent,
+    LanguageSettingComponent
   ],
 
   providers: [],

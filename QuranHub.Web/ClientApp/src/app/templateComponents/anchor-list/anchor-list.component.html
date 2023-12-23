@@ -3,7 +3,7 @@
       <a class="nav-link"
          [routerLink]="['/' + link.url]"
          routerLinkActive="active">
-         {{link.name | titlecase}}
+         {{link.name | translate |titlecase}}
       </a>
     </li>
   </ul>

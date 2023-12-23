@@ -3,7 +3,7 @@
     <button  class="btn btn-primary m-2"
              *ngIf="user!== null && !WritingPost"
              type="button"
-             (click)="startWritingPost()">Add New Thought</button>
+             (click)="startWritingPost()">{{'ADD_NEW_THOUGHT' |translate}}</button>
   </div>
 </div>
 
@@ -26,14 +26,14 @@
             <button  class=" col p-2 m-4 btn btn-info"
                      type="button"
                      (click)="CancelWritingPost()">
-                     Cancel
+                     {{'CANCEL' |translate}}
             </button>
             <button class=" col p-2 m-4 btn btn-primary "
                     type="button"
                     [disabled]="submitted"
                     (click)="AddingPost()">               
                 <loading *ngIf="submitted"></loading>
-                <span *ngIf="!submitted">Post</span></button>
+                <span *ngIf="!submitted">{{'ADD' |translate}}</span></button>
     </div>      
 </div>
 

@@ -7,10 +7,10 @@ import { Component } from '@angular/core';
 
 export class OtherInfoComponent  {
 
-  links :any[] = [{name :"profile details", url : "./profileDetails"},
-                  {name :"about", url : "./about"},
-                  {name :"followers", url : "./followers"},
-                  {name :"followings", url : "./followings"},
+  links :any[] = [{name :"PROFILE_DETAILS", url : "./profileDetails"},
+                  {name :"ABOUT", url : "./about"},
+                  {name :"FOLLOWERS", url : "./followers"},
+                  {name :"FOLLOWINGS", url : "./followings"},
                 ]  
 
  

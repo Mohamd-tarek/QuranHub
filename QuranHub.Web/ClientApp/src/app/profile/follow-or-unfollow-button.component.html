@@ -2,7 +2,7 @@
 (click)="toggleFollow()">
 <spinner *ngIf="loading"></spinner>
 <span *ngIf="!loading">
-    {{ followed ? "Unfollow" : "Follow"}}
+    {{ followed ? ('UNFOLLOW' | translate) : ('FOLLOW' | translate)}}
 </span>
 </button>
            

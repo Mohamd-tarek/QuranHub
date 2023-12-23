@@ -14,7 +14,7 @@
         <button class="offset-4 col-4 btn btn-primary d-inline"
                 *ngIf="!addAya"
                 type="button"
-                (click)="addingAya()">Add Aya
+                (click)="addingAya()">{{'ADD_AYA' | translate}}
         </button>
                 <choose-aya *ngIf="addAya"
                            [chosenSura]="post.verse.sura"
@@ -30,7 +30,7 @@
             <button class="btn btn-secondary me-2"
                     type="button"
                     (click)="shareDone()"
-                    data-bs-dismiss="modal">Close
+                    data-bs-dismiss="modal">{{'CLOSE' |translate}}
             </button>
             <button class="btn btn-primary"
                     type="button"
@@ -38,7 +38,7 @@
                     (click)="sharingPost()">               
                 <spinner *ngIf="submitted">
                 </spinner>
-                <span *ngIf="!submitted">Share</span>
+                <span *ngIf="!submitted">{{'SHARE' |translate}}</span>
             </button>
         </div>
   </div>

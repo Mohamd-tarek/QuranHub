@@ -8,6 +8,8 @@ import { AddPostComponent } from "./add-post/add-post.component";
 import { TemplateModule } from "../templateComponents/template.module";
 import { PostViewerComponent } from "./post-viewer/post-viewer.component";
 import { AuthenticationGuard } from "../services/authentication.guard";
+import { TranslateModule } from '@ngx-translate/core';
+
 
 const routes: Routes = [
   { path: "", component: HomeComponent, canActivate: [AuthenticationGuard] },
@@ -21,6 +23,7 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     TemplateModule,
+    TranslateModule
   ],
   declarations: [
     HomeComponent,

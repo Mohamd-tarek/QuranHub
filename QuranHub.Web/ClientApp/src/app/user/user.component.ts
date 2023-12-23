@@ -11,12 +11,13 @@ export class UserComponent {
     done:boolean = true;
     user: UserBasicInfo;
 
-    links :any[] = [{name :"login Info", url : "./loginInfo"},
-                    {name :"edit login Info", url : "./editLoginInfo"},
-                    {name :"change password", url : "./changePassword"},
-                    {name: "about", url: "./aboutInfo" },
-                    {name: "edit privacy", url: "./editPrivacy" },
-                    {name :"delete", url : "./deleteAccount"}]  
+    links :any[] = [{name :"LOGIN_INFO", url : "./loginInfo"},
+                    {name :"EDIT_LOGIN_INFO", url : "./editLoginInfo"},
+                    {name :"CHANGE_PASSWORD", url : "./changePassword"},
+                    {name: "ABOUT", url: "./aboutInfo" },
+                    {name: "EDIT_PRIVACY", url: "./editPrivacy" },
+                    {name :"DELETE", url : "./deleteAccount"}, 
+                    {name :"LANGUAGE_SETTING", url : "./languageSetting"}]  
 
   constructor(public userService: UserService) {
     this.user = userService.getUser() as UserBasicInfo;

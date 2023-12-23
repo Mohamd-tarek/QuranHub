@@ -1,4 +1,7 @@
-<navbar [links]="links" ></navbar>
-<div class="container ">
-    <router-outlet></router-outlet>
+
+<div [style.direction] ="translate.currentLang == 'ar' ? 'rtl' : 'ltr'">
+    <navbar [links]="links" ></navbar>
+    <div class="container ">
+        <router-outlet></router-outlet>
+    </div>
 </div>

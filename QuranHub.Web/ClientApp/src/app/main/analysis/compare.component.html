@@ -3,7 +3,7 @@
          [style.background-color]="'papayawhip'">
       <button class=" col p-2 me-2 btn btn-primary"
               (click)="addAya()">
-       Add aya
+       {{'ADD_AYA' | translate}}
       </button> 
       <select class="col p-2 ms-2 me-2 form-select"
               aria-label="Default select example"
@@ -17,7 +17,7 @@
       </select>
     </div>
     <div class="border  border-3 rounded-3  p-2 m-2 text-end" [style.background-color]="'papayawhip'">
-        <p>total compareSet : {{compareSet.length}}</p>
+        <p>{{'TOTAL' | translate}} : {{compareSet.length}}</p>
         <aya-set-container [ayaSet]="compareSet" (removeAyaEvent)="removeAya($event)"></aya-set-container>  
       </div>
 </div>

@@ -6,27 +6,27 @@
 
     <div class="form-check form-switch">
       <input class="form-check-input" type="checkbox" id="allowFollow" [(ngModel)]="privacySetting.allowFollow" >
-      <label class="form-check-label" for="allowFollow">Allow Follow </label>
+      <label class="form-check-label" for="allowFollow">{{'ALLOW_FOLLOW' | translate}} </label>
     </div>
     <div class="form-check form-switch">
       <input class="form-check-input" type="checkbox" id="allowComment" [(ngModel)]="privacySetting.allowComment">
-      <label class="form-check-label" for="allowComment">Allow Comment</label>
+      <label class="form-check-label" for="allowComment">{{'ALLOW_COMMENT' | translate}}</label>
     </div>
     <div class="form-check form-switch">
       <input class="form-check-input" type="checkbox" id="allowShare" [(ngModel)]="privacySetting.allowShare" >
-      <label class="form-check-label" for="allowShare">Allow Share</label>
+      <label class="form-check-label" for="allowShare">{{'ALLOW_SHARE' | translate}}</label>
     </div>
     <div class="form-check form-switch">
       <input class="form-check-input" type="checkbox" id="appearInSearch" [(ngModel)]="privacySetting.appearInSearch"  >
-      <label class="form-check-label" for="appearInSearch">Appear In Search</label>
+      <label class="form-check-label" for="appearInSearch">{{'APPEAR_IN_SEARCH' |translate}}</label>
     </div>
 
     <button class="btn btn-primary mt-2" (click)="submit()">
       <spinner *ngIf="loading"></spinner>
-      <span *ngIf="!loading">Edit</span>
+      <span *ngIf="!loading">{{'EDIT' |translate}}</span>
     </button>
 </div>
 
 <ng-template #nodata>
-  <h4 class="m-2">Loading Data...</h4>
+  <h4 class="m-2">{{'LOADING' |translate}}</h4>
 </ng-template>

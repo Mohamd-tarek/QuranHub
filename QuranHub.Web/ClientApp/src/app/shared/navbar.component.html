@@ -20,14 +20,14 @@
                routerLink=""
                routerLinkActive="active"
                [routerLinkActiveOptions]="{exact:true}">
-             Home
+             {{'HOME' | translate | titlecase}}
             </a>
           </li>
           <li *ngFor="let link of links" class="nav-item p-2">
             <a class="nav-link text-white p-2"
                [routerLink]="[link.url]"
                routerLinkActive="active">
-              {{link.name | titlecase}}
+              {{link.name | translate | titlecase}}
             </a>
           </li>
         </ul>

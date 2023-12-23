@@ -33,11 +33,11 @@
             [disabled]="userForm.invalid"
             [class.btn-secondary]="userForm.invalid">
             <spinner *ngIf="loading"></spinner>
-            <span *ngIf="!loading">Edit</span>
+            <span *ngIf="!loading">{{'EDIT' |translate}}</span>
         </button>
     </form>
 </div> 
 
 <ng-template #nodata>
-    <h4 class="m-2">Loading Data...</h4>
+    <h4 class="m-2">{{'LOADING' |translate}}</h4>
 </ng-template> 

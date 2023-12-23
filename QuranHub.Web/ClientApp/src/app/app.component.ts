@@ -10,19 +10,19 @@ import {TranslateService} from '@ngx-translate/core';
 export class AppComponent {
   title = 'QuranHub';
 
-  links :any[] = [{name :"read", url : "/read"},
-                  {name :"tafseer", url : "/tafseer"},
-                  {name :"mindMaps", url : "/mindMaps"},
-                  {name :"search", url : "/search"},
-                  {name :"notes", url : "/notes"},
-                  {name :"statistics", url : "/statistics"},
-                  {name :"analysis", url : "/analysis"},
-                  {name :"documentary", url : "/documentary"},
+  links :any[] = [{name :"READ", url : "/read"},
+                  {name :"TAFSEER", url : "/tafseer"},
+                  {name :"MINDMAPS", url : "/mindMaps"},
+                  {name :"SEARCH", url : "/search"},
+                  {name :"NOTES", url : "/notes"},
+                  {name :"STATISTICS", url : "/statistics"},
+                  {name :"ANALYSIS", url : "/analysis"},
+                  {name :"DOCUMENTARY", url : "/documentary"},
                 ];
-  constructor(translate: TranslateService) {
+  constructor(public translate: TranslateService) {
     translate.addLangs(['en', 'ar']);
-    translate.setDefaultLang('ar');
-    translate.currentLang = "ar";
+    translate.setDefaultLang('en');
+    translate.currentLang = "en";
 
   }
 }

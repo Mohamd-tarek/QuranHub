@@ -3,14 +3,14 @@
     <div *ngIf="!edit" class="border  border-3 rounded-3 p-2 m-2  bg-white" >
       <aya [text]="note?.text ?? 'loading...'"  style="overflow : auto; height: 17vh;"></aya>
       <button type="button" class="btn btn-primary" (click)="edit = true">
-        edit
+        {{'EDIT'| translate}}
       </button>
     </div>
 
   <div *ngIf="edit" class=" border border-3 rounded-3 p-2 m-2 ">
     <textarea class="form-control mb-2" [(ngModel)]="note.text"></textarea>
     <button type="button" *ngIf="edit" class="btn btn-warning " (click)="saveNote()">
-      save
+      {{'SAVE' | translate}}
     </button>
   </div>
 

@@ -4,7 +4,7 @@
         <button class="page-link"
         (click) = "selectPage($event)" 
         [value]="current - 1"
-        >Previous</button>
+        >{{'PREVIOUS' |translate}}</button>
       </li>
       <li *ngFor="let link of getLinks()" [ngClass]="'page-item ' + (current == link ? 'active' : '')" >
         <button class="page-link"
@@ -16,7 +16,7 @@
       <li class="page-item" key="next">
         <button class="page-link"
         (click) = "selectPage($event)" 
-        [value]="current + 1">Next</button>
+        [value]="current + 1">{{'NEXT' | translate}}</button>
       </li>
     </ul>
   </nav>

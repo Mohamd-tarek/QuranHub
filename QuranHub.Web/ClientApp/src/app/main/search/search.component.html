@@ -3,7 +3,7 @@
      <div class="row g-3 align-items-center " >
        <div class="col flex-row-reverse">
          <input id="searchForWord" type="checkbox" [formControl]="searchForWord">
-         <label for="searchForWord" class="m-2"> search for words </label>
+         <label for="searchForWord" class="m-2">{{'SEARCH_FOR_WORDS' |translate}} </label>
        </div>
        <div class="col flex-row-reverse">
          <label for="currentSearch" class="">  </label>
@@ -17,7 +17,7 @@
     </div>
     
     <div class="border  border-3 rounded-3  p-2 m-2 text-end" [style.background-color]="'papayawhip'">
-      <p >total result : {{result.length}}</p>
+      <p >{{'TOTAL' |translate}}: {{result.length}}</p>
       <aya-set-container [highLightText]="currentSearch.value" *ngIf="!searchForWord.value; else wordBlock" [ayaSet]="result"></aya-set-container>  
       <ng-template #wordBlock>
       <div [dragula]="'DRAGULA_ITEMS'">

@@ -18,6 +18,8 @@ import { FollowingsComponent } from "./followings.component";
 import { PostsComponent } from "./posts.component";
 import { FollowOrUnfollowButtonComponent } from "./follow-or-unfollow-button.component";
 import { AuthenticationGuard } from "../services/authentication.guard";
+import { TranslateModule } from '@ngx-translate/core';
+
 
 const routes: Routes = [
     {
@@ -40,7 +42,8 @@ const routes: Routes = [
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    TemplateModule
+    TemplateModule,
+    TranslateModule
   ],
 
   declarations: [

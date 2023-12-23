@@ -24,6 +24,8 @@ import { DocumentaryComponent } from "./documentary/documentary.component";
 import { DocumentaryPlayListsComponent } from "./documentary/documentary-play-lists.component";
 import { DocumentaryPlayListComponent } from "./documentary/documentary-play-list.component";
 import { DocumentaryVideoViewerComponent } from "./documentary/documentary-video-viewer.component"
+import { TranslateModule } from '@ngx-translate/core';
+
 
 const routes: Routes = [
   { path: "read/:ayaIndex", component: ReadComponent },
@@ -62,7 +64,8 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     DragulaModule,
-    TemplateModule
+    TemplateModule,
+    TranslateModule
   ],
 
   declarations: [

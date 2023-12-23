@@ -14,6 +14,8 @@ import { NotificationsContainerComponent } from './notificationComponents/notifi
 import { NotificationComponent } from './notificationComponents/notification/notification.component';
 import { ViewMoreNotificationsComponent } from './notificationComponents/view-more-notifications/view-more-notifications.component';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+
 
 const routes: Routes = [
   {
@@ -34,6 +36,7 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     TemplateModule,
+    TranslateModule
   ],
 
   declarations: [

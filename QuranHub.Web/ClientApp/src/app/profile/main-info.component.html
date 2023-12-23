@@ -11,8 +11,8 @@
     </div>
     <follow-or-unfollow-button class="col-12 col-md" *ngIf="currentUser.id !== userId" [userId]="userId"></follow-or-unfollow-button>
     <div class="col-12 col-md">
-      <i class="fa-solid fa-users"></i> Followers : {{user?.numberOfFollower}} |
-      <i class="fa-solid fa-users"></i> Following : {{user?.numberOfFollowed}}
+      <i class="fa-solid fa-users"></i> {{'FOLLOWERS' | translate}} : {{user?.numberOfFollower}} |
+      <i class="fa-solid fa-users"></i> {{'FOLLOWINGS' | translate}} : {{user?.numberOfFollowed}}
     </div>
   </div>
 </div>

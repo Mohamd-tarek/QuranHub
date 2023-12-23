@@ -12,14 +12,14 @@
     class="col btn btn-sm btn-primary  p-2 me-1"
     routerLink="/auth/login"
     routerLinkActive="btn-info" >
-    Login
+    {{'LOGIN' | translate}}
   </a>
   
   <a *ngIf ="!authService.isAuthenticated"
     class="col btn btn-sm btn-primary p-2 ms-1" 
     routerLink="/auth/signup" 
     routerLinkActive="btn-info">
-    Sign Up
+    {{'SIGNUP' | translate}}
   </a>
 </div>
 <mini-user-panel *ngIf="showUserPanel"

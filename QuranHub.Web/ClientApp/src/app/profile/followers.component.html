@@ -1,12 +1,12 @@
 <div class="border border-3 rounded-3 mb-2" *ngIf="followers" [style.background-color]="'wheat'" > 
   <div class="row m-2">
     <div class="col">
-      <span class="m-2 p-2 text-underline">Folllowers :  {{followers.length}}</span>
+      <span class="m-2 p-2 text-underline">{{'FOLLOWERS' |translate}} :  {{followers.length}}</span>
     </div>
     <div class="col">
       <a 
         [routerLink]="['/profile' , userId, 'followers']"
-        class="p-2" >see all
+        class="p-2" >{{'SEE_ALL' | translate}}
       </a>
     </div>
   </div> 

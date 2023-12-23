@@ -14,7 +14,7 @@
                        required />
                 <div class="text-danger"
                      *ngIf="email.invalid && email.dirty" >
-                    Please enter a valid email
+                    {{'PLEASE_ENTER_VALID_EMAIL' | translate}}
                 </div>
             </div>
             <div class="form-group">
@@ -27,7 +27,7 @@
                        required />
                 <div class="text-danger"
                      *ngIf="password.invalid && password.dirty" >
-                    Please enter a valid password
+                    {{'PLEASE_ENTER_VALID_PASSWORD' | translate}}
                 </div>
             </div>    
             <div class="text-center pt-2">
@@ -35,7 +35,7 @@
                         [disabled]="authForm.invalid"
                         (click)="signUp()">
                         <spinner *ngIf="loading"></spinner>
-                        <span *ngIf="!loading">  SignUp</span>
+                        <span *ngIf="!loading">  {{'SIGNUP' |translate}}</span>
                 </button>
             </div>
         </form>   

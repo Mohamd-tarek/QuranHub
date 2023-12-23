@@ -12,6 +12,8 @@ import { SignUpConfirmComponent } from "./signUpComponents/signUpConfirm.compone
 import { RecoverPasswordComponent } from "./recoverPasswordComponents/recoverPassword.component";
 import { RecoverPasswordConfirmComponent } from "./recoverPasswordComponents/recoverPasswordConfirm.component";
 import { TemplateModule } from "../templateComponents/template.module";
+import { TranslateModule } from '@ngx-translate/core';
+
 
 const routes: Routes = [ { path: "auth" ,
                         component : AuthenticationComponent,
@@ -32,7 +34,8 @@ const routes: Routes = [ { path: "auth" ,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    TemplateModule
+    TemplateModule,
+    TranslateModule
   ],
 
   declarations: [

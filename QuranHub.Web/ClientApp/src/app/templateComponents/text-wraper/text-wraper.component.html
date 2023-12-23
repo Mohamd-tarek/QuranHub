@@ -2,17 +2,17 @@
   <p  *ngIf="seeMore"
       [innerHTML]="textToView"
       class="text-end rounded p-2 lh-lg d-inline" >   
-      {{textToView ?? "loading..."}}  
+      {{textToView ??  'LOADING' |translate}}  
   </p>
   <span class="text-decoration-underline text-primary"
     *ngIf="seeMore"
     (click)="seeAll()"
-    [style.cursor]="'pointer'">See More ...
+    [style.cursor]="'pointer'">{{'SEE_MORE' | translate}} ...
   </span>
 </div>
 <p *ngIf="!seeMore"
    class="p-2 rounded-3 lh-lg text-end"
    [style.background-color]="'#0dcaf099'"
    [innerHTML]="textToView">
-  {{textToView ?? "loading..."}}
+  {{textToView ?? 'LOADING' |translate}}
 </p>

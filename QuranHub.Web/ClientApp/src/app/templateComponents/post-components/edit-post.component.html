@@ -17,10 +17,10 @@
   <label for="floatingTextarea"></label>
 </div>
 <div class="row m-2">
-  <button type="button" class=" col p-2 m-4 btn btn-info" (click)="CancelEditingPost()">Cancel</button>
+  <button type="button" class=" col p-2 m-4 btn btn-info" (click)="CancelEditingPost()">{{'CANCEL' | translate}}</button>
   <button type="button" [disabled]="submitted" class=" col p-2 m-4 btn btn-primary " (click)="savePost()">
     <loading *ngIf="submitted"></loading>
-    <span *ngIf="!submitted">Save</span>
+    <span *ngIf="!submitted">{{'SAVE' |translate}}</span>
   </button>
 </div>
 

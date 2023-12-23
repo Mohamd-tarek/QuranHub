@@ -18,7 +18,7 @@
             <button class="btn btn-primary d-inline"
                     *ngIf="!addAya" type="button"
                     (click)="addingAya()">
-              Add Aya
+              {{'ADD_AYA' |translate}}
           </button>
         </div>
         <div class="col-1">
@@ -34,6 +34,6 @@
             [disabled]="submitted"
             (click)="onAddingComment()">
         <spinner *ngIf="submitted"></spinner>
-        <span *ngIf="!submitted">Comment</span>
+        <span *ngIf="!submitted">{{'COMMENT' | translate}}</span>
     </button>
 </div>

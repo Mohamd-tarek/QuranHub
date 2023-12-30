@@ -5,7 +5,7 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public partial class  AuthenticationController : ControllerBase
 {
-    private ILogger<AuthenticationController> _logger;
+    private readonly Serilog.ILogger _logger;
     private UserManager<QuranHubUser> _userManager;
     private SignInManager<QuranHubUser> _signInManager;
     private IEmailService _emailService;
@@ -13,7 +13,7 @@ public partial class  AuthenticationController : ControllerBase
     private IConfiguration _configuration;
 
     public AuthenticationController(
-        ILogger<AuthenticationController> logger,
+        Serilog.ILogger logger,
         UserManager<QuranHubUser> userManager,
         IEmailService emailService,
         SignInManager<QuranHubUser> signInManager,
@@ -30,113 +30,139 @@ public partial class  AuthenticationController : ControllerBase
     }
 
     [HttpPost("LoginWithPassword")]
-    public async Task<object> LoginWithPassword([FromBody] LoginModel creds)
+    public async Task<ActionResult<object>> LoginWithPassword([FromBody] LoginModel creds)
     {
-        QuranHubUser user = await this._userManager.FindByEmailAsync(creds.Email);
-
-        SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, creds.Password, true);
-
-        if (result.Succeeded) 
+        try
         {
-            SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
+            QuranHubUser user = await this._userManager.FindByEmailAsync(creds.Email);
+
+            SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, creds.Password, true);
+
+            if (result.Succeeded) 
             {
-                Subject = (await _signInManager.CreateUserPrincipalAsync(user)).Identities.First(),
+                SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
+                {
+                    Subject = (await _signInManager.CreateUserPrincipalAsync(user)).Identities.First(),
 
-                Expires = DateTime.Now.AddHours(int.Parse( _configuration["BearerTokens:ExpiryHours"])),
+                    Expires = DateTime.Now.AddHours(int.Parse( _configuration["BearerTokens:ExpiryHours"])),
 
-                SigningCredentials = new SigningCredentials( new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                                                                _configuration["BearerTokens:Key"])),
-                                                                 SecurityAlgorithms.HmacSha256Signature)
-            };
+                    SigningCredentials = new SigningCredentials( new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                                                                    _configuration["BearerTokens:Key"])),
+                                                                     SecurityAlgorithms.HmacSha256Signature)
+                };
 
-            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
 
-            SecurityToken securityToken = handler.CreateToken(descriptor);
+                SecurityToken securityToken = handler.CreateToken(descriptor);
 
-            Console.WriteLine(securityToken.ToString());
+                Console.WriteLine(securityToken.ToString());
 
-            return new {success = true , token = handler.WriteToken(securityToken) };
+                return new {success = true , token = handler.WriteToken(securityToken) };
+            }
+
+            return Ok(new { success = false});
         }
-
-        return new { success = false};
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
           
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromBody] LoginModel creds)
+    public async Task<ActionResult> SignUp([FromBody] LoginModel creds)
     {
-        if (ModelState.IsValid)
+        try
         {
-            QuranHubUser user = await _userManager.FindByEmailAsync(creds.Email);
-            if (user != null) 
+            if (ModelState.IsValid)
             {
-                return BadRequest(new { message = "Email already exist" });
-            }
-
-            if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
-            {
-                return BadRequest(new { message = "Email already exist but not confirmed" });
-            }
-
-            user = new QuranHubUser
-            {
-                UserName = creds.Email,
-                Email = creds.Email
-            };
-
-            IdentityResult result = await _userManager.CreateAsync(user);
-
-            if (result.Process(ModelState)) 
-            {
-                result = await _userManager.AddPasswordAsync(user, creds.Password);
-
-                if (result.Process(ModelState))
+                QuranHubUser user = await _userManager.FindByEmailAsync(creds.Email);
+                if (user != null) 
                 {
-                    await _emailService.SendAccountConfirmEmail(user, "auth/signupConfirm");
+                    return BadRequest(new { message = "Email already exist" });
+                }
 
-                    return Ok("true");
-                } 
-                else
+                if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    await _userManager.DeleteAsync(user);
+                    return BadRequest(new { message = "Email already exist but not confirmed" });
+                }
 
-                    return BadRequest(new { message = "password error happened" });
+                user = new QuranHubUser
+                {
+                    UserName = creds.Email,
+                    Email = creds.Email
+                };
+
+                IdentityResult result = await _userManager.CreateAsync(user);
+
+                if (result.Process(ModelState)) 
+                {
+                    result = await _userManager.AddPasswordAsync(user, creds.Password);
+
+                    if (result.Process(ModelState))
+                    {
+                        await _emailService.SendAccountConfirmEmail(user, "auth/signupConfirm");
+
+                        return Ok("true");
+                    } 
+                    else
+                    {
+                        await _userManager.DeleteAsync(user);
+
+                        return BadRequest(new { message = "password error happened" });
+                    }
                 }
             }
-        }
 
-        return BadRequest(new { message = "unkown error occured" });
+            return BadRequest(new { message = "unkown error occured" });
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
     
     [HttpPost("signUpConfirm")]
-    public async Task<IActionResult> SignUpConfirmAsync([FromBody]SignUpConfirmModel data) 
-    {      
-        if (!string.IsNullOrEmpty(data.Email) && !string.IsNullOrEmpty(data.Token))
+    public async Task<ActionResult> SignUpConfirmAsync([FromBody]SignUpConfirmModel data) 
+    {
+        try
         {
-            QuranHubUser user = await _userManager.FindByEmailAsync(data.Email);
-
-            if (user != null) 
+            if (!string.IsNullOrEmpty(data.Email) && !string.IsNullOrEmpty(data.Token))
             {
-                string decodedToken = this._tokenUrlEncoder.DecodeToken(data.Token);
+                QuranHubUser user = await _userManager.FindByEmailAsync(data.Email);
 
-                IdentityResult result = await _userManager.ConfirmEmailAsync(user, decodedToken);
-
-                if (!result.Process(ModelState))
+                if (user != null) 
                 {
-                    string errors = ModelState.ConcatError();
+                    string decodedToken = this._tokenUrlEncoder.DecodeToken(data.Token);
 
-                     return BadRequest(errors);
+                    IdentityResult result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+
+                    if (!result.Process(ModelState))
+                    {
+                        string errors = ModelState.ConcatError();
+
+                         return BadRequest(errors);
+                    }
                 }
+
+                return Ok(new { message = "Sign Up Confirmed" });
             }
 
-            return Ok(new { message = "Sign Up Confirmed" });
+            return BadRequest();
         }
-
-        return BadRequest();
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("signupResend")]
-    public async Task<IActionResult> SignUpResend([FromBody] string Email) 
-    {         
+    public async Task<ActionResult> SignUpResend([FromBody] string Email) 
+    {
+        try
+        {
             QuranHubUser user = await _userManager.FindByEmailAsync(Email);
 
             if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
@@ -148,6 +174,12 @@ public partial class  AuthenticationController : ControllerBase
             {               
                 return BadRequest();
             }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 }
 

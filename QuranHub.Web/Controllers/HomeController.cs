@@ -5,7 +5,7 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public class HomeController : ControllerBase
 {
-    private ILogger<HomeController> _logger;
+    private readonly Serilog.ILogger _logger;
     private IHomeService _homeService;
     private IUserViewModelsFactory _userViewModelsFactory;
     private IPostViewModelsFactory _postViewModelsFactory;
@@ -15,7 +15,7 @@ public class HomeController : ControllerBase
     private QuranHubUser _currentUser;
 
     public  HomeController(
-        ILogger<HomeController> logger,
+        Serilog.ILogger logger,
         IHomeService homeService,
         IUserViewModelsFactory userViewModelsFactor,
         IPostViewModelsFactory postViewModelsFactory,
@@ -42,53 +42,85 @@ public class HomeController : ControllerBase
     }
 
     [HttpGet("NewFeeds")]
-    public async Task<IEnumerable<object>> GetNewFeedsAsync()
+    public async Task<ActionResult<IEnumerable<object>>> GetNewFeedsAsync()
     {
-       List<object> postViewModels = new List<object>();
+        try
+        {
+            List<object> postViewModels = new List<object>();
 
-       if (User.Identity.IsAuthenticated)
-       {
+           if (User.Identity.IsAuthenticated)
+           {
 
-            List<ShareablePost> posts = await _homeService.GetShareablePostsAsync(_currentUser.Id);
+                List<ShareablePost> posts = await _homeService.GetShareablePostsAsync(_currentUser.Id);
 
-            List<SharedPost> sharedPosts = await _homeService.GetSharedPostsAsync(_currentUser.Id);
+                List<SharedPost> sharedPosts = await _homeService.GetSharedPostsAsync(_currentUser.Id);
 
-            postViewModels = await _viewModelsService.MergePostsAsync(posts, sharedPosts);
-       }
+                postViewModels = await _viewModelsService.MergePostsAsync(posts, sharedPosts);
+           }
 
-        return postViewModels;
+            return Ok(postViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("AddPost")]
-    public async Task<ShareablePostViewModel> AddPost([FromBody] ShareablePost post)
+    public async Task<ActionResult<ShareablePostViewModel>> AddPost([FromBody] ShareablePost post)
     {
-        ShareablePost insertedPost = await _homeService.CreatePostAsync(post);
+        try
+        {
+            ShareablePost insertedPost = await _homeService.CreatePostAsync(post);
 
-        return await _postViewModelsFactory.BuildShareablePostViewModelAsync(insertedPost);
+            return Ok(await _postViewModelsFactory.BuildShareablePostViewModelAsync(insertedPost));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("FindUsersByName/{name}")]
-    public async Task<IEnumerable<UserViewModel>> FindUsersByNameAsync(string name) 
+    public async Task<ActionResult<IEnumerable<UserViewModel>>> FindUsersByNameAsync(string name) 
     {
-        List<QuranHubUser> users = await _homeService.FindUsersByNameAsync(name);
+        try
+        {
+            List<QuranHubUser> users = await _homeService.FindUsersByNameAsync(name);
 
-        List<UserViewModel> userModels = _userViewModelsFactory.BuildUsersViewModel(users);
+            List<UserViewModel> userModels = _userViewModelsFactory.BuildUsersViewModel(users);
 
-        return userModels;
+            return Ok(userModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("SearchPosts/{keyword}")]
-    public async Task<IEnumerable<object>> SearchPostsAsync(string keyword)
+    public async Task<ActionResult<IEnumerable<object>>> SearchPostsAsync(string keyword)
     {
-        List<object> postViewModels = new List<object>();
+        try
+        {
+            List<object> postViewModels = new List<object>();
 
-        List<ShareablePost> posts = await _homeService.SearchShareablePostsAsync(keyword);
+            List<ShareablePost> posts = await _homeService.SearchShareablePostsAsync(keyword);
 
-        List<SharedPost> sharedPosts = await _homeService.SearchSharedPostsAsync(keyword);
+            List<SharedPost> sharedPosts = await _homeService.SearchSharedPostsAsync(keyword);
 
-        postViewModels = await _viewModelsService.MergePostsAsync(posts, sharedPosts);
+            postViewModels = await _viewModelsService.MergePostsAsync(posts, sharedPosts);
 
-        return postViewModels;
+            return Ok(postViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
 }

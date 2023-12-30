@@ -5,7 +5,7 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public class ProfileController : ControllerBase
 {
-    private ILogger<ProfileController> _logger; 
+    private readonly Serilog.ILogger _logger;
     private IProfileService _profileService;
     private IUserViewModelsFactory _userViewModelsFactory;
     private IHubContext<NotificationHub> _notificationHubContext;
@@ -17,7 +17,7 @@ public class ProfileController : ControllerBase
 
     public ProfileController(
         UserManager<QuranHubUser> userManager,
-        ILogger<ProfileController> logger, 
+        Serilog.ILogger logger,
         IProfileService profileService,
         IUserViewModelsFactory userViewModelsFactor,
         IHubContext<NotificationHub> notificationHubContext,
@@ -43,130 +43,226 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("UserPosts/{UserId}")]
-    public async Task<IEnumerable<object>> GetUserPostsAsync(string userId) 
+    public async Task<ActionResult<IEnumerable<object>>> GetUserPostsAsync(string userId) 
     {
-        List<ShareablePost> posts = await _profileService.GetUserShareablePostsAsync(userId);
+        try
+        {
+            List<ShareablePost> posts = await _profileService.GetUserShareablePostsAsync(userId);
 
-        List<SharedPost> sharedPosts = await _profileService.GetUserSharedPostsAsync(userId);
+            List<SharedPost> sharedPosts = await _profileService.GetUserSharedPostsAsync(userId);
 
-        List<object> mergedPosts = await _viewModelsService.MergePostsAsync(posts, sharedPosts);
+            List<object> mergedPosts = await _viewModelsService.MergePostsAsync(posts, sharedPosts);
 
-        return mergedPosts;
+            return Ok(mergedPosts);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("UserFollowers/{UserId}")]
-    public async Task<IEnumerable<UserBasicInfoViewModel>> GetUserFollowersAsync(string userId) 
+    public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowersAsync(string userId) 
     {
-        List <QuranHubUser> users = await _profileService.GetUserFollowersAsync(userId);
+        try
+        {
+            List <QuranHubUser> users = await _profileService.GetUserFollowersAsync(userId);
 
-        List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
+            List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
 
-        return usersViewModels;
+            return Ok(usersViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("UserFollowings/{UserId}")]
-    public async Task<IEnumerable<UserBasicInfoViewModel>> GetUserFollowingsAsync(string userId)
+    public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowingsAsync(string userId)
     {
-        List<QuranHubUser> users = await _profileService.GetUserFollowingsAsync(userId);
+        try
+        {
+            List<QuranHubUser> users = await _profileService.GetUserFollowingsAsync(userId);
 
-        List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
+            List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
 
-        return usersViewModels;
+            return Ok(usersViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("UserFollowers/{UserId}/{KeyWord}")]
-    public async Task<IEnumerable<UserBasicInfoViewModel>> GetUserFollowersAsync(string userId, string KeyWord) 
+    public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowersAsync(string userId, string KeyWord) 
     {
-        List<QuranHubUser> users = await _profileService.GetUserFollowersAsync(userId, KeyWord);
+        try
+        {
+            List<QuranHubUser> users = await _profileService.GetUserFollowersAsync(userId, KeyWord);
 
-        List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
+            List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
 
-        return usersViewModels;
+            return Ok(usersViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("UserFollowings/{UserId}/{KeyWord}")]
-    public async Task<IEnumerable<UserBasicInfoViewModel>> GetUserFollowingsAsync(string userId, string KeyWord)
+    public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowingsAsync(string userId, string KeyWord)
     {
-        List<QuranHubUser> users = await _profileService.GetUserFollowingsAsync(userId, KeyWord);
+        try
+        {
+            List<QuranHubUser> users = await _profileService.GetUserFollowingsAsync(userId, KeyWord);
 
-        List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
+            List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
 
-        return usersViewModels;
+            return Ok(usersViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }      
 
     [HttpGet("UserProfile/{UserId}")]
-    public async Task<ProfileViewModel> GetUserProfileAsync(string userId)
+    public async Task<ActionResult<ProfileViewModel>> GetUserProfileAsync(string userId)
     {
-        QuranHubUser user = await _userManager.FindByIdAsync(userId);
+        try
+        {
+            QuranHubUser user = await _userManager.FindByIdAsync(userId);
 
-        ProfileViewModel profileModel = _userViewModelsFactory.BuildProfileViewModel(user);
+            ProfileViewModel profileModel = _userViewModelsFactory.BuildProfileViewModel(user);
 
-        return profileModel;
+            return Ok(profileModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("editCoverPicture")]
-    public async Task<byte[]> PostEditCoverPicture([FromForm] CoverPictureModel coverPictureModel) 
+    public async Task<ActionResult<byte[]>> PostEditCoverPicture([FromForm] CoverPictureModel coverPictureModel) 
     {
-        IFormFile formFile = coverPictureModel.CoverPictureFile;
+        try
+        {
+            IFormFile formFile = coverPictureModel.CoverPictureFile;
 
-        byte[] coverPicture = _viewModelsService.ReadFileIntoArray(formFile);
+            byte[] coverPicture = _viewModelsService.ReadFileIntoArray(formFile);
 
-        return await _profileService.EditCoverPictureAsync(coverPicture, _currentUser);
+            return Ok(await _profileService.EditCoverPictureAsync(coverPicture, _currentUser));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("editProfilePicture")]
-    public async Task<byte[]> PostEditProfilePicture([FromForm] ProfilePictureModel profilePictureModel)
+    public async Task<ActionResult<byte[]>> PostEditProfilePicture([FromForm] ProfilePictureModel profilePictureModel)
     {
-        QuranHubUser user = await _userManager.GetUserAsync(User);
+        try
+        {
+            QuranHubUser user = await _userManager.GetUserAsync(User);
 
-        IFormFile formFile = profilePictureModel.ProfilePictureFile;
+            IFormFile formFile = profilePictureModel.ProfilePictureFile;
 
-        byte[] profilePicture = _viewModelsService.ReadFileIntoArray(formFile);
+            byte[] profilePicture = _viewModelsService.ReadFileIntoArray(formFile);
 
-        return await _profileService.EditProfilePictureAsync(profilePicture,_currentUser);
+            return Ok(await _profileService.EditProfilePictureAsync(profilePicture,_currentUser));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
 
     }
 
     [HttpGet("CheckFollowing/{UserId}")]
-    public async Task<bool> GetCheckFollowingAsync(string userId)
+    public async Task<ActionResult<bool>> GetCheckFollowingAsync(string userId)
     {
-        return await _profileService.CheckFollowingAsync(_currentUser.Id, userId);   
+        try
+        {
+            return Ok(await _profileService.CheckFollowingAsync(_currentUser.Id, userId));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("FollowUser")]
-    public async Task<bool> FollowUser([FromBody] Follow follow) 
+    public async Task<ActionResult<bool>> FollowUser([FromBody] Follow follow) 
     {
-        Tuple<bool, FollowNotification> result = await _profileService.AddFollowAsync(follow, _currentUser);
-
-        if(result.Item1)
+        try
         {
-            var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
+            Tuple<bool, FollowNotification> result = await _profileService.AddFollowAsync(follow, _currentUser);
 
-            if (user.Online)
+            if(result.Item1)
             {
-                FollowNotificationViewModel notification = this._notificationViewModelsFactory.BuildFollowNotificationViewModel(result.Item2);
+                var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 
-                await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
+                if (user.Online)
+                {
+                    FollowNotificationViewModel notification = this._notificationViewModelsFactory.BuildFollowNotificationViewModel(result.Item2);
+
+                    await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
+                }
+
+                return Ok(true);
+
             }
-
-            return true;
-
+            return Ok(false);
         }
-        return false;
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
 
     }
 
     [HttpPost("UnfollowUser")]
-    public async Task<bool> UnfollowUser([FromBody] Follow follow) 
+    public async Task<ActionResult<bool>> UnfollowUser([FromBody] Follow follow) 
     {
-        return await _profileService.RemoveFollowAsync(follow);
+        try
+        {
+            return Ok(await _profileService.RemoveFollowAsync(follow));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("AboutInfo/{UserId}")]
-    public async Task<AboutInfoViewModel> GetAboutInfoAsync(string userId)
+    public async Task<ActionResult<AboutInfoViewModel>> GetAboutInfoAsync(string userId)
     {
-        QuranHubUser user =  await _userManager.FindByIdAsync(userId);
+        try
+        {
+            QuranHubUser user =  await _userManager.FindByIdAsync(userId);
 
-        return _userViewModelsFactory.BuildAboutInfoViewModel(user);
+            return Ok(_userViewModelsFactory.BuildAboutInfoViewModel(user));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 }

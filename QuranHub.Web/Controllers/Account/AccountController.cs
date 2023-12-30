@@ -5,7 +5,7 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public partial class  AccountController : ControllerBase
 {
-    private ILogger<AccountController> _logger;
+    private readonly Serilog.ILogger _logger;
     private IPostRepository _postRepository;
     private IUserViewModelsFactory _userViewModelsFactory;
     private UserManager<QuranHubUser> _userManager;
@@ -15,7 +15,7 @@ public partial class  AccountController : ControllerBase
     private IPrivacySettingRepository _privacySettingRepository;
 
     public AccountController(
-        ILogger<AccountController> logger,
+        Serilog.ILogger logger,
         UserManager<QuranHubUser> userManager,
         IEmailService emailService,
         SignInManager<QuranHubUser> signInManager,
@@ -36,217 +36,315 @@ public partial class  AccountController : ControllerBase
     }
 
     [HttpGet("userInfo")]
-    public async Task<UserBasicInfoViewModel> GetUserInfoAsync()
+    public async Task<ActionResult<UserBasicInfoViewModel>> GetUserInfoAsync()
     {
-        QuranHubUser user  = await _userManager.GetUserAsync(User);
-        UserBasicInfoViewModel userBasicInfoViewModel = _userViewModelsFactory.BuildUserBasicInfoViewModel(user);
+        try
+        {
 
-        return userBasicInfoViewModel;   
+            QuranHubUser user  = await _userManager.GetUserAsync(User);
+            UserBasicInfoViewModel userBasicInfoViewModel = _userViewModelsFactory.BuildUserBasicInfoViewModel(user);
+
+            return Ok(userBasicInfoViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("editUserInfo")]
-    public async Task<IActionResult> PostEditProfile([FromBody] EditProfileModel data)
+    public async Task<ActionResult> PostEditProfile([FromBody] EditProfileModel data)
     {
-        QuranHubUser user = await _userManager.GetUserAsync(User);
-
-        IdentityResult result = await _userManager.SetUserNameAsync(user, data.UserName);
-
-        if (!result.Process(ModelState))
-        {
-            string errors = ModelState.ConcatError();
-
-            return BadRequest(errors);
-        }
-
-        if (user.Email != data.Email)
-        {
-            await PostChangeEmail(user, data.Email);
-        }
-
-        return Ok("true");
-    }
-
-   
-    [HttpGet("aboutInfo")]
-    public async Task<AboutInfoViewModel> GetAboutInfoAsync()
-    {
-        QuranHubUser user  = await _userManager.GetUserAsync(User);
-
-        AboutInfoViewModel aboutInfoViewModel = _userViewModelsFactory.BuildAboutInfoViewModel(user);
-
-        return aboutInfoViewModel;   
-    }
-
-    [HttpGet("privacySetting")]
-    public async Task<PrivacySetting> GetPrivacySettingAsync()
-    {
-        QuranHubUser user = await _userManager.GetUserAsync(User);
-
-        PrivacySetting privacySetting = await this._privacySettingRepository.GetPrivacySettingByUserIdAsync(user.Id);
-
-        return privacySetting;
-    }
-
-    [HttpPost("privacySetting")]
-    public async Task<IActionResult> PostEditAboutInfoAsync([FromBody] PrivacySetting privacySetting)
-    {
-        QuranHubUser user = await _userManager.GetUserAsync(User);
-
-        if (await this._privacySettingRepository.EditPrivacySettingByUserIdAsync(privacySetting, user.Id))
-        {
-            return Ok();
-        }
-        return BadRequest();
-    }
-
-    [HttpPost("editAboutInfo")]
-    public async Task<IActionResult> PostEditAboutInfoAsync([FromBody] AboutInfoViewModel aboutInfo)
-    {
-        QuranHubUser user  = await _userManager.GetUserAsync(User);
-        user.DateOfBirth  = aboutInfo.DateOfBirth;
-        user.Gender = aboutInfo.Gender;
-        user.Religion = aboutInfo.Religion; 
-        user.AboutMe = aboutInfo.AboutMe;
-
-        IdentityResult result =  await _userManager.UpdateAsync(user);  
-
-        if (!result.Process(ModelState))
-        {
-            string errors = ModelState.ConcatError();
-
-            return BadRequest(errors);
-        }
-
-        return Ok();   
-    }
-
-    [HttpPost("changeEmail")]
-    public async  Task PostChangeEmail(QuranHubUser user, string Email)
-    {
-        await _emailService.SendChangeEmailConfirmEmail(user, Email, "changeEmailConfirm");
-    }
-
-    [HttpGet("changeEmailConfirm")]
-    public async Task<IActionResult> ChangeEmailConfirmAsync(string Email, string Token)
-    {          
-        if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Token))
+        try
         {
             QuranHubUser user = await _userManager.GetUserAsync(User);
 
-            if (user != null) 
-            {
-                string decodedToken = this._tokenUrlEncoder.DecodeToken(Token);
-
-                IdentityResult result  = await _userManager.ChangeEmailAsync (user, Email, Token);
-
-                if (!result.Process(ModelState)) 
-                {
-                    string errors = ModelState.ConcatError();
-                    
-                    return BadRequest(errors);
-                }
-            }
-        }
-
-        return Ok("true");
-    }
-
-    [HttpPost("changePassword")]
-    public async Task<IActionResult> PostChangePasswordAsync([FromBody] PasswordChangeModel data)
-    {
-        if (ModelState.IsValid) 
-        {
-            QuranHubUser user = await _userManager.GetUserAsync(User);
-
-            IdentityResult result = await _userManager.ChangePasswordAsync(user, data.Current, data.NewPassword);
+            IdentityResult result = await _userManager.SetUserNameAsync(user, data.UserName);
 
             if (!result.Process(ModelState))
             {
                 string errors = ModelState.ConcatError();
-                
+
                 return BadRequest(errors);
             }
-        }
 
-        return Ok();
+            if (user.Email != data.Email)
+            {
+                await PostChangeEmail(user, data.Email);
+            }
+
+            return Ok("true");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
+    }
+
+   
+    [HttpGet("aboutInfo")]
+    public async Task<ActionResult<AboutInfoViewModel>> GetAboutInfoAsync()
+    {
+        try
+        {
+            QuranHubUser user  = await _userManager.GetUserAsync(User);
+
+            AboutInfoViewModel aboutInfoViewModel = _userViewModelsFactory.BuildAboutInfoViewModel(user);
+
+            return Ok(aboutInfoViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpGet("privacySetting")]
+    public async Task<ActionResult<PrivacySetting>> GetPrivacySettingAsync()
+    {
+        try
+        {
+            QuranHubUser user = await _userManager.GetUserAsync(User);
+
+            PrivacySetting privacySetting = await this._privacySettingRepository.GetPrivacySettingByUserIdAsync(user.Id);
+
+            return Ok(privacySetting);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost("privacySetting")]
+    public async Task<ActionResult> PostEditAboutInfoAsync([FromBody] PrivacySetting privacySetting)
+    {
+        try
+        {
+            QuranHubUser user = await _userManager.GetUserAsync(User);
+
+            if (await this._privacySettingRepository.EditPrivacySettingByUserIdAsync(privacySetting, user.Id))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost("editAboutInfo")]
+    public async Task<ActionResult> PostEditAboutInfoAsync([FromBody] AboutInfoViewModel aboutInfo)
+    {
+        try
+        {
+            QuranHubUser user  = await _userManager.GetUserAsync(User);
+            user.DateOfBirth  = aboutInfo.DateOfBirth;
+            user.Gender = aboutInfo.Gender;
+            user.Religion = aboutInfo.Religion; 
+            user.AboutMe = aboutInfo.AboutMe;
+
+            IdentityResult result =  await _userManager.UpdateAsync(user);  
+
+            if (!result.Process(ModelState))
+            {
+                string errors = ModelState.ConcatError();
+
+                return BadRequest(errors);
+            }
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost("changeEmail")]
+    public async  Task<ActionResult> PostChangeEmail(QuranHubUser user, string Email)
+    {
+        try
+        {
+            await _emailService.SendChangeEmailConfirmEmail(user, Email, "changeEmailConfirm");
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpGet("changeEmailConfirm")]
+    public async Task<ActionResult> ChangeEmailConfirmAsync(string Email, string Token)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Token))
+            {
+                QuranHubUser user = await _userManager.GetUserAsync(User);
+
+                if (user != null) 
+                {
+                    string decodedToken = this._tokenUrlEncoder.DecodeToken(Token);
+
+                    IdentityResult result  = await _userManager.ChangeEmailAsync (user, Email, Token);
+
+                    if (!result.Process(ModelState)) 
+                    {
+                        string errors = ModelState.ConcatError();
+                    
+                        return BadRequest(errors);
+                    }
+                }
+            }
+
+            return Ok("true");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost("changePassword")]
+    public async Task<ActionResult> PostChangePasswordAsync([FromBody] PasswordChangeModel data)
+    {
+        try
+        {
+            if (ModelState.IsValid) 
+            {
+                QuranHubUser user = await _userManager.GetUserAsync(User);
+
+                IdentityResult result = await _userManager.ChangePasswordAsync(user, data.Current, data.NewPassword);
+
+                if (!result.Process(ModelState))
+                {
+                    string errors = ModelState.ConcatError();
+                
+                    return BadRequest(errors);
+                }
+            }
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("recoverPassword")]
-    public async Task<IActionResult> PostRecoverPasswordAsync([FromBody] string email)
+    public async Task<ActionResult> PostRecoverPasswordAsync([FromBody] string email)
     {
-        if (ModelState.IsValid)
+        try
         {
-            QuranHubUser user = await _userManager.FindByEmailAsync(email);
+            if (ModelState.IsValid)
+            {
+                QuranHubUser user = await _userManager.FindByEmailAsync(email);
 
-            if (user != null) 
-            {
-                await _emailService.SendPasswordRecoveryEmail(user, "recoverPasswordConfirm");
-                return Ok("true");
+                if (user != null) 
+                {
+                    await _emailService.SendPasswordRecoveryEmail(user, "recoverPasswordConfirm");
+                    return Ok("true");
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
-            else
-            {
-                return BadRequest();
-            }
+
+            return BadRequest();
         }
-
-        return BadRequest();
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("recoverPasswordConfirm")]
-    public async Task<IActionResult> PostRecoverPasswordConfirmAsync([FromBody] PasswordRecoverModel data)
+    public async Task<ActionResult> PostRecoverPasswordConfirmAsync([FromBody] PasswordRecoverModel data)
     {
-        if (ModelState.IsValid) 
+        try
         {
-            QuranHubUser user = await _userManager.FindByEmailAsync(data.Email);
-
-            string decodedToken = this._tokenUrlEncoder.DecodeToken(data.Token);
-
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, decodedToken, data.NewPassword);
-
-            if (!result.Process(ModelState)) 
+            if (ModelState.IsValid) 
             {
-                string errors = ModelState.ConcatError();
-                
-                return BadRequest(errors);
-            }
-        }
+                QuranHubUser user = await _userManager.FindByEmailAsync(data.Email);
 
-        return Ok("true");
+                string decodedToken = this._tokenUrlEncoder.DecodeToken(data.Token);
+
+                IdentityResult result = await _userManager.ResetPasswordAsync(user, decodedToken, data.NewPassword);
+
+                if (!result.Process(ModelState)) 
+                {
+                    string errors = ModelState.ConcatError();
+                
+                    return BadRequest(errors);
+                }
+            }
+
+            return Ok("true");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("deleteAccount")]
-    public async Task<IActionResult> PostDeleteAccountAsync()
+    public async Task<ActionResult> PostDeleteAccountAsync()
     {
+        try
+        {
 
-        QuranHubUser quranHubUser = await _userManager.GetUserAsync(User);
+            QuranHubUser quranHubUser = await _userManager.GetUserAsync(User);
 
-        IdentityResult result = await _userManager.DeleteAsync(quranHubUser);
+            IdentityResult result = await _userManager.DeleteAsync(quranHubUser);
         
-        if (!result.Process(ModelState))
-        {
-            string errors = ModelState.ConcatError();
+            if (!result.Process(ModelState))
+            {
+                string errors = ModelState.ConcatError();
             
-            return BadRequest(errors);
+                return BadRequest(errors);
             
+            }
+
+            List<ShareablePost> shareablePostts = await _postRepository.GetShareablePostsByQuranHubUserIdAsync(quranHubUser.Id);
+
+            List<SharedPost> sharedPosts = await _postRepository.GetSharedPostsByQuranHubUserIdAsync(quranHubUser.Id);
+
+            foreach (var post in shareablePostts) 
+            {
+                await _postRepository.DeletePostAsync(post.PostId);
+            }
+
+            foreach (var post in sharedPosts)
+            {
+                await _postRepository.DeletePostAsync(post.PostId);
+            }
+
+            await _signInManager.SignOutAsync();
+
+            return Ok("true");
         }
-
-        List<ShareablePost> shareablePostts = await _postRepository.GetShareablePostsByQuranHubUserIdAsync(quranHubUser.Id);
-
-        List<SharedPost> sharedPosts = await _postRepository.GetSharedPostsByQuranHubUserIdAsync(quranHubUser.Id);
-
-        foreach (var post in shareablePostts) 
+        catch (Exception ex)
         {
-            await _postRepository.DeletePostAsync(post.PostId);
+            _logger.Error(ex.Message);
+            return BadRequest();
         }
-
-        foreach (var post in sharedPosts)
-        {
-            await _postRepository.DeletePostAsync(post.PostId);
-        }
-
-        await _signInManager.SignOutAsync();
-
-        return Ok("true"); 
     }
 
 }

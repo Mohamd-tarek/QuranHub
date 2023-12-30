@@ -5,7 +5,7 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public class DocumentaryController : ControllerBase
 {
-    private ILogger<DocumentaryController> _logger;
+    private readonly Serilog.ILogger _logger;
     private IDocumentaryRepository _documentaryRepository;
     private IVideoInfoViewModelsFactory _videoInfoViewModelsFactory;
     private INotificationViewModelsFactory _notificationViewModelsFactory;
@@ -16,7 +16,7 @@ public class DocumentaryController : ControllerBase
 
 
     public DocumentaryController(
-        ILogger<DocumentaryController> logger,
+        Serilog.ILogger logger,
         IDocumentaryRepository documentaryRepository,
         UserManager<QuranHubUser> userManager,
         IHubContext<NotificationHub> notificationHubContext,
@@ -41,82 +41,149 @@ public class DocumentaryController : ControllerBase
     }
 
     [HttpGet("PlayListsInfo")]
-    public async Task<IEnumerable<PlayListInfo>> GetPlayListsInfoAsync() 
+    public async Task<ActionResult<IEnumerable<PlayListInfo>>> GetPlayListsInfoAsync() 
     {
-        return await  this._documentaryRepository.GetPlayListsAsync();
+        try
+        {
+            return   Ok(await this._documentaryRepository.GetPlayListsAsync());
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("PlayListInfo/{PlaylistName}")]
-    public async Task<PlayListInfo> GetPlayListsInfoAsync(string PlaylistName)
+    public async Task<ActionResult<PlayListInfo>> GetPlayListsInfoAsync(string PlaylistName)
     {
-        return await this._documentaryRepository.GetPlayListByNameAsync(PlaylistName);
+        try
+        {
+            return  Ok(await this._documentaryRepository.GetPlayListByNameAsync(PlaylistName));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("VideoInfoForPlayList/{playListName}/{offset}/{amount}")]
-    public async Task<IEnumerable<VideoInfo>> GetVideoInfoForPlayList(string playListName, int offset = 0, int amount = 20) 
+    public async Task<ActionResult<IEnumerable<VideoInfo>>> GetVideoInfoForPlayList(string playListName, int offset = 0, int amount = 20) 
     {
-        return await  this._documentaryRepository.GetVideoInfoForPlayListAsync(playListName, offset, amount);
+        try
+        {
+            return Ok( await  this._documentaryRepository.GetVideoInfoForPlayListAsync(playListName, offset, amount));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("VideoInfo/{name}")]
-    public async Task<VideoInfoViewModel> GetVideoInfoAsync(string name) 
+    public async Task<ActionResult<VideoInfoViewModel>> GetVideoInfoAsync(string name) 
     {
-        VideoInfo videoInfo =  await  this._documentaryRepository.GetVideoInfoByNameAsync(name);
+        try
+        {
+            VideoInfo videoInfo =  await  this._documentaryRepository.GetVideoInfoByNameAsync(name);
 
-        return await this._videoInfoViewModelsFactory.BuildVideoInfoViewModelAsync(videoInfo);
+            return Ok( await this._videoInfoViewModelsFactory.BuildVideoInfoViewModelAsync(videoInfo));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("VideoInfo/{name}/{CommentId}")]
-    public async Task<VideoInfoViewModel> GetVideoInfoAsync(string name, int CommentId)
+    public async Task<ActionResult<VideoInfoViewModel>> GetVideoInfoAsync(string name, int CommentId)
     {
-        VideoInfo videoInfo = await this._documentaryRepository.GetVideoInfoByNameAsync(name);
+        try
+        {
+            VideoInfo videoInfo = await this._documentaryRepository.GetVideoInfoByNameAsync(name);
 
-        return await this._videoInfoViewModelsFactory.BuildVideoInfoViewModelAsync(videoInfo);
+            return Ok( await this._videoInfoViewModelsFactory.BuildVideoInfoViewModelAsync(videoInfo));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
-    
-
     [HttpGet("LoadMoreReacts/{VideoInfoId}/{Offset}/{Size}")]
-    public async Task<IEnumerable<ReactViewModel>> LoadMoreVideoInfoReacts(int VideoInfoId, int Offset, int Size)
+    public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMoreVideoInfoReacts(int VideoInfoId, int Offset, int Size)
     {
-        List<VideoInfoReact> videoInfoReacts = await _documentaryRepository.GetMoreVideoInfoReactsAsync(VideoInfoId, Offset, Size);
+        try
+        {
+            List<VideoInfoReact> videoInfoReacts = await _documentaryRepository.GetMoreVideoInfoReactsAsync(VideoInfoId, Offset, Size);
 
-        List<ReactViewModel> videoInfoReactsModels = _videoInfoViewModelsFactory.BuildVideoInfoReactsViewModel(videoInfoReacts);
+            List<ReactViewModel> videoInfoReactsModels = _videoInfoViewModelsFactory.BuildVideoInfoReactsViewModel(videoInfoReacts);
 
-        return videoInfoReactsModels;
+            return Ok(videoInfoReactsModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("LoadMoreComments/{VideoInfoId}/{Offset}/{Size}")]
-    public async Task<IEnumerable<CommentViewModel>> LoadMoreCommentsAsync(int VideoInfoId, int Offset, int Size)
+    public async Task<ActionResult<IEnumerable<CommentViewModel>>> LoadMoreCommentsAsync(int VideoInfoId, int Offset, int Size)
     {
-        List<VideoInfoComment> comments = await _documentaryRepository.GetMoreVideoInfoCommentsAsync(VideoInfoId, Offset, Size);
+        try
+        {
+            List<VideoInfoComment> comments = await _documentaryRepository.GetMoreVideoInfoCommentsAsync(VideoInfoId, Offset, Size);
 
-        List<CommentViewModel> commentViewModels = await _videoInfoViewModelsFactory.BuildCommentsViewModelAsync(comments);
+            List<CommentViewModel> commentViewModels = await _videoInfoViewModelsFactory.BuildCommentsViewModelAsync(comments);
 
-        return commentViewModels;
+            return Ok(commentViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("LoadMoreCommentReacts/{VideoInfoId}/{Offset}/{Size}")]
-    public async Task<IEnumerable<ReactViewModel>> LoadMoreCommentReactsAsync(int VideoInfoId, int Offset, int Size)
+    public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMoreCommentReactsAsync(int VideoInfoId, int Offset, int Size)
     {
-        List<VideoInfoCommentReact> comments = await _documentaryRepository.GetMoreVideoInfoCommentReactsAsync(VideoInfoId, Offset, Size);
+        try
+        {
+            List<VideoInfoCommentReact> comments = await _documentaryRepository.GetMoreVideoInfoCommentReactsAsync(VideoInfoId, Offset, Size);
 
-        List<ReactViewModel> commentReactViewModels = _videoInfoViewModelsFactory.BuildCommentReactsViewModel(comments);
+            List<ReactViewModel> commentReactViewModels = _videoInfoViewModelsFactory.BuildCommentReactsViewModel(comments);
 
-        return commentReactViewModels;
+            return Ok(commentReactViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
   
 
     [HttpPost("AddReact")]
-    public async Task<ReactViewModel> AddVideoInfoReactAsync([FromBody] VideoInfoReact videoInfoReact)
+    public async Task<ActionResult<ReactViewModel>> AddVideoInfoReactAsync([FromBody] VideoInfoReact videoInfoReact)
     {
-        VideoInfoReact VideoInfoReact = await _documentaryRepository.AddVideoInfoReactAsync(videoInfoReact
-            , _currentUser);
+        try
+        {
+            VideoInfoReact VideoInfoReact = await _documentaryRepository.AddVideoInfoReactAsync(videoInfoReact, _currentUser);
 
-       
-
-        return _videoInfoViewModelsFactory.BuildVideoInfoReactViewModel(VideoInfoReact);
+            return Ok(_videoInfoViewModelsFactory.BuildVideoInfoReactViewModel(VideoInfoReact));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpDelete("RemoveReact")]
@@ -138,36 +205,58 @@ public class DocumentaryController : ControllerBase
     }
 
     [HttpPost("AddComment")]
-    public async Task<CommentViewModel> AddCommentAsync([FromBody] VideoInfoComment comment)
+    public async Task<ActionResult<CommentViewModel>> AddCommentAsync([FromBody] VideoInfoComment comment)
     {
-        VideoInfoComment VideoInfoComment = await _documentaryRepository.AddVideoInfoCommentAsync(comment, _currentUser);
+        try
+        {
+            VideoInfoComment VideoInfoComment = await _documentaryRepository.AddVideoInfoCommentAsync(comment, _currentUser);
 
-       
-
-        return await _videoInfoViewModelsFactory.BuildCommentViewModelAsync(VideoInfoComment);
+            return Ok( await _videoInfoViewModelsFactory.BuildCommentViewModelAsync(VideoInfoComment));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpDelete("RemoveComment")]
-    public async Task<Boolean> RemoveCommentAsync(int commentId)
+    public async Task<ActionResult<bool>> RemoveCommentAsync(int commentId)
     {
-        return await _documentaryRepository.RemoveVideoInfoCommentAsync(commentId);
+        try
+        {
+            return Ok( await _documentaryRepository.RemoveVideoInfoCommentAsync(commentId));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("AddCommentReact")]
-    public async Task<ReactViewModel> AddCommentReactAsync([FromBody] VideoInfoCommentReact commentReact)
+    public async Task<ActionResult<ReactViewModel>> AddCommentReactAsync([FromBody] VideoInfoCommentReact commentReact)
     {
-        Tuple<VideoInfoCommentReact, VideoInfoCommentReactNotification> result = await _documentaryRepository.AddVideoInfoCommentReactAsync(commentReact, _currentUser);
-
-        var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
-
-        if (result.Item2.TargetUserId != null && result.Item2.TargetUserId != this._currentUser.Id && user.Online)
+        try
         {
-            CommentReactNotificationViewModel notification = this._notificationViewModelsFactory.BuildCommentReactNotificationViewModel(result.Item2);
+            Tuple<VideoInfoCommentReact, VideoInfoCommentReactNotification> result = await _documentaryRepository.AddVideoInfoCommentReactAsync(commentReact, _currentUser);
 
-            await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
+            var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
+
+            if (result.Item2.TargetUserId != null && result.Item2.TargetUserId != this._currentUser.Id && user.Online)
+            {
+                CommentReactNotificationViewModel notification = this._notificationViewModelsFactory.BuildCommentReactNotificationViewModel(result.Item2);
+
+                await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
+            }
+
+            return Ok( _videoInfoViewModelsFactory.BuildCommentReactViewModel(result.Item1));
         }
-
-        return _videoInfoViewModelsFactory.BuildCommentReactViewModel(result.Item1);
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpDelete("RemoveCommentReact")]
@@ -189,9 +278,17 @@ public class DocumentaryController : ControllerBase
     }
 
     [HttpGet("Verses")]
-    public async Task<IEnumerable<Verse>> GetVersesAsync()
+    public async Task<ActionResult<IEnumerable<Verse>>> GetVersesAsync()
     {
-        return await _documentaryRepository.GetVersesAsync();
+        try
+        {
+            return Ok( await _documentaryRepository.GetVersesAsync());
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
    

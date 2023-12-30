@@ -4,13 +4,13 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public partial class  ExternalAuthenticationController : ControllerBase
 {
-    private ILogger<ExternalAuthenticationController> _logger;
+    private readonly Serilog.ILogger _logger;
     private UserManager<QuranHubUser> _userManager;
     private SignInManager<QuranHubUser> _signInManager;
     private IConfiguration _configuration;
 
     public ExternalAuthenticationController(
-        ILogger<ExternalAuthenticationController> logger,
+        Serilog.ILogger logger,
         UserManager<QuranHubUser> userManager,
         SignInManager<QuranHubUser> signInManager,
         IConfiguration configuration)
@@ -23,120 +23,168 @@ public partial class  ExternalAuthenticationController : ControllerBase
     }
 
     [HttpGet("externalSchemas")]
-    public async  Task<IEnumerable<ExternalProviderViewModel>> GetExternalSchemasAsync()
+    public async  Task<ActionResult<IEnumerable<ExternalProviderViewModel>>> GetExternalSchemasAsync()
     {
-       IEnumerable<AuthenticationScheme> ExternalSchemes = await  _signInManager.GetExternalAuthenticationSchemesAsync();
-
-        return ExternalSchemes.Select(schema =>new ExternalProviderViewModel 
+        try
         {
-            name = schema.Name.ToLower(),
-            displayName = schema.DisplayName
-        });
+            IEnumerable<AuthenticationScheme> ExternalSchemes = await  _signInManager.GetExternalAuthenticationSchemesAsync();
+
+            return Ok(ExternalSchemes.Select(schema =>new ExternalProviderViewModel 
+            {
+                name = schema.Name.ToLower(),
+                displayName = schema.DisplayName
+            }));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("LoginWithExternalProvider/{provider}")]
-    public IActionResult PosLoginWithExternalProviderAsync(string provider) 
+    public ActionResult PosLoginWithExternalProviderAsync(string provider) 
     {
-        string callbackUrl = GetUrl("auth/login/LoginExternalCallback");
+        try
+        {
+            string callbackUrl = GetUrl("auth/login/LoginExternalCallback");
 
-        AuthenticationProperties props =
-           _signInManager.ConfigureExternalAuthenticationProperties(provider, callbackUrl);
+            AuthenticationProperties props =
+               _signInManager.ConfigureExternalAuthenticationProperties(provider, callbackUrl);
 
-        return new ChallengeResult(provider, props);
+            return new ChallengeResult(provider, props);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("LoginWithExternalProviderCallback")]
-    public async Task<object> GetLoginWithExternalProviderCallbackAsync()
+    public async Task<ActionResult<object>> GetLoginWithExternalProviderCallbackAsync()
     {
-        ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-
-        string email = info?.Principal?.FindFirst(ClaimTypes.Email)?.Value;
-
-        foreach(var claim in info?.Principal.Claims)
+        try
         {
-            Console.WriteLine(claim.Value);
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+
+            string email = info?.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+
+            foreach(var claim in info?.Principal.Claims)
+            {
+                Console.WriteLine(claim.Value);
+            }
+
+            QuranHubUser user = await _userManager.FindByEmailAsync(email);
+
+            SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
+            {
+                Subject = (await _signInManager.CreateUserPrincipalAsync(user)).Identities.First(),
+
+                Expires = DateTime.Now.AddHours(int.Parse(_configuration["BearerTokens:ExpiryHours"])),
+
+                SigningCredentials = new SigningCredentials( new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                                                                   _configuration["BearerTokens:Key"])),
+                                                              SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+
+            SecurityToken securityToken = handler.CreateToken(descriptor);
+
+            return Ok(new { success = true, token = handler.WriteToken(securityToken) });
         }
-
-        QuranHubUser user = await _userManager.FindByEmailAsync(email);
-
-        SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
+        catch (Exception ex)
         {
-            Subject = (await _signInManager.CreateUserPrincipalAsync(user)).Identities.First(),
-
-            Expires = DateTime.Now.AddHours(int.Parse(_configuration["BearerTokens:ExpiryHours"])),
-
-            SigningCredentials = new SigningCredentials( new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                                                               _configuration["BearerTokens:Key"])),
-                                                          SecurityAlgorithms.HmacSha256Signature)
-        };
-
-        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-
-        SecurityToken securityToken = handler.CreateToken(descriptor);
-
-        return new { success = true, token = handler.WriteToken(securityToken) };
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
 
     }
 
     [HttpPost("SignupWithExternalProvider/{provider}")]
-    public IActionResult PostSignupWithExternalProvider(string provider) 
+    public ActionResult PostSignupWithExternalProvider(string provider) 
     {
-        string callbackUrl = GetUrl("auth/signup/SignUpExternalCallback");
+        try
+        {
+            string callbackUrl = GetUrl("auth/signup/SignUpExternalCallback");
 
-        AuthenticationProperties props = _signInManager.ConfigureExternalAuthenticationProperties(provider, callbackUrl);
+            AuthenticationProperties props = _signInManager.ConfigureExternalAuthenticationProperties(provider, callbackUrl);
 
-        return new ChallengeResult(provider, props);
+            return new ChallengeResult(provider, props);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
      
     [HttpGet("SignupWithExternalProviderCallback")]
-    public async Task<IActionResult> GetSignupWithExternalProviderCallbackAsync() 
+    public async Task<ActionResult> GetSignupWithExternalProviderCallbackAsync() 
     {
-        ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-
-        string email = info?.Principal?.FindFirst(ClaimTypes.Email)?.Value;
-
-        foreach (var claim in info?.Principal.Claims)
+        try
         {
-            Console.WriteLine(claim.Value);
-        }
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
 
-        if (string.IsNullOrEmpty(email))
-        {
-            Console.WriteLine("External service has not provided an email address.");
+            string email = info?.Principal?.FindFirst(ClaimTypes.Email)?.Value;
 
-            return BadRequest(new {message = "External service has not provided an email address."});  
-        }
-        else if ((await _userManager.FindByEmailAsync(email)) != null) 
-        {
-            Console.WriteLine("An account already exists with your email address login instead");
+            foreach (var claim in info?.Principal.Claims)
+            {
+                Console.WriteLine(claim.Value);
+            }
 
-            return BadRequest(new {message = "An account already exists with your email address login instead"});  
-        }
+            if (string.IsNullOrEmpty(email))
+            {
+                Console.WriteLine("External service has not provided an email address.");
 
-        QuranHubUser quranHubUser = new QuranHubUser 
-        {
-            UserName = email,
-            Email = email,
-            EmailConfirmed = true
-        };
+                return BadRequest(new {message = "External service has not provided an email address."});  
+            }
+            else if ((await _userManager.FindByEmailAsync(email)) != null) 
+            {
+                Console.WriteLine("An account already exists with your email address login instead");
 
-        IdentityResult result = await _userManager.CreateAsync(quranHubUser);
+                return BadRequest(new {message = "An account already exists with your email address login instead"});  
+            }
 
-        if (result.Succeeded) 
-        {
-            quranHubUser = await _userManager.FindByEmailAsync(email);
+            QuranHubUser quranHubUser = new QuranHubUser 
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true
+            };
 
-            result = await _userManager.AddLoginAsync(quranHubUser, info);
+            IdentityResult result = await _userManager.CreateAsync(quranHubUser);
 
-            return  Ok("true");
-        }
+            if (result.Succeeded) 
+            {
+                quranHubUser = await _userManager.FindByEmailAsync(email);
+
+                result = await _userManager.AddLoginAsync(quranHubUser, info);
+
+                return  Ok("true");
+            }
         
-        return BadRequest(new {message = "An account could not be created."});  
+            return BadRequest(new {message = "An account could not be created."});
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     private string GetUrl(string routeName)
     {
-        return _configuration["FrontendUrls:Host"] + "/" + routeName;
+        try
+        {
+            return _configuration["FrontendUrls:Host"] + "/" + routeName;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return null;
+        }
     }
 }
 

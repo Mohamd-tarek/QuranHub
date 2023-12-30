@@ -4,23 +4,40 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public class SessionController : ControllerBase
 {
-    private ILogger<SessionController> _logger;
+    private readonly Serilog.ILogger _logger;
 
-    public SessionController(ILogger<SessionController> logger)
+    public SessionController(Serilog.ILogger logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger)); 
 
     }
 
     [HttpGet("state")]
-    public IActionResult GetState()
+    public ActionResult GetState()
     {
-        return Ok(HttpContext.Session.GetString("state"));
+        try
+        {
+            return Ok(HttpContext.Session.GetString("state"));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpPost("state")]
-    public void StoreState([FromBody] Dictionary<string, object> state)
+    public ActionResult StoreState([FromBody] Dictionary<string, object> state)
     {
-      HttpContext.Session.SetSession("state", state);
+        try
+        {
+            HttpContext.Session.SetSession("state", state);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 }

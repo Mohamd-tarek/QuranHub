@@ -6,14 +6,14 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public class NotificationController : ControllerBase
 {
-    private ILogger<NotificationController> _logger;
+    private readonly Serilog.ILogger _logger;
     private INotificationRepository _notificationRepository;
     private INotificationViewModelsFactory _notificationViewModelsFactory;
     private UserManager<QuranHubUser> _userManager;
     private HttpContext _httpContext;
     private QuranHubUser _currentUser;
     public NotificationController(
-        ILogger<NotificationController> logger,
+        Serilog.ILogger logger,
         INotificationRepository notificationRepository,
         INotificationViewModelsFactory notificationViewModelsFactory,   
         UserManager<QuranHubUser> userManager,
@@ -33,111 +33,216 @@ public class NotificationController : ControllerBase
         }
     }
     [HttpGet("GetNotificationById/{notificationId}")]
-    public async Task<object> GetNotificationByIdAsync(int notificationId)
-    {   
-        Notification notification = await _notificationRepository.GetNotificationByIdAsync(notificationId);
+    public async Task<ActionResult<object>> GetNotificationByIdAsync(int notificationId)
+    {
+        try
+        {
+            Notification notification = await _notificationRepository.GetNotificationByIdAsync(notificationId);
         
-        switch(notification.Type){
-            case "FollowNotification" : return await this.GetFollowNotificationByIdAsync(notificationId); break;
-            case "PostReactNotification" : return await this.GetPostReactNotificationByIdAsync(notificationId); break;
-            case "ShareNotification" : return await this.GetShareNotificationByIdAsync(notificationId); break;
-            case "PostShareNotification": return await this.GetPostShareNotificationByIdAsync(notificationId); break;
-            case "CommentNotification" : return await this.GetCommentNotificationByIdAsync(notificationId); break;
-            case "PostCommentNotification": return await this.GetPostCommentNotificationByIdAsync(notificationId); break;
-            case "CommentReactNotification" : return await this.GetCommentReactNotificationByIdAsync(notificationId); break;
-            case "PostCommentReactNotification": return await this.GetPostCommentReactNotificationByIdAsync(notificationId); break;
-            default: return  this._notificationViewModelsFactory.BuildNotificationViewModel(notification); break;
+            switch(notification.Type){
+                case "FollowNotification" : return Ok( await this.GetFollowNotificationByIdAsync(notificationId)); break;
+                case "PostReactNotification" : return Ok(await this.GetPostReactNotificationByIdAsync(notificationId)); break;
+                case "ShareNotification" : return Ok(await this.GetShareNotificationByIdAsync(notificationId)); break;
+                case "PostShareNotification": return Ok(await this.GetPostShareNotificationByIdAsync(notificationId)); break;
+                case "CommentNotification" : return Ok(await this.GetCommentNotificationByIdAsync(notificationId)); break;
+                case "PostCommentNotification": return Ok(await this.GetPostCommentNotificationByIdAsync(notificationId)); break;
+                case "CommentReactNotification" : return Ok(await this.GetCommentReactNotificationByIdAsync(notificationId)); break;
+                case "PostCommentReactNotification": return Ok(await this.GetPostCommentReactNotificationByIdAsync(notificationId)); break;
+                default: return Ok(this._notificationViewModelsFactory.BuildNotificationViewModel(notification)); break;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
         }
     }
-    private async Task<FollowNotificationViewModel> GetFollowNotificationByIdAsync(int notifictionId)
+    private async Task<ActionResult<FollowNotificationViewModel>> GetFollowNotificationByIdAsync(int notifictionId)
     {
-        FollowNotification notification =  await _notificationRepository.GetFollowNotificationByIdAsync(notifictionId);
-        FollowNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildFollowNotificationViewModel(notification);
-        return notificationViewModel;
+        try
+        {
+            FollowNotification notification =  await _notificationRepository.GetFollowNotificationByIdAsync(notifictionId);
+            FollowNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildFollowNotificationViewModel(notification);
+            return Ok(notificationViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
-    private async Task<ShareNotificationViewModel> GetShareNotificationByIdAsync(int notifictionId)
+    private async Task<ActionResult<ShareNotificationViewModel>> GetShareNotificationByIdAsync(int notifictionId)
     {
-        ShareNotification notification =  await _notificationRepository.GetShareNotificationByIdAsync(notifictionId);
-        ShareNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildShareNotificationViewModel(notification);
-        return notificationViewModel;
+        try
+        {
+            ShareNotification notification =  await _notificationRepository.GetShareNotificationByIdAsync(notifictionId);
+            ShareNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildShareNotificationViewModel(notification);
+            return Ok(notificationViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
-    private async Task<ShareNotificationViewModel> GetPostShareNotificationByIdAsync(int notifictionId)
+    private async Task<ActionResult<ShareNotificationViewModel>> GetPostShareNotificationByIdAsync(int notifictionId)
     {
-        PostShareNotification notification = await _notificationRepository.GetPostShareNotificationByIdAsync(notifictionId);
-        Console.WriteLine("notification.PostId: " + notification.PostId);
-        ShareNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildPostShareNotificationViewModel(notification);
-        return notificationViewModel;
+        try
+        {
+            PostShareNotification notification = await _notificationRepository.GetPostShareNotificationByIdAsync(notifictionId);
+            Console.WriteLine("notification.PostId: " + notification.PostId);
+            ShareNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildPostShareNotificationViewModel(notification);
+            return Ok(notificationViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
-    private async Task<CommentNotificationViewModel> GetCommentNotificationByIdAsync(int notifictionId)
+    private async Task<ActionResult<CommentNotificationViewModel>> GetCommentNotificationByIdAsync(int notifictionId)
     {
-        CommentNotification notification =  await _notificationRepository.GetCommentNotificationByIdAsync(notifictionId);
-        CommentNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildCommentNotificationViewModel(notification);
-        return notificationViewModel;
+        try
+        {
+            CommentNotification notification =  await _notificationRepository.GetCommentNotificationByIdAsync(notifictionId);
+            CommentNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildCommentNotificationViewModel(notification);
+            return Ok(notificationViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
-    private async Task<CommentNotificationViewModel> GetPostCommentNotificationByIdAsync(int notifictionId)
+    private async Task<ActionResult<CommentNotificationViewModel>> GetPostCommentNotificationByIdAsync(int notifictionId)
     {
-        PostCommentNotification notification = await _notificationRepository.GetPostCommentNotificationByIdAsync(notifictionId);
-        CommentNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildPostCommentNotificationViewModel(notification);
-        return notificationViewModel;
+        try
+        {
+            PostCommentNotification notification = await _notificationRepository.GetPostCommentNotificationByIdAsync(notifictionId);
+            CommentNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildPostCommentNotificationViewModel(notification);
+            return Ok(notificationViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
-    private async Task<CommentReactNotificationViewModel> GetCommentReactNotificationByIdAsync(int notifictionId)
+    private async Task<ActionResult<CommentReactNotificationViewModel>> GetCommentReactNotificationByIdAsync(int notifictionId)
     {
-        CommentReactNotification notification =  await _notificationRepository.GetCommentReactNotificationByIdAsync(notifictionId);
-        CommentReactNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildCommentReactNotificationViewModel(notification);
-        return notificationViewModel;
+        try
+        {
+            CommentReactNotification notification =  await _notificationRepository.GetCommentReactNotificationByIdAsync(notifictionId);
+            CommentReactNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildCommentReactNotificationViewModel(notification);
+            return Ok(notificationViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
-    private async Task<CommentReactNotificationViewModel> GetPostCommentReactNotificationByIdAsync(int notifictionId)
+    private async Task<ActionResult<CommentReactNotificationViewModel>> GetPostCommentReactNotificationByIdAsync(int notifictionId)
     {
-        PostCommentReactNotification notification = await _notificationRepository.GetPostCommentReactNotificationByIdAsync(notifictionId);
-        CommentReactNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildPostCommentReactNotificationViewModel(notification);
-        return notificationViewModel;
+        try
+        {
+            PostCommentReactNotification notification = await _notificationRepository.GetPostCommentReactNotificationByIdAsync(notifictionId);
+            CommentReactNotificationViewModel notificationViewModel = this._notificationViewModelsFactory.BuildPostCommentReactNotificationViewModel(notification);
+            return Ok(notificationViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
-    private async Task<PostReactNotificationViewModel> GetPostReactNotificationByIdAsync(int notifictionId)
+    private async Task<ActionResult<PostReactNotificationViewModel>> GetPostReactNotificationByIdAsync(int notifictionId)
     {
-        PostReactNotification notification =  await _notificationRepository.GetPostReactNotificationByIdAsync(notifictionId);
-        PostReactNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildPostReactNotificationViewModel(notification);
-        return notificationViewModel;
+        try
+        {
+            PostReactNotification notification =  await _notificationRepository.GetPostReactNotificationByIdAsync(notifictionId);
+            PostReactNotificationViewModel notificationViewModel =  this._notificationViewModelsFactory.BuildPostReactNotificationViewModel(notification);
+            return Ok(notificationViewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("Recent")]
-    public async Task<IEnumerable<NotificationViewModel>> GetRecentNotificationsAsync() 
+    public async Task<ActionResult<IEnumerable<NotificationViewModel>>> GetRecentNotificationsAsync() 
     {
-        List<Notification> notifications =  await _notificationRepository.GetUserNotificationsAsync(_currentUser);
+        try
+        {
+            List<Notification> notifications =  await _notificationRepository.GetUserNotificationsAsync(_currentUser);
 
-        List<NotificationViewModel> notificationsViewModels =  this._notificationViewModelsFactory.BuildNotificationsViewModel(notifications);
+            List<NotificationViewModel> notificationsViewModels =  this._notificationViewModelsFactory.BuildNotificationsViewModel(notifications);
 
-        return notificationsViewModels;
+            return Ok(notificationsViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("LoadMoreNotifications/{Offset}/{Size}")]
-    public async Task<IEnumerable<object>> LoadMoreNotificatinsAsync(int Offset, int Size) 
+    public async Task<ActionResult<IEnumerable<object>>> LoadMoreNotificatinsAsync(int Offset, int Size) 
     {
-        List<Notification> notifications = await _notificationRepository.GetMoreNotificationsAsync(Offset, Size, _currentUser);
+        try
+        {
+            List<Notification> notifications = await _notificationRepository.GetMoreNotificationsAsync(Offset, Size, _currentUser);
 
-        List<NotificationViewModel> notificationsViewModels =  this._notificationViewModelsFactory.BuildNotificationsViewModel(notifications);
+            List<NotificationViewModel> notificationsViewModels =  this._notificationViewModelsFactory.BuildNotificationsViewModel(notifications);
 
-        return notificationsViewModels;
+            return Ok(notificationsViewModels);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("Seen/{NotificationId}")]
-    public async Task MarkNotificationAsSeenAsync(int NotifictionId)
+    public async Task<ActionResult> MarkNotificationAsSeenAsync(int NotifictionId)
     {
-        await _notificationRepository.MarkNotificationAsSeenAsync(NotifictionId);
+        try
+        {
+            await _notificationRepository.MarkNotificationAsSeenAsync(NotifictionId);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpDelete("Delete")]
     public async Task<ActionResult> DeleteNotificationAsync(int notificationId)
     {
-       if( await _notificationRepository.DeleteNotificationAsync(notificationId))
-       {
-            return Ok();
-       }
-       else
-       {
+        try
+        {
+            if ( await _notificationRepository.DeleteNotificationAsync(notificationId))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
             return BadRequest();
-       }
+        }
     }
 }

@@ -4,13 +4,13 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public  class AnalysisController : ControllerBase
 {
-    private ILogger<AnalysisController> _logger;
+    private readonly Serilog.ILogger _logger;
     private IQuranRepository _quranRepository;
     private IMemoryCache _cache;
     private AnalysisService _analysis;
 
     public  AnalysisController(
-        ILogger<AnalysisController> logger,
+        Serilog.ILogger logger,
         IQuranRepository quranRepository,
         AnalysisService analysis,
         IMemoryCache memoryCache)
@@ -22,31 +22,55 @@ public  class AnalysisController : ControllerBase
     }
 
     [HttpGet("topics")]
-    public List<List<QuranClean>> GroupMainTopics()
+    public ActionResult<List<List<QuranClean>>> GroupMainTopics()
     {
-        return _analysis.GroupMainTopics();
+        try
+        {
+            return Ok(_analysis.GroupMainTopics());
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("{id}")]
-    public IEnumerable<QuranClean> GetSimilarAyas(long id) 
+    public ActionResult<IEnumerable<QuranClean>> GetSimilarAyas(long id) 
     {
-        return _analysis.GetSimilarAyas(id);
+        try
+        {
+            return Ok(_analysis.GetSimilarAyas(id));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("uniques")]
-    public IEnumerable<QuranClean> GetUniqueAyas() 
-    {            
-        List<QuranClean> ans;
-
-        if (this._cache.TryGetValue("uniques", out ans))
+    public ActionResult<IEnumerable<QuranClean>> GetUniqueAyas() 
+    {
+        try
         {
-            return ans;
-        }
+            List<QuranClean> ans;
 
-        ans = _analysis.GetUniqueAyas();
+            if (this._cache.TryGetValue("uniques", out ans))
+            {
+                return Ok(ans);
+            }
 
-        this._cache.Set("uniques" , ans);
+            ans = _analysis.GetUniqueAyas();
+
+            this._cache.Set("uniques" , ans);
         
-        return ans;
+            return Ok(ans);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     } 
 }

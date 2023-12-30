@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using QuranHub.Web;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,21 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSwaggerGen();
+
+builder.Host.UseSerilog((context, configuration) =>
+{
+    configuration.Enrich.FromLogContext()
+        .Enrich.WithMachineName()
+        .Enrich.WithEnvironmentUserName()
+        .Enrich.WithProcessId()
+        .Enrich.WithProcessName()
+        .Enrich.WithThreadId()
+        .Enrich.WithThreadName()
+        .WriteTo.File(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Log/log.txt"))
+        //.WriteTo.Seq("http://localhost:5341", Serilog.Events.LogEventLevel.Debug)
+        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
+        .ReadFrom.Configuration(context.Configuration);
+});
 
 builder.AddCustomDatabase();
 

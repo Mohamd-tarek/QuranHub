@@ -4,14 +4,14 @@ namespace QuranHub.Web.Controllers;
 [Route("api/[controller]")]
 public class QuranController : ControllerBase
 {
-    private ILogger<QuranController> _logger;
+    private readonly Serilog.ILogger _logger;
     private IQuranRepository _quranRepository;
     private UserManager<QuranHubUser> _userManager;
     private HttpContext _httpContext;
     private QuranHubUser _currentUser;
 
     public QuranController(
-        ILogger<QuranController> logger,
+        Serilog.ILogger logger,
         IQuranRepository quranRepository,
         UserManager<QuranHubUser> userManager,
         IHttpContextAccessor httpContextAccessor)
@@ -30,39 +30,68 @@ public class QuranController : ControllerBase
     }
 
     [HttpGet("QuranInfo/{type}")]
-    public IEnumerable<object> GetQuranInfo(string type) 
+    public ActionResult<IEnumerable<object>> GetQuranInfo(string type) 
     {
-        return _quranRepository.GetQuranInfo(type);
+        try
+        {
+            return Ok(_quranRepository.GetQuranInfo(type));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [HttpGet("MindMap/{id}")]
-    public async Task<byte[]> GetMindMap(long id) 
+    public async Task<ActionResult<byte[]>> GetMindMap(long id) 
     {
-        return await _quranRepository.GetMindMap(id);
+        try
+        {
+            return Ok(await _quranRepository.GetMindMap(id));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpGet("Note/{index}")]
-    public async Task<Note> GetNote(long index)
+    public async Task<ActionResult<Note>> GetNote(long index)
     {
-        return await _quranRepository.GetNote(index, _currentUser);  
+        try
+        {
+            return Ok(await _quranRepository.GetNote(index, _currentUser));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+            return BadRequest();
+        }
     }
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost("Note")]
-    public async  Task<IActionResult> CreateNote([FromBody] Note note)
+    public async  Task<ActionResult> CreateNote([FromBody] Note note)
     {
-        _logger.LogDebug(note.Index,ToString());
-
-
-        if( await _quranRepository.AddNote(note, _currentUser))
+        try
         {
-            return Ok();
+            if ( await _quranRepository.AddNote(note, _currentUser))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
-        else
+        catch (Exception ex)
         {
+            _logger.Error(ex.Message);
             return BadRequest();
-        }   
+        }
     }
 
 }

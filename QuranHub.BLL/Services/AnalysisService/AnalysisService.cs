@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 
 namespace QuranHub.BLL.Services;
-
+/// <inheritdoc/>
 public partial class AnalysisService 
 {
     private IQuranRepository _quranRepository;

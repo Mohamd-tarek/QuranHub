@@ -1,85 +1,121 @@
-﻿namespace QuranHub.BLL.Services;
+﻿using Microsoft.Extensions.Logging;
+
+namespace QuranHub.BLL.Services;
 
 public partial class AnalysisService 
 {
     private IQuranRepository _quranRepository;
     private Dictionary<QuranClean, List<QuranClean>> _quranGraph;
     private Dictionary<string, double> _weightVector;
+    ILogger<AnalysisService> _logger;
     protected virtual double Accuracy { get; set;} = .7;
 
-    public  AnalysisService(IQuranRepository quranRepository)
+    public  AnalysisService(IQuranRepository quranRepository, ILogger<AnalysisService> logger)
     {
         _quranRepository = quranRepository;
         this.BuildWeightVector();
+        _logger = logger;
         // this.BuildGraph();
     }
 
     private void BuildGraph()
     {
-        List<QuranClean> quran = this._quranRepository.QuranClean.ToList();
-
-        this._quranGraph = new Dictionary<QuranClean, List<QuranClean>>();
-
-        for (int aya = 0; aya < quran.Count; ++aya)
+        try
         {
-            for (int nxtAya = aya + 1; nxtAya < quran.Count; ++nxtAya)
+            List<QuranClean> quran = this._quranRepository.QuranClean.ToList();
+
+            this._quranGraph = new Dictionary<QuranClean, List<QuranClean>>();
+
+            for (int aya = 0; aya < quran.Count; ++aya)
             {
-                if (this.ComputeSimilarity(quran[aya].Text, quran[nxtAya].Text) > 0)
+                for (int nxtAya = aya + 1; nxtAya < quran.Count; ++nxtAya)
                 {
-                    this.InsertEdges(quran[aya], quran[nxtAya]);
+                    if (this.ComputeSimilarity(quran[aya].Text, quran[nxtAya].Text) > 0)
+                    {
+                        this.InsertEdges(quran[aya], quran[nxtAya]);
+                    }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return;
         }
     }
 
     private void InsertEdges(QuranClean aya1, QuranClean aya2)
     {
-        if (!this._quranGraph.ContainsKey(aya1))
+        try
         {
-           this._quranGraph[aya1] = new List<QuranClean>();
-        }
+            if (!this._quranGraph.ContainsKey(aya1))
+            {
+               this._quranGraph[aya1] = new List<QuranClean>();
+            }
 
-        if (!this._quranGraph.ContainsKey(aya2))
+            if (!this._quranGraph.ContainsKey(aya2))
+            {
+               this._quranGraph[aya2] = new List<QuranClean>();
+            }
+
+            this._quranGraph[aya1].Add(aya2);
+
+            this._quranGraph[aya2].Add(aya1);
+        }
+        catch (Exception ex)
         {
-           this._quranGraph[aya2] = new List<QuranClean>();
+            _logger.LogError(ex.Message);
+            return;
         }
-
-        this._quranGraph[aya1].Add(aya2);
-
-        this._quranGraph[aya2].Add(aya1);
     }
 
     private void BuildWeightVector()
     {
-        this._weightVector = new Dictionary<string, double>();
-
-        List<WeightVectorDimention> WeightVectorDimentions = this._quranRepository.WeightVectorDimentions.ToList();
-
-        foreach(var weightVectorDimention in WeightVectorDimentions)
+        try
         {
-            this._weightVector[weightVectorDimention.Word] = weightVectorDimention.Value;
+            this._weightVector = new Dictionary<string, double>();
+
+            List<WeightVectorDimention> WeightVectorDimentions = this._quranRepository.WeightVectorDimentions.ToList();
+
+            foreach(var weightVectorDimention in WeightVectorDimentions)
+            {
+                this._weightVector[weightVectorDimention.Word] = weightVectorDimention.Value;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return;
         }
     }
 
     public List<QuranClean> GetUniqueAyas()
-    {            
-        List<QuranClean> ans = new List<QuranClean>();
-
-        List<QuranClean> quran = this._quranRepository.QuranClean.ToList();
-
-        SortedDictionary<double, List<QuranClean>> similarAyasSortedByScore = new (new DescendingComparer<double>());
-
-        foreach (var aya in quran) 
+    {
+        try
         {
-            List<QuranClean> result = (List<QuranClean>)GetSimilarAyas(aya.Index);
+            List<QuranClean> ans = new List<QuranClean>();
 
-            if(result.Count == 0)
+            List<QuranClean> quran = this._quranRepository.QuranClean.ToList();
+
+            SortedDictionary<double, List<QuranClean>> similarAyasSortedByScore = new (new DescendingComparer<double>());
+
+            foreach (var aya in quran) 
             {
-                ans.Add(aya);
-            }
-        }
+                List<QuranClean> result = (List<QuranClean>)GetSimilarAyas(aya.Index);
 
-        return ans;
+                if(result.Count == 0)
+                {
+                    ans.Add(aya);
+                }
+            }
+
+            return ans;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
 }
 
@@ -106,5 +142,6 @@ public static class LinqExtension
         }
 
         return result;
-    }
+
+     }
 }

@@ -1,6 +1,8 @@
 ﻿
 namespace QuranHub.Domain.Repositories;
-
+/// <summary>
+/// represent quran repository
+/// </summary>
 public interface IQuranRepository 
 {
 
@@ -25,13 +27,36 @@ public interface IQuranRepository
     public IEnumerable<Sajda> Sajdas  { get; }
 
     public IEnumerable<WeightVectorDimention> WeightVectorDimentions { get; }
-
-    public IEnumerable<object> GetQuranInfo(string type) ;
+    /// <summary>
+    /// get quran info
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public IEnumerable<object> GetQuranInfo(string type);
+    /// <summary>
+    /// get note 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public Task<Note> GetNote(long id, QuranHubUser user);
-    public  Task<byte[]> GetMindMap(long id) ;
+    /// <summary>
+    /// get mind map
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public  Task<byte[]> GetMindMap(long id);
+    /// <summary>
+    /// add note 
+    /// </summary>
+    /// <param name="note"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public  Task<bool> AddNote(Note note, QuranHubUser user);
+    /// <summary>
+    /// edit weight vector
+    /// </summary>
+    /// <param name="values"></param>
+    /// <returns></returns>
     public Task EditWeightVectorAsync(Dictionary<string, double> values);
-
-
-
 }

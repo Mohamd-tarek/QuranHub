@@ -20,32 +20,52 @@ public class VideoInfoComment :Comment
 
     public VideoInfoCommentReact AddVideoInfoCommentReact(string quranHubUserId, int type = 0)
     {
+        try
+        {
+            var VideoInfoCommentReact = new VideoInfoCommentReact(quranHubUserId, CommentId, VideoInfoId, type);
 
-        var VideoInfoCommentReact = new VideoInfoCommentReact(quranHubUserId, CommentId, VideoInfoId, type);
+            VideoInfoCommentReacts.Add(VideoInfoCommentReact);
 
-        VideoInfoCommentReacts.Add(VideoInfoCommentReact);
+            ReactsCount++;
 
-        ReactsCount++;
-
-        return VideoInfoCommentReact;
+            return VideoInfoCommentReact;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public VideoInfoCommentReactNotification AddVideoInfoCommentReactNotifiaction(QuranHubUser quranHubUser, int reactId)
     {
-        string message = quranHubUser.UserName + " reacted to your comment "
-           + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
+        try
+        {
+            string message = quranHubUser.UserName + " reacted to your comment "
+               + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
 
-        var CommentReactNotification = new VideoInfoCommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.CommentId, reactId, this.VideoInfoId);
+            var CommentReactNotification = new VideoInfoCommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.CommentId, reactId, this.VideoInfoId);
 
-        VideoInfoCommentReactNotifications.Add(CommentReactNotification);
-        return CommentReactNotification;
+            VideoInfoCommentReactNotifications.Add(CommentReactNotification);
+            return CommentReactNotification;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public void RemoveVideoInfoCommentReact(int VideoInfoCommentReactId)
     {
-        VideoInfoCommentReacts.Remove(new VideoInfoCommentReact() {ReactId = VideoInfoCommentReactId });
+        try
+        {
+            VideoInfoCommentReacts.Remove(new VideoInfoCommentReact() {ReactId = VideoInfoCommentReactId });
 
-        this.RemoveCommentReact(VideoInfoCommentReactId);
+            this.RemoveCommentReact(VideoInfoCommentReactId);
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
 
     }
 

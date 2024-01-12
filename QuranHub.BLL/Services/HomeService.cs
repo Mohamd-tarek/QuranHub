@@ -1,4 +1,7 @@
-﻿namespace QuranHub.BLL.Services;
+﻿using FFmpeg.AutoGen;
+using Microsoft.Extensions.Logging;
+
+namespace QuranHub.BLL.Services;
 
 public class HomeService : IHomeService
 {   
@@ -6,75 +9,135 @@ public class HomeService : IHomeService
     private UserManager<QuranHubUser> _userManager;
     private IPostRepository _postRepository;
     private IFollowRepository _followRepository;
+    private ILogger<HomeService> _logger;
 
-   
+
+
     public  HomeService(
         UserManager<QuranHubUser> userManager,
         IFollowRepository followRepository,
-        IPostRepository postRepository)
+        IPostRepository postRepository,
+        ILogger<HomeService> logger)
     {
         _userManager = userManager;
         _followRepository = followRepository;
         _postRepository = postRepository;  
+        _logger = logger;
     }
 
     public async Task<ShareablePost> CreatePostAsync(ShareablePost post)
     {
-        return await this._postRepository.CreatePostAsync(post);
+        try
+        {
+            return await this._postRepository.CreatePostAsync(post);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
 
     public async Task<List<QuranHubUser>> GetUserFollowedsAsync(string userId)
     {
-        return await this._followRepository.GetOrderedUserFollowedsAsync(userId);
+        try
+        {
+            return await this._followRepository.GetOrderedUserFollowedsAsync(userId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
 
     public async Task<List<ShareablePost>> GetShareablePostsAsync(string userId)
     {
-        List<QuranHubUser> followed = await this.GetUserFollowedsAsync(userId);
-
-        List<ShareablePost> posts = new List<ShareablePost>();
-
-        foreach (var user in followed)
+        try
         {
-            List<ShareablePost> followedPosts = await _postRepository.GetShareablePostsByQuranHubUserIdAsync(user.Id);
-            posts.AddRange(followedPosts);
-        }
+            List<QuranHubUser> followed = await this.GetUserFollowedsAsync(userId);
 
-        return posts;
+            List<ShareablePost> posts = new List<ShareablePost>();
+
+            foreach (var user in followed)
+            {
+                List<ShareablePost> followedPosts = await _postRepository.GetShareablePostsByQuranHubUserIdAsync(user.Id);
+                posts.AddRange(followedPosts);
+            }
+
+            return posts;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
    
     public async Task<List<SharedPost>> GetSharedPostsAsync(string userId)
     {
-        List<QuranHubUser> followed = await this.GetUserFollowedsAsync(userId);
-
-        List<SharedPost> sharedPosts = new List<SharedPost>();
-
-        foreach (var user in followed)
+        try
         {
-            List<SharedPost> followedSharedPosts = await _postRepository.GetSharedPostsByQuranHubUserIdAsync(user.Id);
-            sharedPosts.AddRange(followedSharedPosts);
-        }
+            List<QuranHubUser> followed = await this.GetUserFollowedsAsync(userId);
 
-        return sharedPosts;
+            List<SharedPost> sharedPosts = new List<SharedPost>();
+
+            foreach (var user in followed)
+            {
+                List<SharedPost> followedSharedPosts = await _postRepository.GetSharedPostsByQuranHubUserIdAsync(user.Id);
+                sharedPosts.AddRange(followedSharedPosts);
+            }
+
+            return sharedPosts;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
    
-    public async Task<List<QuranHubUser>> FindUsersByNameAsync(string name) 
+    public async Task<List<QuranHubUser>> FindUsersByNameAsync(string name)
     {
-        List<QuranHubUser> users =  await _userManager.Users
+        try
+        {
+            List<QuranHubUser> users =  await _userManager.Users
                                                       .Where(user => user.UserName.Contains(name))
                                                       .ToListAsync();
 
-        return users;
+            return users;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
         
     }
 
     public async Task<List<ShareablePost>> SearchShareablePostsAsync(string keyword)
     {
-        return await this._postRepository.SearchShareablePostsAsync(keyword);
+        try
+        {
+            return await this._postRepository.SearchShareablePostsAsync(keyword);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
 
     public async Task<List<SharedPost>> SearchSharedPostsAsync(string keyword)
     {
-        return await this._postRepository.SearchSharedPostsAsync(keyword);
+        try
+        {
+            return await this._postRepository.SearchSharedPostsAsync(keyword);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
 }

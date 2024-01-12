@@ -27,6 +27,10 @@ export class StateDataService extends StateService  {
       "currentMindMapSura" : 1,
       "currentSimilarSura":  1,
       "currentSimilarAya": 1,
+      "currentLexicalSura":  1,
+      "currentLexicalAya": 1,
+      "currentSyntaxSura":  1,
+      "currentSyntaxAya": 1,
       "compareSetInfo": []
 
      });

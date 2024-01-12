@@ -21,32 +21,52 @@ public class PostComment :Comment
 
     public PostCommentReact AddPostCommentReact(string quranHubUserId, int type = 0)
     {
+        try
+        { 
+            var PostCommentReact = new PostCommentReact(quranHubUserId, CommentId, PostId, type);
 
-        var PostCommentReact = new PostCommentReact(quranHubUserId, CommentId, PostId, type);
+            PostCommentReacts.Add(PostCommentReact);
 
-        PostCommentReacts.Add(PostCommentReact);
+            ReactsCount++;
 
-        ReactsCount++;
-
-        return PostCommentReact;
+            return PostCommentReact;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public PostCommentReactNotification AddPostCommentReactNotifiaction(QuranHubUser quranHubUser, int reactId)
     {
-        string message = quranHubUser.UserName + " reacted to your comment "
-           + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
+        try
+        {
+            string message = quranHubUser.UserName + " reacted to your comment "
+               + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
 
-        var CommentReactNotification = new PostCommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.CommentId, reactId, this.PostId);
+            var CommentReactNotification = new PostCommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.CommentId, reactId, this.PostId);
 
-        PostCommentReactNotifications.Add(CommentReactNotification);
-        return CommentReactNotification;
+            PostCommentReactNotifications.Add(CommentReactNotification);
+            return CommentReactNotification;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public void RemovePostCommentReact(int PostCommentReactId)
     {
-        PostCommentReacts.Remove(new PostCommentReact() {ReactId = PostCommentReactId});
+        try
+        {
+            PostCommentReacts.Remove(new PostCommentReact() {ReactId = PostCommentReactId});
 
-        this.RemoveCommentReact(PostCommentReactId);
+            this.RemoveCommentReact(PostCommentReactId);
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
 
     }
 

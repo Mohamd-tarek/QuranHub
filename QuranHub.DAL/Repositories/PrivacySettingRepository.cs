@@ -1,77 +1,99 @@
 ﻿
-namespace QuranHub.DAL.Repositories;
+using Microsoft.Extensions.Logging;
 
+namespace QuranHub.DAL.Repositories;
+/// <inheritdoc/>
 public class PrivacySettingRepository : IPrivacySettingRepository
 {
     private IdentityDataContext _identityDataContext;
-    public PrivacySettingRepository(IdentityDataContext identityDataContext)
+    private readonly ILogger<PrivacySettingRepository> _logger;
+    public PrivacySettingRepository(
+        IdentityDataContext identityDataContext,
+        ILogger<PrivacySettingRepository> logger)
     {
-        _identityDataContext = identityDataContext;  
+        _identityDataContext = identityDataContext;
+        _logger = logger;
     }
 
     public async Task<PrivacySetting> GetPrivacySettingByIdAsync(int privacySettingId)
     {
-        PrivacySetting privacySetting = await this._identityDataContext.PrivacySettings.FindAsync(privacySettingId);
+        try
+        {
+            PrivacySetting privacySetting = await this._identityDataContext.PrivacySettings.FindAsync(privacySettingId);
 
-        privacySetting.QuranHubUser = null;
+            privacySetting.QuranHubUser = null;
 
-        return privacySetting;
+            return privacySetting;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
     public async Task<PrivacySetting> GetPrivacySettingByUserIdAsync(string userId)
     {
-        PrivacySetting? privacySetting =  await this._identityDataContext.PrivacySettings.Where(privacySetting => privacySetting.QuranHubUserId == userId).FirstOrDefaultAsync();
-
-        if(privacySetting == null)
+        try
         {
-            privacySetting = new PrivacySetting()
+            PrivacySetting? privacySetting =  await this._identityDataContext.PrivacySettings.Where(privacySetting => privacySetting.QuranHubUserId == userId).FirstOrDefaultAsync();
+
+            if(privacySetting == null)
             {
-                QuranHubUserId = userId,
-                AllowFollow = true,
-                AllowComment = true,
-                AllowShare = true,
-                AppearInSearch = true,
-            };
+                privacySetting = new PrivacySetting()
+                {
+                    QuranHubUserId = userId,
+                    AllowFollow = true,
+                    AllowComment = true,
+                    AllowShare = true,
+                    AppearInSearch = true,
+                };
+            }
+
+            privacySetting.QuranHubUser = null;
+
+            return privacySetting;
         }
-
-        privacySetting.QuranHubUser = null;
-
-        return privacySetting;
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
     public async Task<bool> EditPrivacySettingAsync(PrivacySetting privacySetting)
     {
-        PrivacySetting targetPrivacySetting  = await this._identityDataContext.PrivacySettings.FindAsync(privacySetting.PrivacySettingId);
-        targetPrivacySetting.AllowFollow = privacySetting.AllowFollow;
-        targetPrivacySetting.AllowComment = privacySetting.AllowComment;
-        targetPrivacySetting.AllowShare = privacySetting.AllowShare;
-        targetPrivacySetting.AppearInSearch = privacySetting.AppearInSearch;
-
         try
         {
+            PrivacySetting targetPrivacySetting  = await this._identityDataContext.PrivacySettings.FindAsync(privacySetting.PrivacySettingId);
+            targetPrivacySetting.AllowFollow = privacySetting.AllowFollow;
+            targetPrivacySetting.AllowComment = privacySetting.AllowComment;
+            targetPrivacySetting.AllowShare = privacySetting.AllowShare;
+            targetPrivacySetting.AppearInSearch = privacySetting.AppearInSearch;
             await this._identityDataContext.SaveChangesAsync();
             return true;
-        } 
-        catch(Exception ex)
+        }
+        catch (Exception ex)
         {
+            _logger.LogError(ex.Message);
             return false;
         }
     }
     public async Task<bool> EditPrivacySettingByUserIdAsync(PrivacySetting privacySetting, string userId)
     {
-        PrivacySetting? targetPrivacySetting = await this._identityDataContext.PrivacySettings.Where(privacySetting => privacySetting.QuranHubUserId == userId).FirstOrDefaultAsync();
-
-        if(targetPrivacySetting == null)
-        {
-            targetPrivacySetting = new();
-        }
-
-        targetPrivacySetting.AllowFollow = privacySetting.AllowFollow;
-        targetPrivacySetting.AllowComment = privacySetting.AllowComment;
-        targetPrivacySetting.AllowShare = privacySetting.AllowShare;
-        targetPrivacySetting.AppearInSearch = privacySetting.AppearInSearch;
-        targetPrivacySetting.QuranHubUserId = userId;
 
         try
         {
+            PrivacySetting? targetPrivacySetting = await this._identityDataContext.PrivacySettings.Where(privacySetting => privacySetting.QuranHubUserId == userId).FirstOrDefaultAsync();
+
+            if(targetPrivacySetting == null)
+            {
+                targetPrivacySetting = new();
+            }
+
+            targetPrivacySetting.AllowFollow = privacySetting.AllowFollow;
+            targetPrivacySetting.AllowComment = privacySetting.AllowComment;
+            targetPrivacySetting.AllowShare = privacySetting.AllowShare;
+            targetPrivacySetting.AppearInSearch = privacySetting.AppearInSearch;
+            targetPrivacySetting.QuranHubUserId = userId;
             if (targetPrivacySetting.PrivacySettingId == 0)
             {
                 await  this._identityDataContext.PrivacySettings.AddAsync(targetPrivacySetting);
@@ -84,6 +106,7 @@ public class PrivacySettingRepository : IPrivacySettingRepository
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex.Message);
             return false;
         }
     }

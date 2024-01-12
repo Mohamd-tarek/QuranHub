@@ -23,41 +23,69 @@ public class VideoInfo : IEquatable<VideoInfo>
 
     public VideoInfoReact AddVideoInfoReact(string quranHubUserId, int type = 0)
     {
-        var React = new VideoInfoReact(quranHubUserId, VideoInfoId, type);
+        try
+        {
+            var React = new VideoInfoReact(quranHubUserId, VideoInfoId, type);
 
-        VideoInfoReacts.Add(React);
+            VideoInfoReacts.Add(React);
 
-        ReactsCount++;
+            ReactsCount++;
 
-        return React;
+            return React;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
    
 
     public void RemoveVideoInfoReact(int VideoInfoReactId)
     {
-        VideoInfoReacts.Remove(new VideoInfoReact() { ReactId = VideoInfoReactId });
+        try
+        {
+            VideoInfoReacts.Remove(new VideoInfoReact() { ReactId = VideoInfoReactId });
 
-        ReactsCount--;
+            ReactsCount--;
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
     }
 
     public VideoInfoComment AddVideoInfoComment(string quranHubUserId, string text, int? verseId)
     {
-        var Comment = new VideoInfoComment(quranHubUserId, VideoInfoId, text, verseId);
+        try
+        {
+            var Comment = new VideoInfoComment(quranHubUserId, VideoInfoId, text, verseId);
 
-        VideoInfoComments.Add(Comment);
+            VideoInfoComments.Add(Comment);
 
-        CommentsCount++;
+            CommentsCount++;
 
-        return Comment;
+            return Comment;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
    
 
     public void RemoveVideoInfoComment(int CommentId)
     {
-        VideoInfoComments.Remove(new VideoInfoComment() { CommentId = CommentId });
+        try
+        {
+            VideoInfoComments.Remove(new VideoInfoComment() { CommentId = CommentId });
 
-        CommentsCount--;
+            CommentsCount--;
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
     }
 
 

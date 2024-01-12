@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using QuranHub.Domain.Models;
 
 namespace QuranHub.DAL.Repositories;
-
+/// <inheritdoc/>
 public class DocumentaryRepository : IDocumentaryRepository 
 {   
     private IdentityDataContext _identityDataContext;

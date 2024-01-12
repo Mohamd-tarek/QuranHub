@@ -5,13 +5,10 @@ namespace QuranHub.BLL.Services;
 
 public class HomeService : IHomeService
 {   
-
     private UserManager<QuranHubUser> _userManager;
     private IPostRepository _postRepository;
     private IFollowRepository _followRepository;
     private ILogger<HomeService> _logger;
-
-
 
     public  HomeService(
         UserManager<QuranHubUser> userManager,
@@ -102,8 +99,8 @@ public class HomeService : IHomeService
         try
         {
             List<QuranHubUser> users =  await _userManager.Users
-                                                      .Where(user => user.UserName.Contains(name))
-                                                      .ToListAsync();
+                                                          .Where(user => user.UserName.Contains(name))
+                                                          .ToListAsync();
 
             return users;
         }

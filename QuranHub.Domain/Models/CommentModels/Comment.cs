@@ -35,42 +35,70 @@ public class Comment :IEquatable<Comment>
 
     public CommentReact AddCommentReact(string quranHubUserId, int type = 0)
     {
-        var CommentReact = new CommentReact(quranHubUserId, CommentId, type);
+        try
+        {
+            var CommentReact = new CommentReact(quranHubUserId, CommentId, type);
 
-        CommentReacts.Add(CommentReact);
+            CommentReacts.Add(CommentReact);
 
-        ReactsCount++;
+            ReactsCount++;
 
-        return CommentReact;
+            return CommentReact;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public CommentReactNotification AddCommentReactNotifiaction(QuranHubUser quranHubUser, int reactId)
     {
-        string message = quranHubUser.UserName + " reacted to your comment "
-           + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
+        try
+        { 
+            string message = quranHubUser.UserName + " reacted to your comment "
+               + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
 
-        var CommentReactNotification = new CommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.CommentId, reactId);
+            var CommentReactNotification = new CommentReactNotification(quranHubUser.Id, this.QuranHubUserId, message, this.CommentId, reactId);
 
-        CommentReactNotifications.Add(CommentReactNotification);
-        return CommentReactNotification;
+            CommentReactNotifications.Add(CommentReactNotification);
+            return CommentReactNotification;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public void RemoveCommentReact(int CommentReactId)
     {
-        CommentReacts.Remove(new CommentReact() {ReactId = CommentReactId});
+        try
+        { 
+            CommentReacts.Remove(new CommentReact() {ReactId = CommentReactId});
 
-        ReactsCount--;
+            ReactsCount--;
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
     }
 
     public override bool Equals(object obj)
     {
-        if (obj == null) return false;
+        try
+        { 
+            if (obj == null) return false;
 
-        Comment objAsPostComment = obj as Comment;
+            Comment objAsPostComment = obj as Comment;
 
-        if (objAsPostComment == null) return false;
+            if (objAsPostComment == null) return false;
 
-        else return Equals(objAsPostComment);
+            else return Equals(objAsPostComment);
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 
     public override int GetHashCode()

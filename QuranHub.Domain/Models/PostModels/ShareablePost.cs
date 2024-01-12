@@ -26,32 +26,53 @@ public class ShareablePost :Post
 
     public PostShare AddPostShare(string quranHubUserId)
     {
-        var share = new PostShare(quranHubUserId, PostId);
+        try
+        {
+            var share = new PostShare(quranHubUserId, PostId);
 
-        PostShares.Add(share);
+            PostShares.Add(share);
 
-        SharesCount++;
+            SharesCount++;
 
-        return share;
+            return share;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public PostShareNotification AddPostShareNotification(QuranHubUser quranHubUser, int shareId )
     {
-        string message = quranHubUser.UserName + " shared  your post "
-                + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
+        try
+        {
+            string message = quranHubUser.UserName + " shared  your post "
+                    + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
 
-        var ShareNotification = new PostShareNotification(quranHubUser.Id, this.QuranHubUserId, message, shareId, this.PostId);
+            var ShareNotification = new PostShareNotification(quranHubUser.Id, this.QuranHubUserId, message, shareId, this.PostId);
 
-        PostShareNotifications.Add(ShareNotification);
+            PostShareNotifications.Add(ShareNotification);
 
-        return ShareNotification;
+            return ShareNotification;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public void RemovePostShare(int shareId)
     {
-        PostShares.Remove(new PostShare(){ ShareId = shareId});
+        try
+        {
+            PostShares.Remove(new PostShare(){ ShareId = shareId});
 
-        SharesCount--;
+            SharesCount--;
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
     }
 
 }

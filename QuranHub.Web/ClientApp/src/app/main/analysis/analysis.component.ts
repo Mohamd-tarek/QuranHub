@@ -11,8 +11,8 @@ export class AnalysisComponent {
                   {name :"UNIQUES", url : "./uniques"},
                   {name :"TOPICS", url : "./topics"},
                   {name :"COMPARE", url : "./compare"},
-                  {name :"LEXICAL_ANALUYSIS", url : "./lexicalAnalysis"},
-                  {name :"SYNTAX_ANALYSIS", url : "./syntaxAnalysis"},
+                  {name :"LEXICAL_ANALUYSIS", url : "./lexical"},
+                  {name :"SYNTAX_ANALYSIS", url : "./syntax"},
   ]
 
    constructor() {}

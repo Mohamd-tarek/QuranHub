@@ -21,55 +21,67 @@ public class VideoSeedData
 
     public static async Task SeedPlayListsInfoAsync(IdentityDataContext IdentityDataContext )
     {
-
-        var thumbnailsfiles = Directory.GetFiles(thumbnailsDir);
-        PlayListInfo playListInfo = new PlayListInfo
+        try
         {
-            Name = "العلم والايمان ",
-            ThumbnailImage =  File.ReadAllBytes(thumbnailsfiles[0]),
-            NumberOfVideos = thumbnailsfiles.Length
-        };
+            var thumbnailsfiles = Directory.GetFiles(thumbnailsDir);
+            PlayListInfo playListInfo = new PlayListInfo
+            {
+                Name = "العلم والايمان ",
+                ThumbnailImage =  File.ReadAllBytes(thumbnailsfiles[0]),
+                NumberOfVideos = thumbnailsfiles.Length
+            };
 
-        await IdentityDataContext.PlayListsInfo.AddAsync(playListInfo);
+            await IdentityDataContext.PlayListsInfo.AddAsync(playListInfo);
 
-        await IdentityDataContext.SaveChangesAsync();
+            await IdentityDataContext.SaveChangesAsync();
 
-        var videosFiles = Directory.GetFiles(videosDir);
+            var videosFiles = Directory.GetFiles(videosDir);
 
-        foreach (var file in videosFiles)
-        {
-            await SeedVideoInfoAsync(IdentityDataContext, playListInfo, file);
+            foreach (var file in videosFiles)
+            {
+                await SeedVideoInfoAsync(IdentityDataContext, playListInfo, file);
+            }
+
+            await IdentityDataContext.SaveChangesAsync();
+
         }
-
-        await IdentityDataContext.SaveChangesAsync();
-
+        catch (Exception ex)
+        {
+            return;
+        }
 
     }
 
     public static async Task  SeedVideoInfoAsync(IdentityDataContext IdentityDataContext, PlayListInfo playListInfo, string path ) 
     {
-
-        var mediaInfo = new MediaInfo();
-
-        mediaInfo.Open(path);
-
-        string name = Path.GetFileNameWithoutExtension(path);
-
-        string dirctory = Path.GetDirectoryName(path);
-
-        var videoInfo = new VideoInfo
+        try
         {
-            ThumbnailImage = File.ReadAllBytes(thumbnailsDir + @"\" + name + ".jpeg" ),
-            Name = name,
-            Type = mediaInfo.Get(StreamKind.Video, 0, "Format"),
-            Duration = TimeSpan.FromMilliseconds(int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Duration"))),
-            Width = int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Width")),
-            Height = int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Height")),
-            Path = "https://localhost:7046/video/" + name,
-            PlayListInfoId = playListInfo.PlayListInfoId
-        };
+            var mediaInfo = new MediaInfo();
 
-       await IdentityDataContext.VideosInfo.AddAsync(videoInfo);
+            mediaInfo.Open(path);
+
+            string name = Path.GetFileNameWithoutExtension(path);
+
+            string dirctory = Path.GetDirectoryName(path);
+
+            var videoInfo = new VideoInfo
+            {
+                ThumbnailImage = File.ReadAllBytes(thumbnailsDir + @"\" + name + ".jpeg" ),
+                Name = name,
+                Type = mediaInfo.Get(StreamKind.Video, 0, "Format"),
+                Duration = TimeSpan.FromMilliseconds(int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Duration"))),
+                Width = int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Width")),
+                Height = int.Parse(mediaInfo.Get(StreamKind.Video, 0, "Height")),
+                Path = "https://localhost:7046/video/" + name,
+                PlayListInfoId = playListInfo.PlayListInfoId
+            };
+
+           await IdentityDataContext.VideosInfo.AddAsync(videoInfo);
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
         
     } 
     

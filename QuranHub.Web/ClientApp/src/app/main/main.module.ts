@@ -14,6 +14,8 @@ import { NoteComponent } from "./note/note.component";
 import { NoteTextComponent } from "./note/note-text/note-text.component";
 import { AnalysisComponent } from "./analysis/analysis.component";
 import { SimilarComponent } from "./analysis/similar.component";
+import { LexicalAnalysisComponent } from "./analysis/lexical-analysis.component";
+import { SyntaxAnalysisComponent } from "./analysis/syntax-analysis.component";
 import { UniquesComponent } from "./analysis/uniques.component";
 import { TopicsComponent } from "./analysis/topics.component";
 import { CompareComponent } from "./analysis/compare.component";
@@ -39,6 +41,8 @@ const routes: Routes = [
       children: [
         {path: "", redirectTo: "similar", pathMatch: "full"},
         {path: "similar", component: SimilarComponent},
+        {path: "lexical", component: LexicalAnalysisComponent},
+        {path: "syntax", component: SyntaxAnalysisComponent},
         {path: "uniques", component: UniquesComponent},
         {path: "topics", component: TopicsComponent},
         {path: "compare", component: CompareComponent}
@@ -77,6 +81,8 @@ const routes: Routes = [
     StatisticsComponent,
     AnalysisComponent, 
     SimilarComponent,
+    LexicalAnalysisComponent,
+    SyntaxAnalysisComponent,
     UniquesComponent,
     TopicsComponent,
     CompareComponent,

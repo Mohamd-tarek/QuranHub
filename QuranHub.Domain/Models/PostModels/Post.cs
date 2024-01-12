@@ -24,61 +24,103 @@ public class Post :IEquatable<Post>
 
     public PostReact AddPostReact(string quranHubUserId, int type = 0)
     {
-        var React = new PostReact(quranHubUserId, PostId, type);
+        try
+        {
+            var React = new PostReact(quranHubUserId, PostId, type);
 
-        PostReacts.Add(React);
+            PostReacts.Add(React);
 
-        ReactsCount++;
+            ReactsCount++;
 
-        return React;
+            return React;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public PostReactNotification AddPostReactNotifiaction(QuranHubUser quranHubUser, int ReactId )
     {
-        string message = quranHubUser.UserName + " reacted to your post " 
-                          + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
+        try
+        {
+            string message = quranHubUser.UserName + " reacted to your post " 
+                              + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";
 
-        var ReactNotification = new PostReactNotification(quranHubUser.Id, this.QuranHubUserId, message, ReactId, this.PostId);
+            var ReactNotification = new PostReactNotification(quranHubUser.Id, this.QuranHubUserId, message, ReactId, this.PostId);
 
-        PostReactNotifications.Add(ReactNotification);
+            PostReactNotifications.Add(ReactNotification);
 
-        return ReactNotification;
+            return ReactNotification;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public void RemovePostReact(int PostReactId)
     {
-        PostReacts.Remove(new PostReact() {ReactId = PostReactId});
+        try
+        {
+            PostReacts.Remove(new PostReact() {ReactId = PostReactId});
 
-        ReactsCount--;
+            ReactsCount--;
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
     }
 
     public PostComment AddPostComment(string quranHubUserId, string text, int? verseId)
     {
-        var Comment = new PostComment(quranHubUserId, PostId, text, verseId);
+        try
+        {
+            var Comment = new PostComment(quranHubUserId, PostId, text, verseId);
 
-        PostComments.Add(Comment);
+            PostComments.Add(Comment);
 
-        CommentsCount++;
+            CommentsCount++;
 
-        return Comment;
+            return Comment;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
     public PostCommentNotification AddPostCommentNotifiaction(QuranHubUser quranHubUser, int CommentId)
     {
-        string message = quranHubUser.UserName + " commented on your post "
-                 + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";;
+        try
+        {
+            string message = quranHubUser.UserName + " commented on your post "
+                     + "\"" + ( this.Text.Length < 40 ? this.Text : this.Text.Substring(0, 40 ) + "...") + "\"";;
 
-        var CommentNotification = new PostCommentNotification(quranHubUser.Id, this.QuranHubUserId, message, CommentId, this.PostId);
+            var CommentNotification = new PostCommentNotification(quranHubUser.Id, this.QuranHubUserId, message, CommentId, this.PostId);
 
-        PostCommentNotifications.Add(CommentNotification);
+            PostCommentNotifications.Add(CommentNotification);
 
-        return CommentNotification;
+            return CommentNotification;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     public void RemovePostComment(int CommentId)
     {
-        PostComments.Remove(new PostComment() {CommentId = CommentId});
+        try
+        {
+            PostComments.Remove(new PostComment() {CommentId = CommentId});
 
-        CommentsCount--;
+            CommentsCount--;
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
     }
 
     public override bool Equals(object obj)

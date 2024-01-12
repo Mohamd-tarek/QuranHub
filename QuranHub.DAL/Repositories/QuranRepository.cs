@@ -1,17 +1,22 @@
 ﻿
-namespace QuranHub.DAL.Repositories;
+using Microsoft.Extensions.Logging;
 
+namespace QuranHub.DAL.Repositories;
+/// <inheritdoc/>
 public class QuranRepository : IQuranRepository 
 {   
     private QuranContext _quranContext;
     private IdentityDataContext _identityDataContext;
+    private readonly ILogger<QuranRepository> _logger;
 
     public  QuranRepository(
         QuranContext quranContext,
-        IdentityDataContext identityDataContext)
+        IdentityDataContext identityDataContext,
+        ILogger<QuranRepository> logger)
     { 
         _quranContext = quranContext;
         _identityDataContext = identityDataContext;
+        _logger = logger;
 
     }
     public IEnumerable<Quran> Quran => _quranContext.Quran.AsNoTracking();
@@ -37,98 +42,120 @@ public class QuranRepository : IQuranRepository
 
     public IEnumerable<object> GetQuranInfo(string type) 
     {
-        switch (type)
+        try
         {
-            case "Quran": return Quran; break;
-            case "Muyassar": return Muyassar; break;
-            case "Jalalayn": return Jalalayn; break;
-            case "IbnKatheer": return IbnKatheer; break;
-            case "Tabary": return Tabary; break;
-            case "Qortobi": return Qortobi; break;
-            case "Translation": return Translation; break;
-            case "QuranClean": return QuranClean; break;
-            case "Hizbs": return Hizbs; break;
-            case "Juzs": return Juzs; break;
-            case "Manzils": return Manzils; break;
-            case "Pages": return Pages; break;
-            case "Rukus": return Rukus; break;
-            case "Sajdas": return Sajdas; break;
-            case "Suras": return Suras; break;
-            default: return Quran; break;
+            switch (type)
+            {
+                case "Quran": return Quran; break;
+                case "Muyassar": return Muyassar; break;
+                case "Jalalayn": return Jalalayn; break;
+                case "IbnKatheer": return IbnKatheer; break;
+                case "Tabary": return Tabary; break;
+                case "Qortobi": return Qortobi; break;
+                case "Translation": return Translation; break;
+                case "QuranClean": return QuranClean; break;
+                case "Hizbs": return Hizbs; break;
+                case "Juzs": return Juzs; break;
+                case "Manzils": return Manzils; break;
+                case "Pages": return Pages; break;
+                case "Rukus": return Rukus; break;
+                case "Sajdas": return Sajdas; break;
+                case "Suras": return Suras; break;
+                default: return Quran; break;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
         }
     }
 
     public async Task<Note> GetNote(long id, QuranHubUser user) 
     {
-
-        Note? note =  await _identityDataContext.Notes
+        try
+        {
+            Note? note =  await _identityDataContext.Notes
                                                 .Where(d=> d.Index == id && d.QuranHubUserId == user.Id)
                                                 .FirstOrDefaultAsync();
 
-        if(note != null)
-        {
-            note.QuranHubUser = null;
-        }
+            if(note != null)
+            {
+                note.QuranHubUser = null;
+            }
 
-        return note;
+            return note;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return null;
+        }
     }
     public async Task<bool> AddNote(Note note, QuranHubUser user)
     {
-
-        if (this.Notes.Any((d => d.Index == note.Index && d.QuranHubUserId ==user.Id)))
-        {
-            Note cur = await this.GetNote(note.Index,user);
-            
-            cur.Text = note.Text;
-
-            if(cur.QuranHubUser == null)
-            {
-                cur.QuranHubUser = user;
-            }
-        }
-        else
-        {
-            note.QuranHubUserId =user.Id;
-
-            await _identityDataContext.AddAsync(note);
-
-        }
         try
         {
-            await _identityDataContext.SaveChangesAsync();
+
+            if (this.Notes.Any((d => d.Index == note.Index && d.QuranHubUserId == user.Id)))
+            {
+                Note cur = await this.GetNote(note.Index, user);
+
+                cur.Text = note.Text;
+
+                if (cur.QuranHubUser == null)
+                {
+                    cur.QuranHubUser = user;
+                }
+            }
+            else
+            {
+                note.QuranHubUserId = user.Id;
+
+                await _identityDataContext.AddAsync(note);
+
+            }
+            return true;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
+            _logger.LogError(ex.Message);
             return false;
         }
-
-        return true;
     }
     public async Task<byte[]> GetMindMap(long id)
     {
         try
         {
-
           return await _quranContext.MindMaps
                                     .Where(d => d.Index == id)
                                     .Select(m => m.MapImage)
                                     .SingleAsync();
 
-        } 
+        }
         catch (Exception ex)
         {
-            return new byte[0];
+            _logger.LogError(ex.Message);
+            return null;
         }
 
     }
 
     public async Task EditWeightVectorAsync(Dictionary<string, double> values)
     {
-        foreach(var weightVectorDimention in _quranContext.WeightVectorDimentions)
+        try
         {
-            weightVectorDimention.Value = values[weightVectorDimention.Word];
-        }
+            foreach (var weightVectorDimention in _quranContext.WeightVectorDimentions)
+            {
+                weightVectorDimention.Value = values[weightVectorDimention.Word];
+            }
 
-        await _quranContext.SaveChangesAsync();
+            await _quranContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return;
+        }
     }
 }

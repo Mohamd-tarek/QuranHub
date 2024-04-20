@@ -7,7 +7,7 @@
           <i class="fa-sharp fa-solid fa-camera"></i>
         </upload-file>
       </div>
-      <user-Info [user]="user" [profilePictureDiamter]="120"></user-Info>
+      <user-Info [profilePictureClickable]="true" [user]="user" [profilePictureDiamter]="120"></user-Info>
     </div>
     <follow-or-unfollow-button class="col-12 col-md" *ngIf="currentUser.id !== userId" [userId]="userId"></follow-or-unfollow-button>
     <div class="col-12 col-md">

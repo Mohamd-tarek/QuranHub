@@ -1,5 +1,5 @@
 <div  class="miniUserPanel m-2 p-2 bg-dark rounded-3">
-  <user-Info *ngIf ="authService.isAuthenticated" [user]="user" [profilePictureDiamter]="90"></user-Info>
+  <user-Info *ngIf ="authService.isAuthenticated"  [user]="user" [profilePictureDiamter]="90"></user-Info>
   <div class=" m-2 p-2">
     <a *ngIf ="authService.isAuthenticated"
       routerLink="/user/loginInfo" 

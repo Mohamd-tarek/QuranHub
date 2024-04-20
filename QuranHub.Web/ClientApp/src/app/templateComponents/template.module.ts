@@ -4,6 +4,7 @@ import { AyaComponent } from "./aya/aya.component";
 import { InlineAyaComponent } from "./inline-aya/inline-aya.component";
 import { LoadingComponent } from "./loading/loading.component";
 import { ProfilePictureComponent } from "./profile-picture/profile-picture.component";
+import { ProfilePictureModalComponent } from "./profile-picture-modal/profile-picture-modal.component";
 import { RectanglePictureComponent } from "./rectangle-picture/rectangle-picture.component";
 import { LinkElementComponent } from "./link-element/link-element.component";
 import { RouterModule } from "@angular/router";
@@ -79,6 +80,7 @@ import { TranslateModule } from '@ngx-translate/core';
     InlineAyaComponent,
     LoadingComponent,
     ProfilePictureComponent,
+    ProfilePictureModalComponent,
     SpinnerComponent,
     RectanglePictureComponent,
     LinkElementComponent,
@@ -141,6 +143,7 @@ import { TranslateModule } from '@ngx-translate/core';
     InlineAyaComponent,
     LoadingComponent,
     ProfilePictureComponent,
+    ProfilePictureModalComponent,
     SpinnerComponent,
     RectanglePictureComponent,
     LinkElementComponent,

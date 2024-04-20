@@ -1,6 +1,9 @@
 <div class="m-2 ">
-    <profile-picture  [diamter]="profilePictureDiamter"
-                     [picture]="user?.profilePicture">
+    <profile-picture
+      (click)="showProilePictureModal()"
+      [style.cursor]="'pointer'"
+      [diamter]="profilePictureDiamter"
+      [picture]="user?.profilePicture">
 
     </profile-picture>
     <a  class="p-2  text-truncate"

@@ -1,0 +1,9 @@
+<div class="d-inline-block row justify-content-center w-100 " >
+    <div class="col text-center">
+        <img *ngIf="picture.length"
+             class="border border-2 "
+             alt="Profile Picture"
+             [src]="'data:image/png;base64,' + picture" />
+
+    </div>
+</div>

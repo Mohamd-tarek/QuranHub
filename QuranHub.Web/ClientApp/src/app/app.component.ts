@@ -11,6 +11,7 @@ export class AppComponent {
   title = 'QuranHub';
 
   links :any[] = [{name :"READ", url : "/read"},
+                  {name :"RECITAL", url : "/recital"},
                   {name :"TAFSEER", url : "/tafseer"},
                   {name :"MINDMAPS", url : "/mindMaps"},
                   {name :"SEARCH", url : "/search"},

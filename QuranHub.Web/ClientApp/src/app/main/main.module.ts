@@ -6,6 +6,7 @@ import { AuthenticationGuard } from "../services/authentication.guard";
 import { CommonModule } from '@angular/common';
 import { ReadComponent } from "./read/read.component";
 import { QuranComponent } from "./read/quran/quran.component";
+import { RecitalComponent } from "./recital/recital.component";
 import { TafseerAndTransComponent } from "./read/tafseer-and-trans/tafseer-and-trans.component";
 import { SearchComponent } from "./search/search.component";
 import { TafseerComponent } from "./tafseer/tafseer.component";
@@ -32,6 +33,7 @@ import { TranslateModule } from '@ngx-translate/core';
 const routes: Routes = [
   { path: "read/:ayaIndex", component: ReadComponent },
   { path: "read", component: ReadComponent } ,
+  { path: "recital", component: RecitalComponent } ,
   { path: "search", component: SearchComponent },
   { path: "tafseer", component :TafseerComponent},
   { path: "statistics", component: StatisticsComponent },
@@ -75,6 +77,7 @@ const routes: Routes = [
   declarations: [
     ReadComponent,
     QuranComponent,
+    RecitalComponent,
     TafseerAndTransComponent,
     SearchComponent,
     TafseerComponent,

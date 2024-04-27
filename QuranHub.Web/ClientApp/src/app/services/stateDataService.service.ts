@@ -13,6 +13,7 @@ export class StateDataService extends StateService  {
       "overviewMode" : false,
       "currentLanguage": "arabic",
       "currentQuranSura" :1,
+      "currentRecitalSura" :1,
       "currentTafseerAndTranSura":  1, 
       "currentTafseerAndTranAya": 1,
       "currentNoteSura" : 1, 

@@ -1,0 +1,37 @@
+    <div *ngIf="dataLoaded; else nodata" >
+      <div class="row  justify-content-end m-2" >
+        <select class="form-select "
+                aria-label="Default select example"
+                [(ngModel)]="curSura" >
+          <option  *ngFor="let sura of suras" value={{sura.index}} > {{sura.name}} - {{sura.index }}</option>
+        </select> 
+      </div>
+      <div class="row">
+        <span class="m-auto w-auto">
+          <previous-pointer (previousEvent)="prev()"></previous-pointer>
+          <next-pointer (nextEvent)="next()"></next-pointer>
+        </span>
+      </div> 
+      <div class="row align-items-start mt-2 " id="1000">
+        <div class="col m-2">
+            <p 
+            class="text-end rounded lh-lg p-2 contents border  border-3 rounded-3"
+            (scroll)="savePosition()" style="overflow: auto; height: 69vh; background-color: #0dcaf099;" >
+                <inline-aya  *ngFor="let aya of sura" [aya]="aya" [focused]="aya.aya == ayaIndex" ></inline-aya>
+            </p>
+        </div>
+      </div>
+      <div class="row">
+        <span class="m-auto w-auto">
+          <previous-pointer (previousEvent)="prev()" #targetAya></previous-pointer>
+          <next-pointer (nextEvent)="next()"></next-pointer>
+        </span>
+      </div> 
+    </div>
+
+  
+    <ng-template #nodata>
+      <loading></loading>
+    </ng-template> 
+  
+  

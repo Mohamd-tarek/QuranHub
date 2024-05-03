@@ -20,5 +20,4 @@ export class PlayListInfoComponent  {
     this.router.navigate(['./playList', this.info.name], { relativeTo: this.route });
   }
 
-
 }

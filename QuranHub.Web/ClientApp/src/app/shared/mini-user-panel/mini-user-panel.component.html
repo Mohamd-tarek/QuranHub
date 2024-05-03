@@ -1,4 +1,4 @@
-<div  class="miniUserPanel m-2 p-2 bg-dark rounded-3">
+<div  class="miniUserPanel  m-2 p-2 bg-dark rounded-3" [class.ar]="translate.currentLang === 'ar'" [class.en]="translate.currentLang === 'en'">
   <user-Info *ngIf ="authService.isAuthenticated"  [user]="user" [profilePictureDiamter]="90"></user-Info>
   <div class=" m-2 p-2">
     <a *ngIf ="authService.isAuthenticated"
@@ -6,7 +6,7 @@
       class="btn d-block btn-sm btn-primary mt-2 p-2" >{{'ACCOUNT_SETTING' | translate}}
     </a>
   
-    <button *ngIf ="authService.isAuthenticated"class="btn d-block btn-sm btn-primary  w-100 mt-2 p-2"
+    <button *ngIf ="authService.isAuthenticated"class="btn d-block  btn-sm btn-primary  w-100 mt-2 p-2"
     (click)="logout()">
       {{'LOGOUT' | translate}}
     </button>
@@ -14,3 +14,4 @@
   </div>
 </div>
 
+  

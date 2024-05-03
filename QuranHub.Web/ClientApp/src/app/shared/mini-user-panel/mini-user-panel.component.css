@@ -1,6 +1,13 @@
 .miniUserPanel{
   position: absolute;
   top: 73px;
-  right: 0px;
   z-index: 1010;
+}
+
+.en{
+  right: 0px;
+}
+
+.ar{
+  left: 0px;
 }

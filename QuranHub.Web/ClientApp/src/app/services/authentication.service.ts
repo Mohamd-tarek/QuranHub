@@ -5,6 +5,8 @@ import { Router} from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { AuthenticationService, IExternalScheme } from "../abstractions/services/authenticationService";
 import { identityPaths } from "../constants/authentication.constants";
+import { SessionStorageService } from "./session-storage.service";
+import { JWTTokenService } from "./jwt-token-service";
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +14,11 @@ import { identityPaths } from "../constants/authentication.constants";
 
 export class BasicAuthenticationService extends AuthenticationService {
 
-  constructor( private http: HttpClient, private router : Router) {
+  constructor( 
+    private http: HttpClient,
+    private router : Router,
+    private session: SessionStorageService,
+    private jwtService: JWTTokenService) {
     super();
   }
 
@@ -27,7 +33,7 @@ export class BasicAuthenticationService extends AuthenticationService {
           return true;
     }
 
-    if (this.tryGetTokenFromCookie()) {
+    if (this.tryGetTokenFromSession()) {
       return true;
     }
 
@@ -42,7 +48,7 @@ export class BasicAuthenticationService extends AuthenticationService {
     if (!this.authenticationToken) {
       return this.authenticationToken as string
     }
-    this.tryGetTokenFromCookie();
+    this.tryGetTokenFromSession();
 
     return this.authenticationToken;
   }
@@ -61,8 +67,7 @@ export class BasicAuthenticationService extends AuthenticationService {
   }
 
   logout() {
-    let domian =  window.location.hostname;
-    this.deleteCookie("AuthenticationToken", "/", domian);
+    this.session.clear();
     this.authenticationToken = undefined;
     this.authenticated = false;
   }
@@ -71,9 +76,9 @@ export class BasicAuthenticationService extends AuthenticationService {
     this.router.navigateByUrl("/");
   }
 
-  tryGetTokenFromCookie(): boolean {
-    let token = this.getCookie("AuthenticationToken");
-    if (token !== undefined) {
+  tryGetTokenFromSession(): boolean {
+    let token = this.session.get("token") as string;
+    if (token !== null) {
       this.authenticationToken = token;
       this.authenticated = true;
       return true;
@@ -83,7 +88,7 @@ export class BasicAuthenticationService extends AuthenticationService {
 
   storeAuthenticationToken(token: string) {
     this.authenticationToken = token;
-    this.setCookie("AuthenticationToken", token, 3);
+    this.jwtService.setToken(token);
     this.authenticated = true;
   }
     

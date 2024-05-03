@@ -30,6 +30,9 @@ import { AuthenticationTokenInterceptor } from './AuthenticationTokenInterceptor
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { JWTTokenService } from './services/jwt-token-service';
+import { SessionStorageService } from './services/session-storage.service';
+import { UserPermissionService } from './services/user-permission.service';
 
 
 const routes: Routes = []  
@@ -76,7 +79,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: HTTP_INTERCEPTORS, useClass: HttpXsrfInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: WithCredentialsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationTokenInterceptor, multi: true },
-     AuthenticationGuard,
+     AuthenticationGuard, JWTTokenService, SessionStorageService, UserPermissionService
   ],
   bootstrap: [AppComponent]
 })

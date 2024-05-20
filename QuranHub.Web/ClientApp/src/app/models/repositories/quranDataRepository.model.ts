@@ -78,7 +78,7 @@ export class QuranDataRepository extends QuranRepository {
   }
    
   getSimilarAyas(aya : Quran) :Observable<Quran[]> {
-    return this.http.get<Quran[]>(restApiPaths.AnalysisURL  + aya.index);
+    return this.http.get<Quran[]>(restApiPaths.AnalysisURL + "similar-ayas/" + aya.index);
   }
 
   getUniques() :Observable<Quran[]> {

@@ -2,8 +2,9 @@
 
 namespace QuranHub.Web.Controllers;
 
+[ApiController]
+
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/[controller]")]
 public class NotificationController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -32,7 +33,7 @@ public class NotificationController : ControllerBase
             _currentUser = _userManager.GetUserAsync(this._httpContext.User).Result;
         }
     }
-    [HttpGet("GetNotificationById/{notificationId}")]
+    [HttpGet(Router.Notification.GetNotificationById)]
     public async Task<ActionResult<object>> GetNotificationByIdAsync(int notificationId)
     {
         try
@@ -174,7 +175,7 @@ public class NotificationController : ControllerBase
         }
     }
 
-    [HttpGet("Recent")]
+    [HttpGet(Router.Notification.Recent)]
     public async Task<ActionResult<IEnumerable<NotificationViewModel>>> GetRecentNotificationsAsync() 
     {
         try
@@ -192,7 +193,7 @@ public class NotificationController : ControllerBase
         }
     }
 
-    [HttpGet("LoadMoreNotifications/{Offset}/{Size}")]
+    [HttpGet(Router.Notification.LoadMoreNotifications)]
     public async Task<ActionResult<IEnumerable<object>>> LoadMoreNotificatinsAsync(int Offset, int Size) 
     {
         try
@@ -210,7 +211,7 @@ public class NotificationController : ControllerBase
         }
     }
 
-    [HttpGet("Seen/{NotificationId}")]
+    [HttpGet(Router.Notification.Seen)]
     public async Task<ActionResult> MarkNotificationAsSeenAsync(int NotifictionId)
     {
         try
@@ -225,7 +226,7 @@ public class NotificationController : ControllerBase
         }
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete(Router.Notification.Delete)]
     public async Task<ActionResult> DeleteNotificationAsync(int notificationId)
     {
         try

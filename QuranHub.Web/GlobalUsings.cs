@@ -24,6 +24,7 @@ global using QuranHub.BLL;
 global using QuranHub.BLL.Abstraction;
 global using QuranHub.BLL.Services;
 global using QuranHub.Web.Models;
+global using QuranHub.Web.Enums;
 global using QuranHub.Web.Services;
 global using  QuranHub.Web.Hubs;
 global using QuranHub.Web.Extensions;

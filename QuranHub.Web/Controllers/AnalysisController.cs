@@ -1,7 +1,8 @@
 ﻿
 namespace QuranHub.Web.Controllers;
 
-[Route("api/[controller]")]
+[ApiController]
+
 public  class AnalysisController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -21,7 +22,7 @@ public  class AnalysisController : ControllerBase
         _analysis = analysis ?? throw new ArgumentNullException(nameof(analysis));
     }
 
-    [HttpGet("topics")]
+    [HttpGet(Router.Analysis.Topics)]
     public ActionResult<List<List<QuranClean>>> GroupMainTopics()
     {
         try
@@ -35,7 +36,7 @@ public  class AnalysisController : ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet(Router.Analysis.SimilarAyas)]
     public ActionResult<IEnumerable<QuranClean>> GetSimilarAyas(long id) 
     {
         try
@@ -49,7 +50,7 @@ public  class AnalysisController : ControllerBase
         }
     }
 
-    [HttpGet("uniques")]
+    [HttpGet(Router.Analysis.Uniques)]
     public ActionResult<IEnumerable<QuranClean>> GetUniqueAyas() 
     {
         try

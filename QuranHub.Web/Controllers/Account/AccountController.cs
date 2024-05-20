@@ -1,8 +1,8 @@
 ﻿
 namespace QuranHub.Web.Controllers;
 
+[ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/[controller]")]
 public partial class  AccountController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -35,7 +35,7 @@ public partial class  AccountController : ControllerBase
 
     }
 
-    [HttpGet("userInfo")]
+    [HttpGet(Router.Account.UserInfo)]
     public async Task<ActionResult<UserBasicInfoViewModel>> GetUserInfoAsync()
     {
         try
@@ -53,7 +53,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpPost("editUserInfo")]
+    [HttpPost(Router.Account.EditUserInfo)]
     public async Task<ActionResult> PostEditProfile([FromBody] EditProfileModel data)
     {
         try
@@ -84,7 +84,7 @@ public partial class  AccountController : ControllerBase
     }
 
    
-    [HttpGet("aboutInfo")]
+    [HttpGet(Router.Account.AboutInfo)]
     public async Task<ActionResult<AboutInfoViewModel>> GetAboutInfoAsync()
     {
         try
@@ -102,7 +102,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpGet("privacySetting")]
+    [HttpGet(Router.Account.PrivacySetting)]
     public async Task<ActionResult<PrivacySetting>> GetPrivacySettingAsync()
     {
         try
@@ -120,7 +120,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpPost("privacySetting")]
+    [HttpPost(Router.Account.PrivacySetting)]
     public async Task<ActionResult> PostEditAboutInfoAsync([FromBody] PrivacySetting privacySetting)
     {
         try
@@ -140,7 +140,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpPost("editAboutInfo")]
+    [HttpPost(Router.Account.EditAboutInfo)]
     public async Task<ActionResult> PostEditAboutInfoAsync([FromBody] AboutInfoViewModel aboutInfo)
     {
         try
@@ -169,7 +169,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpPost("changeEmail")]
+    [HttpPost(Router.Account.ChangeEmail)]
     public async  Task<ActionResult> PostChangeEmail(QuranHubUser user, string Email)
     {
         try
@@ -184,7 +184,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpGet("changeEmailConfirm")]
+    [HttpGet(Router.Account.ChangeEmailConfirm)]
     public async Task<ActionResult> ChangeEmailConfirmAsync(string Email, string Token)
     {
         try
@@ -217,7 +217,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpPost("changePassword")]
+    [HttpPost(Router.Account.ChangePassword)]
     public async Task<ActionResult> PostChangePasswordAsync([FromBody] PasswordChangeModel data)
     {
         try
@@ -245,7 +245,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpPost("recoverPassword")]
+    [HttpPost(Router.Account.RecoverPassword)]
     public async Task<ActionResult> PostRecoverPasswordAsync([FromBody] string email)
     {
         try
@@ -274,7 +274,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpPost("recoverPasswordConfirm")]
+    [HttpPost(Router.Account.RecoverPasswordConfirm)]
     public async Task<ActionResult> PostRecoverPasswordConfirmAsync([FromBody] PasswordRecoverModel data)
     {
         try
@@ -304,7 +304,7 @@ public partial class  AccountController : ControllerBase
         }
     }
 
-    [HttpPost("deleteAccount")]
+    [HttpPost(Router.Account.DeleteAccount)]
     public async Task<ActionResult> PostDeleteAccountAsync()
     {
         try

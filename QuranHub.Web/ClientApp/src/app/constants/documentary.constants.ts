@@ -1,19 +1,19 @@
 
 import { RestApiUrl } from "./application.constants";
 
-export const documentaryURL = RestApiUrl + "/Documentary";
+export const documentaryURL = RestApiUrl + "/documentary";
 
 
 export const VideoActions = {
-  LoadMoreComments: `LoadMoreComments`,
-  LoadMoreVideoInfoReacts: `LoadMoreReacts`,
-  LoadMoreCommentReacts: `LoadMoreCommentReacts`,
-  AddVideoInfoReact: `AddReact`,
-  RemoveVideoInfoReact: `RemoveReact`,
-  AddCommentReact: `AddCommentReact`,
-  RemoveCommentReact: `RemoveCommentReact`,
-  AddComment: `AddComment`,
-  RemoveComment: `RemoveComment`,
+  LoadMoreComments: `load-more-comments`,
+  LoadMoreVideoInfoReacts: `load-more-reacts`,
+  LoadMoreCommentReacts: `load-more-comments-reacts`,
+  AddVideoInfoReact: `add-react`,
+  RemoveVideoInfoReact: `remove-react`,
+  AddCommentReact: `add-comment-react`,
+  RemoveCommentReact: `remove-comment-react`,
+  AddComment: `add-comment`,
+  RemoveComment: `remove-comment`,
 };
 
 interface DocumentaryPathsType  {
@@ -36,12 +36,12 @@ interface DocumentaryPathsType  {
 }
 
 export let documentaryPaths: DocumentaryPathsType = {
-  PlayListsInfo: `${documentaryURL}/PlayListsInfo/`,
-  PlayListInfo: `${documentaryURL}/PlayListInfo/`,
-  VideoInfoForPlayList: `${documentaryURL }/VideoInfoForPlayList/`,
-  VideoInfo: `${documentaryURL}/VideoInfo/`,
-  Video: `${documentaryURL}/Video/`,
-  Verses: `${documentaryURL}/Verses/`,
+  PlayListsInfo: `${documentaryURL}/play-lists-info/`,
+  PlayListInfo: `${documentaryURL}/play-list-info/`,
+  VideoInfoForPlayList: `${documentaryURL }/video-info-for-play-list/`,
+  VideoInfo: `${documentaryURL}/video-info/`,
+  Video: `${documentaryURL}/video/`,
+  Verses: `${documentaryURL}/verses/`,
   LoadMoreComments: `${documentaryURL}/${VideoActions.LoadMoreComments}/`,
   LoadMoreVideoInfoReacts: `${documentaryURL}/${VideoActions.LoadMoreVideoInfoReacts}/`,
   LoadMoreCommentReacts: `${documentaryURL}/${VideoActions.LoadMoreCommentReacts}/`,

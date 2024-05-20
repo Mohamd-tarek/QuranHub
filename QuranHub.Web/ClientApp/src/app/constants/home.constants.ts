@@ -1,6 +1,6 @@
 import { RestApiUrl } from "./application.constants";
 
-export const homeURL = RestApiUrl + "/Home";
+export const homeURL = RestApiUrl + "/home";
 
 interface HomePathsType  {
       readonly NewFeeds : string;
@@ -10,9 +10,9 @@ interface HomePathsType  {
 }
 
 export const homePaths: HomePathsType = {
-   NewFeeds: `${homeURL}/NewFeeds/`,
-   AddPost: `${ homeURL }/AddPost/`,
-   FindUsersByName: `${homeURL}/FindUsersByName/`,
-   SearchPosts: `${homeURL}/SearchPosts/`
+   NewFeeds: `${homeURL}/new-feeds/`,
+   AddPost: `${ homeURL }/add-post/`,
+   FindUsersByName: `${homeURL}/find-users-by-name/`,
+   SearchPosts: `${homeURL}/search-posts/`
 }
 

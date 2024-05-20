@@ -1,8 +1,9 @@
 ﻿
 namespace QuranHub.Web.Controllers;
 
+
+
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/[controller]")]
 public class DocumentaryController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -40,7 +41,7 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpGet("PlayListsInfo")]
+    [HttpGet(Router.Documentary.PlayListsInfo)]
     public async Task<ActionResult<IEnumerable<PlayListInfo>>> GetPlayListsInfoAsync() 
     {
         try
@@ -54,7 +55,7 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpGet("PlayListInfo/{PlaylistName}")]
+    [HttpGet(Router.Documentary.PlayListInfo)]
     public async Task<ActionResult<PlayListInfo>> GetPlayListsInfoAsync(string PlaylistName)
     {
         try
@@ -68,7 +69,7 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpGet("VideoInfoForPlayList/{playListName}/{offset}/{amount}")]
+    [HttpGet(Router.Documentary.VideoInfoForPlayList)]
     public async Task<ActionResult<IEnumerable<VideoInfo>>> GetVideoInfoForPlayList(string playListName, int offset = 0, int amount = 20) 
     {
         try
@@ -82,7 +83,7 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpGet("VideoInfo/{name}")]
+    [HttpGet(Router.Documentary.VideoInfo)]
     public async Task<ActionResult<VideoInfoViewModel>> GetVideoInfoAsync(string name) 
     {
         try
@@ -98,23 +99,8 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpGet("VideoInfo/{name}/{CommentId}")]
-    public async Task<ActionResult<VideoInfoViewModel>> GetVideoInfoAsync(string name, int CommentId)
-    {
-        try
-        {
-            VideoInfo videoInfo = await this._documentaryRepository.GetVideoInfoByNameAsync(name);
 
-            return Ok( await this._videoInfoViewModelsFactory.BuildVideoInfoViewModelAsync(videoInfo));
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex.Message);
-            return BadRequest();
-        }
-    }
-
-    [HttpGet("LoadMoreReacts/{VideoInfoId}/{Offset}/{Size}")]
+    [HttpGet(Router.Documentary.LoadMoreReacts)]
     public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMoreVideoInfoReacts(int VideoInfoId, int Offset, int Size)
     {
         try
@@ -132,7 +118,7 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpGet("LoadMoreComments/{VideoInfoId}/{Offset}/{Size}")]
+    [HttpGet(Router.Documentary.LoadMoreComments)]
     public async Task<ActionResult<IEnumerable<CommentViewModel>>> LoadMoreCommentsAsync(int VideoInfoId, int Offset, int Size)
     {
         try
@@ -150,7 +136,7 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpGet("LoadMoreCommentReacts/{VideoInfoId}/{Offset}/{Size}")]
+    [HttpGet(Router.Documentary.LoadMoreCommentReacts)]
     public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMoreCommentReactsAsync(int VideoInfoId, int Offset, int Size)
     {
         try
@@ -170,7 +156,7 @@ public class DocumentaryController : ControllerBase
 
   
 
-    [HttpPost("AddReact")]
+    [HttpPost(Router.Documentary.AddReact)]
     public async Task<ActionResult<ReactViewModel>> AddVideoInfoReactAsync([FromBody] VideoInfoReact videoInfoReact)
     {
         try
@@ -186,8 +172,8 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpDelete("RemoveReact")]
-    public async Task<ActionResult> RemoveVideoInfoReactReactAsync(int VideoInfoReactId)
+    [HttpDelete(Router.Documentary.RemoveReact)]
+    public async Task<ActionResult> RemoveVideoInfoReactAsync(int VideoInfoReactId)
     {
         try
         {
@@ -198,13 +184,13 @@ public class DocumentaryController : ControllerBase
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException(nameof(RemoveVideoInfoReactReactAsync));
+            throw new InvalidOperationException(nameof(RemoveVideoInfoReactAsync));
         }
 
         return BadRequest();
     }
 
-    [HttpPost("AddComment")]
+    [HttpPost(Router.Documentary.AddComment)]
     public async Task<ActionResult<CommentViewModel>> AddCommentAsync([FromBody] VideoInfoComment comment)
     {
         try
@@ -220,7 +206,7 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpDelete("RemoveComment")]
+    [HttpDelete(Router.Documentary.RemoveComment)]
     public async Task<ActionResult<bool>> RemoveCommentAsync(int commentId)
     {
         try
@@ -234,7 +220,7 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpPost("AddCommentReact")]
+    [HttpPost(Router.Documentary.AddCommentReact)]
     public async Task<ActionResult<ReactViewModel>> AddCommentReactAsync([FromBody] VideoInfoCommentReact commentReact)
     {
         try
@@ -259,7 +245,7 @@ public class DocumentaryController : ControllerBase
         }
     }
 
-    [HttpDelete("RemoveCommentReact")]
+    [HttpDelete(Router.Documentary.RemoveCommentReact)]
     public async Task<ActionResult> RemoveCommentReactAsync(int commentId)
     {
         try
@@ -277,7 +263,7 @@ public class DocumentaryController : ControllerBase
         return BadRequest();
     }
 
-    [HttpGet("Verses")]
+    [HttpGet(Router.Documentary.Verses)]
     public async Task<ActionResult<IEnumerable<Verse>>> GetVersesAsync()
     {
         try

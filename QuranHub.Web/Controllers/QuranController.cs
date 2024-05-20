@@ -1,7 +1,7 @@
 ﻿
 namespace QuranHub.Web.Controllers;
 
-[Route("api/[controller]")]
+[ApiController]
 public class QuranController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -29,7 +29,7 @@ public class QuranController : ControllerBase
         }
     }
 
-    [HttpGet("QuranInfo/{type}")]
+    [HttpGet(Router.Quran.QuranInfo)]
     public ActionResult<IEnumerable<object>> GetQuranInfo(string type) 
     {
         try
@@ -43,7 +43,7 @@ public class QuranController : ControllerBase
         }
     }
 
-    [HttpGet("MindMap/{id}")]
+    [HttpGet(Router.Quran.MindMap)]
     public async Task<ActionResult<byte[]>> GetMindMap(long id) 
     {
         try
@@ -58,7 +58,7 @@ public class QuranController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [HttpGet("Note/{index}")]
+    [HttpGet(Router.Quran.Note)]
     public async Task<ActionResult<Note>> GetNote(long index)
     {
         try
@@ -73,7 +73,7 @@ public class QuranController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [HttpPost("Note")]
+    [HttpPost(Router.Quran.CreateNote)]
     public async  Task<ActionResult> CreateNote([FromBody] Note note)
     {
         try

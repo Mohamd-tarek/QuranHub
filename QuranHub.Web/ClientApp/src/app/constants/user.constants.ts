@@ -17,13 +17,13 @@ interface UserPathsType {
 }
 
 export const userPaths: UserPathsType = {
-    ChangePassword: `${UserUrl}/ChangePassword`,
-    AboutInfo: `${UserUrl}/AboutInfo`,
-    EditAboutInfo: `${UserUrl}/EditAboutInfo`,
-    DeleteAccount: `${UserUrl}/DeleteAccount`,
-    EditUserInfo: `${UserUrl}/EditUserInfo`,
-    UserInfo: `${UserUrl}/UserInfo`,
-    PrivacySetting: `${UserUrl}/PrivacySetting`,
+    ChangePassword: `${UserUrl}/change-password`,
+    AboutInfo: `${UserUrl}/about-info`,
+    EditAboutInfo: `${UserUrl}/edit-about-info`,
+    DeleteAccount: `${UserUrl}/delete-account`,
+    EditUserInfo: `${UserUrl}/edit-user-info`,
+    UserInfo: `${UserUrl}/user-info`,
+    PrivacySetting: `${UserUrl}/privacy-setting`,
 };
 
 

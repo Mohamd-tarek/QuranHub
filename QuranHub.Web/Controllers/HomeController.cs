@@ -1,8 +1,8 @@
 ﻿
 namespace QuranHub.Web.Controllers;
 
+[ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/[controller]")]
 public class HomeController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -41,7 +41,7 @@ public class HomeController : ControllerBase
 
     }
 
-    [HttpGet("NewFeeds")]
+    [HttpGet(Router.Home.NewFeeds)]
     public async Task<ActionResult<IEnumerable<object>>> GetNewFeedsAsync()
     {
         try
@@ -67,7 +67,7 @@ public class HomeController : ControllerBase
         }
     }
 
-    [HttpPost("AddPost")]
+    [HttpPost(Router.Home.AddPost)]
     public async Task<ActionResult<ShareablePostViewModel>> AddPost([FromBody] ShareablePost post)
     {
         try
@@ -83,7 +83,7 @@ public class HomeController : ControllerBase
         }
     }
 
-    [HttpGet("FindUsersByName/{name}")]
+    [HttpGet(Router.Home.FindUsersByName)]
     public async Task<ActionResult<IEnumerable<UserViewModel>>> FindUsersByNameAsync(string name) 
     {
         try
@@ -101,7 +101,7 @@ public class HomeController : ControllerBase
         }
     }
 
-    [HttpGet("SearchPosts/{keyword}")]
+    [HttpGet(Router.Home.SearchPosts)]
     public async Task<ActionResult<IEnumerable<object>>> SearchPostsAsync(string keyword)
     {
         try

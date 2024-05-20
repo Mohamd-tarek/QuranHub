@@ -18,16 +18,16 @@ export const profileURL = RestApiUrl + "/profile";
    }
 
 export const profilePaths: ProfilePaths = {
-   UserPosts : `${profileURL}/UserPosts/`,
-   UserFollowers : `${ profileURL }/UserFollowers/`,
-   UserFollowings :`${profileURL}/UserFollowings/`,
-   GetUserProfile:`${profileURL}/UserProfile/`,
-   GetCoverPicture:`${profileURL}/CoverPicture/`,
-   EditCoverPicture:`${profileURL}/editCoverPicture/`,
-   GetProfilePicture:`${profileURL}/ProfilePicture/`,
-   EditProfilePicture:`${profileURL}/EditProfilePicture/`,
-   CheckFollowing:`${profileURL}/CheckFollowing/`,
-   FollowUser:`${profileURL}/FollowUser/`,
-   UnfollowUser:`${profileURL}/UnFollowUser/`,
-   AboutInfo:`${profileURL}/aboutInfo/`,
+   UserPosts : `${profileURL}/user-posts/`,
+   UserFollowers : `${ profileURL }/user-followers/`,
+   UserFollowings :`${profileURL}/user-followings/`,
+   GetUserProfile:`${profileURL}/user-profile/`,
+   GetCoverPicture:`${profileURL}/cover-picture/`,
+   EditCoverPicture:`${profileURL}/edit-cover-picture/`,
+   GetProfilePicture:`${profileURL}/profile-picture/`,
+   EditProfilePicture:`${profileURL}/edit-profile-picture/`,
+   CheckFollowing:`${profileURL}/check-following/`,
+   FollowUser:`${profileURL}/follow-user/`,
+   UnfollowUser:`${profileURL}/unfollow-user/`,
+   AboutInfo:`${profileURL}/about-info/`,
 }

@@ -6,7 +6,7 @@ interface RestApiPathsType  {
 }
 
 export const restApiPaths: RestApiPathsType = {
-  SessionURL: `${RestApiUrl }/Session/`,
+  SessionURL: `${RestApiUrl }/session/`,
 }
 
 

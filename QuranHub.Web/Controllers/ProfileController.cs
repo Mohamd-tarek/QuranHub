@@ -1,8 +1,10 @@
 ﻿
 namespace QuranHub.Web.Controllers;
 
+
+[ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/[controller]")]
+
 public class ProfileController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -42,7 +44,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("UserPosts/{UserId}")]
+    [HttpGet(Router.Profile.UserPosts)]
     public async Task<ActionResult<IEnumerable<object>>> GetUserPostsAsync(string userId) 
     {
         try
@@ -62,7 +64,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("UserFollowers/{UserId}")]
+    [HttpGet(Router.Profile.UserFollowers)]
     public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowersAsync(string userId) 
     {
         try
@@ -80,7 +82,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("UserFollowings/{UserId}")]
+    [HttpGet(Router.Profile.UserFollowings)]
     public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowingsAsync(string userId)
     {
         try
@@ -98,7 +100,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("UserFollowers/{UserId}/{KeyWord}")]
+    [HttpGet(Router.Profile.SearchUserFollowers)]
     public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowersAsync(string userId, string KeyWord) 
     {
         try
@@ -116,7 +118,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("UserFollowings/{UserId}/{KeyWord}")]
+    [HttpGet(Router.Profile.SearchUserFollowings)]
     public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowingsAsync(string userId, string KeyWord)
     {
         try
@@ -134,7 +136,7 @@ public class ProfileController : ControllerBase
         }
     }      
 
-    [HttpGet("UserProfile/{UserId}")]
+    [HttpGet(Router.Profile.UserProfile)]
     public async Task<ActionResult<ProfileViewModel>> GetUserProfileAsync(string userId)
     {
         try
@@ -152,7 +154,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpPost("editCoverPicture")]
+    [HttpPost(Router.Profile.EditCoverPicture)]
     public async Task<ActionResult<byte[]>> PostEditCoverPicture([FromForm] CoverPictureModel coverPictureModel) 
     {
         try
@@ -170,7 +172,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpPost("editProfilePicture")]
+    [HttpPost(Router.Profile.EditProfilePicture)]
     public async Task<ActionResult<byte[]>> PostEditProfilePicture([FromForm] ProfilePictureModel profilePictureModel)
     {
         try
@@ -191,7 +193,7 @@ public class ProfileController : ControllerBase
 
     }
 
-    [HttpGet("CheckFollowing/{UserId}")]
+    [HttpGet(Router.Profile.CheckFollowing)]
     public async Task<ActionResult<bool>> GetCheckFollowingAsync(string userId)
     {
         try
@@ -205,7 +207,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpPost("FollowUser")]
+    [HttpPost(Router.Profile.FollowUser)]
     public async Task<ActionResult<bool>> FollowUser([FromBody] Follow follow) 
     {
         try
@@ -236,7 +238,7 @@ public class ProfileController : ControllerBase
 
     }
 
-    [HttpPost("UnfollowUser")]
+    [HttpPost(Router.Profile.UnfollowUser)]
     public async Task<ActionResult<bool>> UnfollowUser([FromBody] Follow follow) 
     {
         try
@@ -250,7 +252,7 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpGet("AboutInfo/{UserId}")]
+    [HttpGet(Router.Profile.AboutInfo)]
     public async Task<ActionResult<AboutInfoViewModel>> GetAboutInfoAsync(string userId)
     {
         try

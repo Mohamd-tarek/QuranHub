@@ -1,7 +1,7 @@
 ﻿
 namespace QuranHub.Web.Controllers;
 
-[Route("api/[controller]")]
+[ApiController]
 public class SessionController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -12,7 +12,7 @@ public class SessionController : ControllerBase
 
     }
 
-    [HttpGet("state")]
+    [HttpGet(Router.Session.State)]
     public ActionResult GetState()
     {
         try
@@ -26,7 +26,7 @@ public class SessionController : ControllerBase
         }
     }
 
-    [HttpPost("state")]
+    [HttpPost(Router.Session.State)]
     public ActionResult StoreState([FromBody] Dictionary<string, object> state)
     {
         try

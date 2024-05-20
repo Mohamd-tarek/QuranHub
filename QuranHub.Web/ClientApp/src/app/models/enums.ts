@@ -25,6 +25,12 @@ export enum PermissionEnum{
   Delete = "Delete"                 
 }
 
+export enum ResponseCodeEnum {
+  Success = 0,
+  Fail = 1,
+  GeneralError = 2,
+}
+
 
 
 

@@ -1,8 +1,8 @@
 ﻿
 namespace QuranHub.Web.Controllers;
 
+[ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/[controller]")]
 public class PostController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -39,7 +39,7 @@ public class PostController : ControllerBase
         }
     }
     
-    [HttpGet("GetPostById/{PostId}")]
+    [HttpGet(Router.Post.GetPostById)]
     public async Task<ActionResult<PostViewModel>> GetPostByIdAsync(int PostId)
     {
         try
@@ -57,7 +57,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpGet("GetPostById/{PostId}/{CommentId}")]
+    [HttpGet(Router.Post.GetPostByIdForComment)]
     public async Task<ActionResult<PostViewModel>> GetPostByIdAsync(int PostId, int CommentId)
     {
         try
@@ -75,7 +75,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpGet("LoadMorePostReacts/{PostId}/{Offset}/{Size}")]
+    [HttpGet(Router.Post.LoadMorePostReacts)]
     public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMorePostReacts(int PostId, int Offset, int Size)
     {
         try
@@ -93,7 +93,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpGet("LoadMoreComments/{PostId}/{Offset}/{Size}")]
+    [HttpGet(Router.Post.LoadMoreComments)]
     public async Task<ActionResult<IEnumerable<CommentViewModel>>> LoadMoreCommentsAsync(int PostId, int Offset, int Size) 
     {
         try
@@ -111,7 +111,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpGet("LoadMoreCommentReacts/{PostId}/{Offset}/{Size}")]
+    [HttpGet(Router.Post.LoadMoreCommentReacts)]
     public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMoreCommentReactsAsync(int PostId, int Offset, int Size)
     {
         try
@@ -129,7 +129,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpGet("LoadMoreShares/{PostId}/{Offset}/{Size}")]
+    [HttpGet(Router.Post.LoadMoreShares)]
     public async Task<ActionResult<IEnumerable<ShareViewModel>>> LoadMoreSharesAsync(int PostId, int Offset, int Size)
     {
         try
@@ -147,7 +147,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpPost("AddPostReact")]
+    [HttpPost(Router.Post.AddPostReact)]
     public async Task<ActionResult<ReactViewModel>> AddPostReactAsync([FromBody] PostReact postReact) 
     {
         try
@@ -172,7 +172,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpDelete("RemovePostReact")]
+    [HttpDelete(Router.Post.RemovePostReact)]
     public async Task<ActionResult> RemovePostReactAsync(int postId)
     {
         try
@@ -190,7 +190,7 @@ public class PostController : ControllerBase
         return BadRequest();
     }
 
-    [HttpPost("AddComment")]
+    [HttpPost(Router.Post.AddComment)]
     public async Task<ActionResult<CommentViewModel>> AddCommentAsync([FromBody] PostComment comment)
     {
         try
@@ -215,7 +215,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpDelete("RemoveComment")]
+    [HttpDelete(Router.Post.RemoveComment)]
     public async Task<ActionResult<bool>> RemoveCommentAsync(int commentId)
     {
         try
@@ -229,7 +229,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpPost("AddCommentReact")]
+    [HttpPost(Router.Post.AddCommentReact)]
     public async Task<ActionResult<ReactViewModel>> AddCommentReactAsync([FromBody] PostCommentReact commentReact) 
     {
         try
@@ -254,7 +254,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpDelete("RemoveCommentReact")]
+    [HttpDelete(Router.Post.RemoveCommentReact)]
     public async Task<ActionResult> RemoveCommentReactAsync(int commentId) 
     {
         try
@@ -272,7 +272,7 @@ public class PostController : ControllerBase
         return BadRequest();
     }
 
-    [HttpPost("SharePost")]
+    [HttpPost(Router.Post.SharePost)]
     public async Task<ActionResult<ShareViewModel>> SharePostAsync([FromBody] SharedPost sharedPost)
     {
         try
@@ -297,7 +297,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpGet("Verses")]
+    [HttpGet(Router.Post.Verses)]
     public async Task<ActionResult<IEnumerable<Verse>>> GetVersesAsync()
     {
         try
@@ -311,7 +311,7 @@ public class PostController : ControllerBase
         }
     }
 
-    [HttpPut("EditPost")]
+    [HttpPut(Router.Post.EditPost)]
     public async Task<ActionResult> EditPostAsync([FromBody] Post post)
     {
         try
@@ -327,7 +327,7 @@ public class PostController : ControllerBase
         }        
     }
 
-    [HttpDelete("DeletePost")]
+    [HttpDelete(Router.Post.DeletePost)]
     public async Task<ActionResult> DeletePostAsync(int postId)
     {
         try

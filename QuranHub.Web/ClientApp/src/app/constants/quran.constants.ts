@@ -1,9 +1,9 @@
 
 import { RestApiUrl } from "./application.constants";
 
-export const dataURL = RestApiUrl + "/Quran";
+export const dataURL = RestApiUrl + "/quran";
 
-export const quranInfoURL = RestApiUrl + "/Quran/QuranInfo";
+export const quranInfoURL = RestApiUrl + "/quran/quran-info";
 
 interface QuranInfoPathsType  {
    readonly Quran : string;
@@ -38,9 +38,9 @@ let quranInfoURLS : QuranInfoPathsType = {
 
 export const restApiPaths: RestApiPathsType = {
    QuranInfoURLS: quranInfoURLS,
-   MindMapURL: `${dataURL }/MindMap/`,
-   NoteUrl : `${ dataURL }/Note/`,
-   AnalysisURL: `${RestApiUrl}/Analysis/`
+   MindMapURL: `${dataURL }/mindMap/`,
+   NoteUrl : `${ dataURL }/note/`,
+   AnalysisURL: `${RestApiUrl}/analysis/`
 }
 
 

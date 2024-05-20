@@ -1,7 +1,7 @@
 
 import {BaseUrl, RestApiUrl } from "./application.constants";
 
-export const NotificationUrl = RestApiUrl + "/Notification";
+export const NotificationUrl = RestApiUrl + "/notification";
 
 interface NotificationPathsType {
 
@@ -15,11 +15,11 @@ interface NotificationPathsType {
 
 export const notificationPaths: NotificationPathsType = {
   NotificationHub: `${BaseUrl}/NotificationHub`,
-  Recent: `${NotificationUrl}/Recent`,
-  GetNotificationById: `${NotificationUrl}/GetNotificationById`,
-  LoadMoreNotifications: `${NotificationUrl}/LoadMoreNotifications`,
-  Seen: `${NotificationUrl}/Seen`,
-  Delete: `${NotificationUrl}/Delete`,
+  Recent: `${NotificationUrl}/recent`,
+  GetNotificationById: `${NotificationUrl}/get-notification-by-id`,
+  LoadMoreNotifications: `${NotificationUrl}/load-more-notifications`,
+  Seen: `${NotificationUrl}/seen`,
+  Delete: `${NotificationUrl}/delete`,
 };
 
 

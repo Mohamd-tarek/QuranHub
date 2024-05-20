@@ -3,29 +3,29 @@ import { RestApiUrl } from "./application.constants";
 
 export const AuthenticatinUrl = RestApiUrl + "/authentication";
 
-export const ExternalAuthenticatinUrl = RestApiUrl + "/ExternalAuthentication";
+export const ExternalAuthenticatinUrl = RestApiUrl + "/external-authentication";
 
 export const ReturnUrlType = 'returnUrl';
 
 export const LogoutActions = {
-  Logout: 'Logout',
+  Logout: 'logout',
 };
 
 export const LoginActions = {
-  LoginWithPassword: 'LoginWithPassword',
-  LoginWithExternalProvider: 'LoginWithExternalProvider',
-  LoginWithExternalProviderCallback: 'LoginWithExternalProviderCallback',
-  LoginFailed: 'LoginFailed',
+  LoginWithPassword: 'login-with-password',
+  LoginWithExternalProvider: 'login-with-external-provider',
+  LoginWithExternalProviderCallback: 'login-with-external-provider-callback',
+  LoginFailed: 'login-failed',
 };
 
 export const SignupActions = {
-  Signup: 'Signup',
-  SignupCallback: 'SignupCallback',
-  SignupWithExternalProvider: 'SignupWithExternalProvider',
-  SignupWithExternalProviderCallback: 'SignupWithExternalProviderCallback',
-  SignupConfirm: 'SignupConfirm',
-  SignupResend: 'SignupResend',
-  SignupFailed: 'SignupFailed',
+  Signup: 'signup',
+  SignupCallback: 'signup-callback',
+  SignupWithExternalProvider: 'signup-with-external-provider',
+  SignupWithExternalProviderCallback: 'signup-with-external-provider-callback',
+  SignupConfirm: 'signup-confirm',
+  SignupResend: 'signup-resend',
+  SignupFailed: 'signup-failed',
 };
 
 interface IdentityPathsType {
@@ -54,8 +54,8 @@ export const identityPaths: IdentityPathsType = {
     SignupConfirm: `${AuthenticatinUrl}/${SignupActions.SignupConfirm}`,
     SignupResend: `${AuthenticatinUrl}/${SignupActions.SignupResend}`,
     LogOut: `${AuthenticatinUrl}/${LogoutActions.Logout}`,
-    ExternalSchemas: `${ExternalAuthenticatinUrl}/externalSchemas`,
-    RecoverPassword: `${AuthenticatinUrl}/recoverPassword`,
+    ExternalSchemas: `${ExternalAuthenticatinUrl}/external-schemas`,
+    RecoverPassword: `${AuthenticatinUrl}/recover-password`,
 };
 
 

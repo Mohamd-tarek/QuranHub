@@ -9,5 +9,5 @@ export const ApplicationName = 'QuranHub.Web';
 
 export const BaseUrl = `${environment.API_URL}`;  
 
-export const RestApiUrl = BaseUrl + '/api';
+export const RestApiUrl = BaseUrl + '/api/v1';
 

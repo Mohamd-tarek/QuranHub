@@ -1,18 +1,18 @@
 import { RestApiUrl } from "./application.constants";
 
-export const postURL = RestApiUrl + "/Post";
+export const postURL = RestApiUrl + "/post";
 
 export const PostActions = {
-   LoadMoreComments: `LoadMoreComments`,
-   LoadMorePostReacts: `LoadMorePostReacts`,
-   LoadMoreCommentReacts: `LoadMoreCommentReacts`,
-   LoadMoreShares: `LoadMoreShares`,
-   AddPostReact: `AddPostReact`,
-   RemovePostReact : `RemovePostReact`,
-   AddCommentReact : `AddCommentReact`,
-   RemoveCommentReact : `RemoveCommentReact`,
-   AddComment: `AddComment`,
-   RemoveComment: `RemoveComment`,
+   LoadMoreComments: `load-more-comments`,
+   LoadMorePostReacts: `load-more-post-reacts`,
+   LoadMoreCommentReacts: `load-more-comment-reacts`,
+   LoadMoreShares: `load-more-shares`,
+   AddPostReact: `add-post-react`,
+   RemovePostReact : `remove-post-react`,
+   AddCommentReact : `add-comment-react`,
+   RemoveCommentReact : `add-comment-react`,
+   AddComment: `add-comment`,
+   RemoveComment: `remove-comment`,
 };
 
 interface PostPathsType  {
@@ -35,8 +35,8 @@ interface PostPathsType  {
    }
 
 export const postPaths: PostPathsType = {
-  GetPostById: `${postURL}/GetPostById/`,
-  Verses: `${postURL}/Verses/`,
+  GetPostById: `${postURL}/get-post-by-id/`,
+  Verses: `${postURL}/verses/`,
   LoadMoreComments: `${postURL}/${PostActions.LoadMoreComments}/`,
   LoadMorePostReacts: `${postURL}/${PostActions.LoadMorePostReacts}/`,
   LoadMoreCommentReacts: `${postURL}/${PostActions.LoadMoreCommentReacts}/`,
@@ -47,10 +47,10 @@ export const postPaths: PostPathsType = {
   RemoveComment: `${postURL}/${PostActions.RemoveComment}/`,
   AddCommentReact: `${postURL}/${PostActions.AddCommentReact}/`,
   RemoveCommentReact: `${postURL}/${PostActions.RemoveCommentReact}/`,
-  SharePost: `${postURL}/SharePost/`,
-  UnSharePost: `${postURL}/UnSharePost/`,
-  EditPost: `${postURL}/EditPost/`,
-  DeletePost: `${postURL}/DeletePost/`,
+  SharePost: `${postURL}/share-post/`,
+  UnSharePost: `${postURL}/unSharePost/`,
+  EditPost: `${postURL}/edit-post/`,
+  DeletePost: `${postURL}/delete-post/`,
  
 }
 

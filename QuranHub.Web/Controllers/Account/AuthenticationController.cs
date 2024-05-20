@@ -2,7 +2,8 @@
 
 namespace QuranHub.Web.Controllers;
 
-[Route("api/[controller]")]
+[ApiController]
+
 public partial class  AuthenticationController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -29,7 +30,7 @@ public partial class  AuthenticationController : ControllerBase
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    [HttpPost("LoginWithPassword")]
+    [HttpPost(Router.Authenticate.LoginWithPassword)]
     public async Task<ActionResult<object>> LoginWithPassword([FromBody] LoginModel creds)
     {
         try
@@ -69,7 +70,7 @@ public partial class  AuthenticationController : ControllerBase
         }
     }
           
-    [HttpPost("signup")]
+    [HttpPost(Router.Authenticate.SignUp)]
     public async Task<ActionResult> SignUp([FromBody] LoginModel creds)
     {
         try
@@ -123,7 +124,7 @@ public partial class  AuthenticationController : ControllerBase
         }
     }
     
-    [HttpPost("signUpConfirm")]
+    [HttpPost(Router.Authenticate.SignUpConfirm)]
     public async Task<ActionResult> SignUpConfirmAsync([FromBody]SignUpConfirmModel data) 
     {
         try
@@ -158,7 +159,7 @@ public partial class  AuthenticationController : ControllerBase
         }
     }
 
-    [HttpPost("signupResend")]
+    [HttpPost(Router.Authenticate.SignupResend)]
     public async Task<ActionResult> SignUpResend([FromBody] string Email) 
     {
         try

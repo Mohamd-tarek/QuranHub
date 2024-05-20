@@ -1,7 +1,7 @@
 ﻿ 
 namespace QuranHub.Web.Controllers;
 
-[Route("api/[controller]")]
+[ApiController]
 public partial class  ExternalAuthenticationController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
@@ -22,7 +22,7 @@ public partial class  ExternalAuthenticationController : ControllerBase
 
     }
 
-    [HttpGet("externalSchemas")]
+    [HttpGet(Router.ExternalAuthentication.ExternalSchemas)]
     public async  Task<ActionResult<IEnumerable<ExternalProviderViewModel>>> GetExternalSchemasAsync()
     {
         try
@@ -42,7 +42,7 @@ public partial class  ExternalAuthenticationController : ControllerBase
         }
     }
 
-    [HttpPost("LoginWithExternalProvider/{provider}")]
+    [HttpPost(Router.ExternalAuthentication.LoginWithExternalProvider)]
     public ActionResult PosLoginWithExternalProviderAsync(string provider) 
     {
         try
@@ -61,7 +61,7 @@ public partial class  ExternalAuthenticationController : ControllerBase
         }
     }
 
-    [HttpGet("LoginWithExternalProviderCallback")]
+    [HttpGet(Router.ExternalAuthentication.LoginWithExternalProviderCallback)]
     public async Task<ActionResult<object>> GetLoginWithExternalProviderCallbackAsync()
     {
         try
@@ -102,7 +102,7 @@ public partial class  ExternalAuthenticationController : ControllerBase
 
     }
 
-    [HttpPost("SignupWithExternalProvider/{provider}")]
+    [HttpPost(Router.ExternalAuthentication.SignupWithExternalProvider)]
     public ActionResult PostSignupWithExternalProvider(string provider) 
     {
         try
@@ -120,7 +120,7 @@ public partial class  ExternalAuthenticationController : ControllerBase
         }
     }
      
-    [HttpGet("SignupWithExternalProviderCallback")]
+    [HttpGet(Router.ExternalAuthentication.SignupWithExternalProviderCallback)]
     public async Task<ActionResult> GetSignupWithExternalProviderCallbackAsync() 
     {
         try

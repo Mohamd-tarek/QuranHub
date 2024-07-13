@@ -8,6 +8,8 @@ import { NotificationRepository } from '../abstractions/repositories/notificatio
 import { NotifcationDataRepository } from './repositories/NotificationDataRepository.model';
 import { DocumentaryRepository } from "../abstractions/repositories/documentaryRepository";
 import { DocumentaryDataRepository } from "./repositories/documentaryDataRepository.model";
+import { HadithRepository } from "../abstractions/repositories/hadithRepository";
+import { HadithDataRepository } from "./repositories/hadithDataRepository.model";
 
 
 @NgModule({
@@ -17,7 +19,8 @@ import { DocumentaryDataRepository } from "./repositories/documentaryDataReposit
     { provide: QuranRepository, useClass: QuranDataRepository },
     { provide: PostRepository, useClass: PostDataRepository },
     { provide: NotificationRepository, useClass: NotifcationDataRepository },
-    { provide: DocumentaryRepository, useClass: DocumentaryDataRepository }
+    { provide: DocumentaryRepository, useClass: DocumentaryDataRepository },
+    { provide: HadithRepository, useClass: HadithDataRepository }
    ]
 })
 

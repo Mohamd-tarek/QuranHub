@@ -21,6 +21,34 @@ namespace QuranHub.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("QuranHub.Domain.Models.Hadith", b =>
+                {
+                    b.Property<int>("HadithId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HadithId"));
+
+                    b.Property<int>("HadithNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HadithNumberInSection")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("HadithId");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("Hadiths");
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.Hizb", b =>
                 {
                     b.Property<int>("Id")
@@ -297,6 +325,29 @@ namespace QuranHub.DAL.Migrations
                     b.ToTable("Sajdas");
                 });
 
+            modelBuilder.Entity("QuranHub.Domain.Models.Section", b =>
+                {
+                    b.Property<int>("SectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionId"));
+
+                    b.Property<int>("HadithNumberEnd")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HadithNumberStart")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SectionId");
+
+                    b.ToTable("Sections");
+                });
+
             modelBuilder.Entity("QuranHub.Domain.Models.Sura", b =>
                 {
                     b.Property<int>("SuraId")
@@ -402,6 +453,22 @@ namespace QuranHub.DAL.Migrations
                     b.HasKey("WeightVectorDimentionId");
 
                     b.ToTable("WeightVectorDimentions");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.Hadith", b =>
+                {
+                    b.HasOne("QuranHub.Domain.Models.Section", "Section")
+                        .WithMany("Hadiths")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("QuranHub.Domain.Models.Section", b =>
+                {
+                    b.Navigation("Hadiths");
                 });
 #pragma warning restore 612, 618
         }

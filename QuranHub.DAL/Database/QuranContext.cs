@@ -28,6 +28,10 @@ public class QuranContext : DbContext
     public DbSet<Page> Pages { get; set; }
     public DbSet<Sajda> Sajdas { get; set; }
 
+    public DbSet<Section> Sections { get; set; }
+
+    public DbSet<Hadith> Hadiths { get; set; }
+
     public DbSet<WeightVectorDimention> WeightVectorDimentions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

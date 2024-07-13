@@ -19,6 +19,8 @@ export class StateDataService extends StateService  {
       "currentNoteSura" : 1, 
       "currentNoteAya": 1,
       "currentSearch": "",
+      "currentHadithSearch": "",
+      "currentSectionIndex": 1,
       "currentTafseerSura": 1,
       "currentTafseerAya": 1,
       "currentTafseerTafseer": "muyassar",

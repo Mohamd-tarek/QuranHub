@@ -1,0 +1,27 @@
+  
+  <div *ngIf="dataLoaded; else nodata">
+      <div  class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+        <div  class="tab-pane fade show active mt-2" id="search" role="tabpanel" aria-labelledby="home-tab">
+          <div class="border  border-3 rounded-3 p-2 mb-2 " [style.background-color]="'papayawhip'">
+          <div class="row g-3 align-items-center " >
+            <div class="col flex-row-reverse" >
+              <select class="form-select "
+                      aria-label="Default select example"
+                      [(ngModel)]="curSection" >
+                <option  *ngFor="let section of sections" value={{section.sectionId}} > {{section.name}}</option>
+              </select> 
+            </div>
+          </div>
+          </div>
+          
+          <div class="border  border-3 rounded-3  p-2  text-end" [style.background-color]="'papayawhip'">
+            <p >{{'TOTAL' |translate}}: {{result.length}}</p>
+            <aya-set-container [highLightText]="currentHadithSearch.value" [isHadith]="true"  [ayaSet]="result"></aya-set-container>  
+          </div>    
+      </div>
+    </div>
+</div>
+  
+  <ng-template #nodata>
+    <loading></loading>
+  </ng-template>

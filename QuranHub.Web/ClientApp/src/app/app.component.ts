@@ -15,6 +15,7 @@ export class AppComponent {
                   {name :"TAFSEER", url : "/tafseer"},
                   {name :"MINDMAPS", url : "/mindMaps"},
                   {name :"SEARCH", url : "/search"},
+                  {name :"HADITH", url : "/hadith"},
                   {name :"NOTES", url : "/notes"},
                   {name :"STATISTICS", url : "/statistics"},
                   {name :"ANALYSIS", url : "/analysis"},

@@ -28,6 +28,7 @@ import { DocumentaryPlayListsComponent } from "./documentary/documentary-play-li
 import { DocumentaryPlayListComponent } from "./documentary/documentary-play-list.component";
 import { DocumentaryVideoViewerComponent } from "./documentary/documentary-video-viewer.component"
 import { TranslateModule } from '@ngx-translate/core';
+import { HadithComponent } from "./hadith/hadith.component";
 
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: "read", component: ReadComponent } ,
   { path: "recital", component: RecitalComponent } ,
   { path: "search", component: SearchComponent },
+  { path: "hadith", component: HadithComponent },
   { path: "tafseer", component :TafseerComponent},
   { path: "statistics", component: StatisticsComponent },
   { path: "notes", component: NoteComponent, canActivate: [AuthenticationGuard] },
@@ -95,7 +97,8 @@ const routes: Routes = [
     DocumentaryComponent,
     DocumentaryPlayListsComponent,
     DocumentaryPlayListComponent,
-    DocumentaryVideoViewerComponent
+    DocumentaryVideoViewerComponent,
+    HadithComponent
   ],
 
   providers: [],

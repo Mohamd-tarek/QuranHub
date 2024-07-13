@@ -7,7 +7,7 @@
           aria-label="Close"
           (click)='removeAya()'>
   </button>
-  <aya-info [suraIndex]="aya.sura" [ayaIndex]="aya.aya" ></aya-info>
+  <aya-info *ngIf="!isHadith" [suraIndex]="aya.sura"  [ayaIndex]="aya.aya" ></aya-info>
   <aya [text]="aya.text"
        [highLightText]="highLightText"></aya>
 </div>

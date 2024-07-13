@@ -147,6 +147,16 @@
           
 
         }
+
+        public static class Hadith
+        {
+
+            private const string Prefix = Root + "hadith/";
+            public const string GetAll = Prefix + "get-all";
+            public const string GetSectionById = Prefix + "section/{id}";
+            public const string GetHadithById = Prefix + "hadith/{id}";
+        }
+
         public static class Session
         {
             private const string Prefix = Root + "session/";

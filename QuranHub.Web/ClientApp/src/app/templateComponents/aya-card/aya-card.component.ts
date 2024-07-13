@@ -15,6 +15,9 @@ export class AyaCardComponent  {
   aya!: Quran ;
 
   @Input()
+  isHadith: boolean = false ;
+
+  @Input()
   closable: boolean = false;
 
   @Input()

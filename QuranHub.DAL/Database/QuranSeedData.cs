@@ -1,4 +1,8 @@
 ﻿
+using QuranHub.Domain.Models;
+using System.Xml.Linq;
+
+
 namespace QuranHub.DAL.Database;
 
 public class QuranSeedData
@@ -13,7 +17,8 @@ public class QuranSeedData
         "ar.jalalayn.xml", "katheerWithHTML.xml",
         "tabaryWithHTML.xml","qortobiWithHTML.xml",  
         "en.hilali.xml","quran-simple-clean-xml.xml",
-        "quran-meta.xml"
+        "quran-meta.xml",
+        "sahih-elbukhary.xml"
     };
 
     public static async Task SeedDatabaseAsync(IServiceProvider provider)
@@ -32,7 +37,9 @@ public class QuranSeedData
 
                 SeedMindMaps(context);
 
-                await context.SaveChangesAsync();            
+                await SeedSahihElbokhary(context);
+
+                context.SaveChanges();            
             }
         }
         catch (Exception ex)
@@ -254,6 +261,117 @@ public class QuranSeedData
              return;
         }
 
+    }
+
+    public static async Task SeedSahihElbokhary(QuranContext ctx)
+    {
+        try
+        {
+            string metaPath = solutionDir + @"\" + files[9];
+
+            XElement data = XElement.Load(metaPath);
+
+            await SeedSections(ctx, data);
+
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
+    }
+
+    public static async Task SeedSections(QuranContext ctx, XElement xmlData)
+    {
+        try
+        {
+            IEnumerable<XElement> sections = xmlData.Element("metadata").Element("sections").Elements("element");
+
+            int sectionNumber = 1;
+
+            foreach (XElement section in sections)
+            {
+
+                    Section curSection = new Section()
+                    {
+                        Name = section.Value
+                    };
+
+                    GetSectionDetails(xmlData, ref curSection, sectionNumber);
+
+                    ctx.Sections.Add(curSection);
+
+                    await ctx.SaveChangesAsync();
+
+                    SeedHadiths(ctx, xmlData, curSection.HadithNumberStart, curSection.HadithNumberEnd, curSection.SectionId);
+
+                sectionNumber++;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
+    }
+
+    public static void GetSectionDetails(XElement xmlData, ref Section section,  int sectionNumber)
+    {
+        try
+        {
+            var curSection = xmlData.Element("metadata").Element("section_details").Elements("section_detail").ToList()[sectionNumber - 1];
+            section.HadithNumberStart = int.Parse(curSection.Element("hadithnumber_first").Value);
+            section.HadithNumberEnd = int.Parse(curSection.Element("hadithnumber_last").Value);
+
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
+    }
+
+    public static void SeedHadiths(QuranContext ctx, XElement xmlData, int start, int end, int sectionId)
+    {
+        try
+        {
+            List<XElement> hadiths = xmlData.Elements("hadiths").ToList();
+
+            while(start <= end)
+            {
+
+                var hadith = hadiths[start];
+                try
+                {
+
+                    Hadith curHadith = new Hadith()
+                    {
+                        Text = hadith.Element("text").Value,
+                        HadithNumber = int.Parse(hadith.Element("hadithnumber").Value),
+                        HadithNumberInSection = int.Parse(hadith.Element("reference").Element("hadith").Value),
+                        SectionId = sectionId
+                    };
+
+                    if (int.Parse(hadith.Element("reference").Element("book").Value) > 97)
+                    {
+                        throw new Exception();
+
+                    }
+                    ctx.Hadiths.Add(curHadith);
+                    
+                }
+                catch (Exception ex)
+                {
+                    start++;
+                    continue;
+                }
+                start++;
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+            return;
+        }
     }
 }
 

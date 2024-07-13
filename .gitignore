@@ -231,3 +231,4 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+/QuranHub.Web/wwwroot/Log/log.txt

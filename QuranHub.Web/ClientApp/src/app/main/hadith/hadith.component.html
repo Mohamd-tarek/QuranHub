@@ -13,11 +13,23 @@
             </div>
           </div>
           </div>
+          <div class="row">
+            <span class="m-auto w-auto">
+              <previous-pointer (previousEvent)="prev()"></previous-pointer>
+              <next-pointer (nextEvent)="next()"></next-pointer>
+            </span>
+          </div> 
           
           <div class="border  border-3 rounded-3  p-2  text-end" [style.background-color]="'papayawhip'">
             <p >{{'TOTAL' |translate}}: {{result.length}}</p>
             <aya-set-container [highLightText]="currentHadithSearch.value" [isHadith]="true"  [ayaSet]="result"></aya-set-container>  
-          </div>    
+          </div>   
+          <div class="row">
+            <span class="m-auto w-auto">
+              <previous-pointer (previousEvent)="prev()"></previous-pointer>
+              <next-pointer (nextEvent)="next()"></next-pointer>
+            </span>
+          </div>  
       </div>
     </div>
 </div>

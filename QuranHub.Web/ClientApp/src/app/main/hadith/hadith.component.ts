@@ -100,5 +100,17 @@ export class HadithComponent implements OnDestroy {
   removeItem(index: number): void{
     this.result.splice(index, 1);
   }
+
+  next(){
+    if(this.curSection < 97){
+      this.curSection++;
+    }
+  }
+
+  prev(){
+    if(this.curSection > 1 ){
+      this.curSection--;
+    }
+  }
  
 }

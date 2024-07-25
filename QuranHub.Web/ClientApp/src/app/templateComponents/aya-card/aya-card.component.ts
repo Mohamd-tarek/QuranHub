@@ -1,6 +1,7 @@
 import { Component, Input, Output,EventEmitter } from '@angular/core';
 import { Quran } from 'src/app/models/quran/quran.model';
 import { FadeOutTrigger } from 'src/app/animations/FadeOut.animation';
+import { QuranRepository } from 'src/app/abstractions/repositories/quranRepository';
 
 
 @Component({
@@ -10,7 +11,13 @@ import { FadeOutTrigger } from 'src/app/animations/FadeOut.animation';
 })
 
 export class AyaCardComponent  {
+  
+  constructor(private quranRepo: QuranRepository){
 
+  }
+  
+  english:boolean = false;
+  
   @Input()
   aya!: Quran ;
 
@@ -30,5 +37,25 @@ export class AyaCardComponent  {
 
   removeAya(): void{
     this.removeAyaEvent.emit();
+  }
+
+  transtalte(){
+    if(!this.english)
+    {
+      this.quranRepo.translation.subscribe((data:any) => {
+       this.aya = data[this.aya.sura][this.aya.aya - 1];
+       this.english = true;
+       }
+      )
+    }
+    else
+    {
+      this.quranRepo.quran.subscribe((data:any) => {
+        this.aya = data[this.aya.sura][this.aya.aya - 1];
+        this.english = false;
+        }
+       )
+    }
+
   }
 }

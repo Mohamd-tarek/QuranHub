@@ -1,13 +1,24 @@
 <div class="border  border-3 rounded-3 p-2 m-2 "
 [@fadeOut]
 [style.backgroundColor]="backgroundColor">
-  <button class="d-inline float-start btn-close"
-          *ngIf="closable"
-          type="button"
-          aria-label="Close"
-          (click)='removeAya()'>
-  </button>
-  <aya-info *ngIf="!isHadith" [suraIndex]="aya.sura"  [ayaIndex]="aya.aya" ></aya-info>
+<div class="row">
+        <div class="col">
+                <button class="d-inline float-start btn-close"
+                        *ngIf="closable"
+                        type="button"
+                        aria-label="Close"
+                        (click)='removeAya()'>
+                </button>
+        </div>
+        <div class="col text-center text-decoration-underline" (click)='transtalte()'>       
+                <span *ngIf="english" > Arabic </span>
+                <span *ngIf="!english" > English </span>             
+        </div>
+        <div class="col">
+            <aya-info *ngIf="!isHadith" [suraIndex]="aya.sura"  [ayaIndex]="aya.aya" ></aya-info>
+        </div>
+</div>
+
   <aya [text]="aya.text"
        [highLightText]="highLightText"></aya>
 </div>

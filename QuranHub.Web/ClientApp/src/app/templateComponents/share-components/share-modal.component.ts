@@ -59,8 +59,9 @@ export class ShareModalComponent  implements OnInit{
   }
 
   sharingPost(){
+    console.log(this.post);
     this.submitted = true;
-    console.log(this.verseId + " - " + this.user.id + " - "+  this.text + " -", this.privacy)
+    console.log(this.verseId + " - " + this.user.id + " - "+  this.text + " -", this.privacy + " - " + this.post.postId)
     this.repository.sharePost(this.verseId, this.user.id, this.text, this.privacy , this.post.postId).subscribe((post:any) => {
          if(post !== null){
           this.submitted = false;

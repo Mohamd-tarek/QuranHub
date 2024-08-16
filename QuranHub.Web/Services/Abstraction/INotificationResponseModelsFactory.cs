@@ -1,0 +1,18 @@
+﻿
+
+namespace QuranHub.Web.Services;
+
+public interface INotificationResponseModelsFactory
+{
+    public List<NotificationResponseModel> BuildNotificationsResponseModel(List<Notification> notifications);
+    public NotificationResponseModel BuildNotificationResponseModel(Notification notification );
+    public FollowNotificationResponseModel BuildFollowNotificationResponseModel(FollowNotification followNotification);
+    public PostReactNotificationResponseModel BuildPostReactNotificationResponseModel(PostReactNotification postReactNotification);
+    public ShareNotificationResponseModel BuildShareNotificationResponseModel(ShareNotification shareNotification);
+    public ShareNotificationResponseModel BuildPostShareNotificationResponseModel(PostShareNotification shareNotification);
+    public CommentNotificationResponseModel BuildCommentNotificationResponseModel(CommentNotification commentNotification);
+    public CommentNotificationResponseModel BuildPostCommentNotificationResponseModel(PostCommentNotification commentNotification);
+    public CommentReactNotificationResponseModel BuildCommentReactNotificationResponseModel(CommentReactNotification commentReactNotification);
+    public CommentReactNotificationResponseModel BuildPostCommentReactNotificationResponseModel(PostCommentReactNotification commentReactNotification);
+
+}

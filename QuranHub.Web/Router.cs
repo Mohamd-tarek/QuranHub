@@ -12,12 +12,12 @@
             public const string UserInfo = Prefix + "user-info";
             public const string EditUserInfo = Prefix + "edit-user-info";
             public const string AboutInfo = Prefix + "about-info";
-            public const string PrivacySetting = Prefix + "privacy-Setting";
-            public const string EditAboutInfo = Prefix + "edit-aAbout-info";
+            public const string PrivacySetting = Prefix + "privacy-setting";
+            public const string EditAboutInfo = Prefix + "edit-about-info";
             public const string ChangeEmail = Prefix + "change-email";
             public const string ChangeEmailConfirm = Prefix + "change-email-confirm";
             public const string ChangePassword = Prefix + "change-password";
-            public const string RecoverPassword = Prefix + "crecover-password";
+            public const string RecoverPassword = Prefix + "recover-password";
             public const string RecoverPasswordConfirm = Prefix + "recover-password-confirm";
             public const string DeleteAccount = Prefix + "delete-account";
 

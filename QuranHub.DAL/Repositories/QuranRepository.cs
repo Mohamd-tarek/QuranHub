@@ -92,16 +92,16 @@ public class QuranRepository : IQuranRepository
             return null;
         }
     }
-    public async Task<bool> AddNote(Note note, QuranHubUser user)
+    public async Task<bool> AddNote(int NoteId, int Index, int Sura, int Aya, string Text, QuranHubUser user)
     {
         try
         {
 
-            if (this.Notes.Any((d => d.Index == note.Index && d.QuranHubUserId == user.Id)))
+            if (this.Notes.Any((d => d.Index == Index && d.QuranHubUserId == user.Id)))
             {
-                Note cur = await this.GetNote(note.Index, user);
+                Note cur = await this.GetNote(Index, user);
 
-                cur.Text = note.Text;
+                cur.Text = Text;
 
                 if (cur.QuranHubUser == null)
                 {
@@ -110,11 +110,15 @@ public class QuranRepository : IQuranRepository
             }
             else
             {
-                note.QuranHubUserId = user.Id;
+                var note = new Note(Index, Sura, Aya, Text, user.Id);
 
                 await _identityDataContext.AddAsync(note);
 
+
             }
+
+            await _identityDataContext.SaveChangesAsync();
+
             return true;
         }
         catch (Exception ex)

@@ -19,7 +19,7 @@ public class PostComment :Comment
         PostId = postId;
     }
 
-    public PostCommentReact AddPostCommentReact(string quranHubUserId, int type = 0)
+    public PostCommentReact AddPostCommentReact(string quranHubUserId, int type = 1)
     {
         try
         { 

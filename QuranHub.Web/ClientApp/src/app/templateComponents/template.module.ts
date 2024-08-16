@@ -62,6 +62,7 @@ import { onClickOutsideHideDirective } from "./onClickOutsideHide.directive";
 import { DragulaModule } from 'ng2-dragula';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslateModule } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -136,7 +137,7 @@ import { TranslateModule } from '@ngx-translate/core';
     onClickOutsideHideDirective
   ],
 
-  providers: [],
+  providers: [DatePipe],
 
   exports: [
     AyaComponent,

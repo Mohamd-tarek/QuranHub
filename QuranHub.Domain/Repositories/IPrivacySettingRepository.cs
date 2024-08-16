@@ -29,7 +29,7 @@ public interface IPrivacySettingRepository
     /// <param name="privacySetting"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public Task<bool> EditPrivacySettingByUserIdAsync(PrivacySetting privacySetting, string userId);
+    public Task<bool> EditPrivacySettingByUserIdAsync(bool AllowFollow, bool AllowComment, bool AllowShare,bool AppearInSearch , string userId);
 
 
 }

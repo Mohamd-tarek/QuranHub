@@ -7,8 +7,8 @@ public class PostController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
     private IPostRepository _postRepository;
-    private IPostViewModelsFactory _postViewModelsFactory;
-    private INotificationViewModelsFactory _notificationViewModelsFactory;
+    private IPostResponseModelsFactory _postResponseModelsFactory;
+    private INotificationResponseModelsFactory _notificationResponseModelsFactory;
     private IHubContext<NotificationHub> _notificationHubContext;
     private UserManager<QuranHubUser> _userManager;
     private HttpContext _httpContext;
@@ -19,8 +19,8 @@ public class PostController : ControllerBase
         IPostRepository postRepository,
         UserManager<QuranHubUser> userManager,
         IHubContext<NotificationHub> notificationHubContext,
-        IPostViewModelsFactory postViewModelsFactory,
-        INotificationViewModelsFactory notificationViewModelsFactory,
+        IPostResponseModelsFactory postResponseModelsFactory,
+        INotificationResponseModelsFactory notificationResponseModelsFactory,
         IHttpContextAccessor httpContextAccessor)
     {
        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -28,8 +28,8 @@ public class PostController : ControllerBase
        _httpContext = httpContextAccessor.HttpContext  ?? throw new ArgumentNullException(nameof(httpContextAccessor));;
        _postRepository = postRepository ?? throw new ArgumentNullException(nameof(postRepository));
        _notificationHubContext = notificationHubContext ?? throw new ArgumentNullException(nameof(notificationHubContext));
-       _postViewModelsFactory = postViewModelsFactory ?? throw new ArgumentNullException(nameof(postViewModelsFactory));
-       _notificationViewModelsFactory = notificationViewModelsFactory ?? throw new ArgumentNullException(nameof(notificationViewModelsFactory));
+       _postResponseModelsFactory = postResponseModelsFactory ?? throw new ArgumentNullException(nameof(postResponseModelsFactory));
+       _notificationResponseModelsFactory = notificationResponseModelsFactory ?? throw new ArgumentNullException(nameof(notificationResponseModelsFactory));
 
         ClaimsPrincipal claimsPrincipal = this._httpContext.User;
 
@@ -40,15 +40,15 @@ public class PostController : ControllerBase
     }
     
     [HttpGet(Router.Post.GetPostById)]
-    public async Task<ActionResult<PostViewModel>> GetPostByIdAsync(int PostId)
+    public async Task<ActionResult<PostResponseModel>> GetPostByIdAsync(int PostId)
     {
         try
         {
             Post post = await this._postRepository.GetPostByIdAsync(PostId);
 
-            PostViewModel postViewModel =await this._postViewModelsFactory.BuildPostViewModelAsync(post);
+            PostResponseModel postResponseModel =await this._postResponseModelsFactory.BuildPostResponseModelAsync(post);
       
-            return Ok(postViewModel);
+            return Ok(postResponseModel);
         }
         catch (Exception ex)
         {
@@ -58,15 +58,15 @@ public class PostController : ControllerBase
     }
 
     [HttpGet(Router.Post.GetPostByIdForComment)]
-    public async Task<ActionResult<PostViewModel>> GetPostByIdAsync(int PostId, int CommentId)
+    public async Task<ActionResult<PostResponseModel>> GetPostByIdAsync(int PostId, int CommentId)
     {
         try
         {
             Post post = await this._postRepository.GetPostByIdWithSpecificCommentAsync(PostId, CommentId);
 
-            PostViewModel postViewModel =await this._postViewModelsFactory.BuildPostViewModelAsync(post);
+            PostResponseModel postResponseModel =await this._postResponseModelsFactory.BuildPostResponseModelAsync(post);
       
-            return Ok(postViewModel);
+            return Ok(postResponseModel);
         }
         catch (Exception ex)
         {
@@ -76,13 +76,13 @@ public class PostController : ControllerBase
     }
 
     [HttpGet(Router.Post.LoadMorePostReacts)]
-    public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMorePostReacts(int PostId, int Offset, int Size)
+    public async Task<ActionResult<IEnumerable<ReactResponseModel>>> LoadMorePostReacts(int PostId, int Offset, int Size)
     {
         try
         {
             List<PostReact> postReacts = await _postRepository.GetMorePostReactsAsync(PostId, Offset, Size);
 
-            List<ReactViewModel> postReactsModels =  _postViewModelsFactory.BuildPostReactsViewModel(postReacts);
+            List<ReactResponseModel> postReactsModels =  _postResponseModelsFactory.BuildPostReactsResponseModel(postReacts);
 
             return Ok(postReactsModels);
         }
@@ -94,15 +94,15 @@ public class PostController : ControllerBase
     }
 
     [HttpGet(Router.Post.LoadMoreComments)]
-    public async Task<ActionResult<IEnumerable<CommentViewModel>>> LoadMoreCommentsAsync(int PostId, int Offset, int Size) 
+    public async Task<ActionResult<IEnumerable<CommentResponseModel>>> LoadMoreCommentsAsync(int PostId, int Offset, int Size) 
     {
         try
         {
             List<PostComment> comments = await _postRepository.GetMorePostCommentsAsync(PostId, Offset, Size);
 
-            List<CommentViewModel> commentViewModels = await _postViewModelsFactory.BuildCommentsViewModelAsync(comments);
+            List<CommentResponseModel> commentResponseModels = await _postResponseModelsFactory.BuildCommentsResponseModelAsync(comments);
 
-            return Ok(commentViewModels);
+            return Ok(commentResponseModels);
         }
         catch (Exception ex)
         {
@@ -112,15 +112,15 @@ public class PostController : ControllerBase
     }
 
     [HttpGet(Router.Post.LoadMoreCommentReacts)]
-    public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMoreCommentReactsAsync(int PostId, int Offset, int Size)
+    public async Task<ActionResult<IEnumerable<ReactResponseModel>>> LoadMoreCommentReactsAsync(int PostId, int Offset, int Size)
     {
         try
         {
             List<PostCommentReact> comments = await _postRepository.GetMorePostCommentReactsAsync(PostId, Offset, Size);
 
-            List<ReactViewModel> commentReactViewModels =  _postViewModelsFactory.BuildCommentReactsViewModel(comments);
+            List<ReactResponseModel> commentReactResponseModels =  _postResponseModelsFactory.BuildCommentReactsResponseModel(comments);
 
-            return Ok(commentReactViewModels);
+            return Ok(commentReactResponseModels);
         }
         catch (Exception ex)
         {
@@ -130,15 +130,15 @@ public class PostController : ControllerBase
     }
 
     [HttpGet(Router.Post.LoadMoreShares)]
-    public async Task<ActionResult<IEnumerable<ShareViewModel>>> LoadMoreSharesAsync(int PostId, int Offset, int Size)
+    public async Task<ActionResult<IEnumerable<ShareResponseModel>>> LoadMoreSharesAsync(int PostId, int Offset, int Size)
     {
         try
         {
             List<PostShare> shares = await _postRepository.GetMorePostSharesAsync(PostId, Offset, Size);
 
-            List<PostShareViewModel> ShareViewModels =  _postViewModelsFactory.BuildSharesViewModel(shares);
+            List<PostShareResponseModel> ShareResponseModels =  _postResponseModelsFactory.BuildSharesResponseModel(shares);
 
-            return Ok(ShareViewModels);
+            return Ok(ShareResponseModels);
         }
         catch (Exception ex)
         {
@@ -148,22 +148,22 @@ public class PostController : ControllerBase
     }
 
     [HttpPost(Router.Post.AddPostReact)]
-    public async Task<ActionResult<ReactViewModel>> AddPostReactAsync([FromBody] PostReact postReact) 
+    public async Task<ActionResult<ReactResponseModel>> AddPostReactAsync([FromBody] AddPostReactRequestModel postReact) 
     {
         try
         {
-            Tuple<PostReact, PostReactNotification>  result = await _postRepository.AddPostReactAsync(postReact, _currentUser);
+            Tuple<PostReact, PostReactNotification>  result = await _postRepository.AddPostReactAsync(postReact.PostId, _currentUser);
 
             var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 
             if(result.Item2.TargetUserId != null && result.Item2.TargetUserId != this._currentUser.Id && user.Online)
             {
-                PostReactNotificationViewModel notification =  this._notificationViewModelsFactory.BuildPostReactNotificationViewModel(result.Item2);
+                PostReactNotificationResponseModel notification =  this._notificationResponseModelsFactory.BuildPostReactNotificationResponseModel(result.Item2);
 
                 await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
             }
 
-            return Ok( _postViewModelsFactory.BuildPostReactViewModel(result.Item1));
+            return Ok( _postResponseModelsFactory.BuildPostReactResponseModel(result.Item1));
         }
         catch (Exception ex)
         {
@@ -191,22 +191,22 @@ public class PostController : ControllerBase
     }
 
     [HttpPost(Router.Post.AddComment)]
-    public async Task<ActionResult<CommentViewModel>> AddCommentAsync([FromBody] PostComment comment)
+    public async Task<ActionResult<CommentResponseModel>> AddCommentAsync([FromBody] AddPostCommentRequestModel comment)
     {
         try
         {
-            Tuple<PostComment, PostCommentNotification> result = await _postRepository.AddPostCommentAsync(comment, _currentUser);
+            Tuple<PostComment, PostCommentNotification> result = await _postRepository.AddPostCommentAsync(comment.PostId, comment.Text, comment.VerseId, _currentUser);
 
             var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 
             if (result.Item2.TargetUserId != null && result.Item2.TargetUserId != this._currentUser.Id && user.Online)
             {
-                CommentNotificationViewModel notification =  this._notificationViewModelsFactory.BuildCommentNotificationViewModel(result.Item2);
+                CommentNotificationResponseModel notification =  this._notificationResponseModelsFactory.BuildCommentNotificationResponseModel(result.Item2);
 
                 await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
             }
 
-            return Ok( await _postViewModelsFactory.BuildCommentViewModelAsync(result.Item1));
+            return Ok( await _postResponseModelsFactory.BuildCommentResponseModelAsync(result.Item1));
         }
         catch (Exception ex)
         {
@@ -230,22 +230,22 @@ public class PostController : ControllerBase
     }
 
     [HttpPost(Router.Post.AddCommentReact)]
-    public async Task<ActionResult<ReactViewModel>> AddCommentReactAsync([FromBody] PostCommentReact commentReact) 
+    public async Task<ActionResult<ReactResponseModel>> AddCommentReactAsync([FromBody] AddCommentReactRequestModel commentReact) 
     {
         try
         {
-            Tuple<PostCommentReact, PostCommentReactNotification> result = await _postRepository.AddPostCommentReactAsync(commentReact, _currentUser);
+            Tuple<PostCommentReact, PostCommentReactNotification> result = await _postRepository.AddPostCommentReactAsync(commentReact.CommentId, _currentUser);
 
             var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 
             if (result.Item2.TargetUserId != null &&  result.Item2.TargetUserId != this._currentUser.Id && user.Online)
             {
-                CommentReactNotificationViewModel notification =  this._notificationViewModelsFactory.BuildCommentReactNotificationViewModel(result.Item2);
+                CommentReactNotificationResponseModel notification =  this._notificationResponseModelsFactory.BuildCommentReactNotificationResponseModel(result.Item2);
 
                 await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
             }
 
-            return  Ok(_postViewModelsFactory.BuildCommentReactViewModel(result.Item1));
+            return  Ok(_postResponseModelsFactory.BuildCommentReactResponseModel(result.Item1));
         }
         catch (Exception ex)
         {
@@ -273,22 +273,22 @@ public class PostController : ControllerBase
     }
 
     [HttpPost(Router.Post.SharePost)]
-    public async Task<ActionResult<ShareViewModel>> SharePostAsync([FromBody] SharedPost sharedPost)
+    public async Task<ActionResult<ShareResponseModel>> SharePostAsync([FromBody] SharePostRequestModel sharePost)
     {
         try
         {
-            Tuple<PostShare, PostShareNotification> result = await _postRepository.SharePostAsync(sharedPost, _currentUser);
+            Tuple<PostShare, PostShareNotification> result = await _postRepository.SharePostAsync(sharePost.Privacy, sharePost.PostId, sharePost.Text, sharePost.VerseId, _currentUser);
 
             var user = await _userManager.FindByIdAsync(result.Item2.TargetUserId);
 
             if (result.Item2.TargetUserId != null && result.Item2.TargetUserId != this._currentUser.Id && user.Online)
             {
-                ShareNotificationViewModel notification =  this._notificationViewModelsFactory.BuildShareNotificationViewModel(result.Item2);
+                ShareNotificationResponseModel notification =  this._notificationResponseModelsFactory.BuildShareNotificationResponseModel(result.Item2);
 
                 await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
             }
 
-            return Ok(_postViewModelsFactory.BuildShareViewModel(result.Item1));
+            return Ok(_postResponseModelsFactory.BuildShareResponseModel(result.Item1));
         }
         catch (Exception ex)
         {
@@ -312,12 +312,12 @@ public class PostController : ControllerBase
     }
 
     [HttpPut(Router.Post.EditPost)]
-    public async Task<ActionResult> EditPostAsync([FromBody] Post post)
+    public async Task<ActionResult> EditPostAsync([FromBody] EditPostRequestModel post)
     {
         try
         {
             
-            await _postRepository.EditPostAsync(post);
+            await _postRepository.EditPostAsync(post.PostId, post.Privacy, post.Text, post.VerseId);
 
             return Ok();
         }

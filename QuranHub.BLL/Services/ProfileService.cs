@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using QuranHub.Core.Dtos.Request;
 
 namespace QuranHub.BLL.Services;
 
@@ -238,7 +239,7 @@ public class ProfileService : IProfileService
     {
         try
         {
-            return await this._followRepository.FollowExistAsync(followedId, followerId);
+            return await this._followRepository.FollowExistAsync(followerId, followedId);
         }
         catch (Exception ex)
         {
@@ -247,11 +248,11 @@ public class ProfileService : IProfileService
         }
     }
 
-    public async Task<Tuple<bool, FollowNotification>> AddFollowAsync(Follow follow, QuranHubUser user)
+    public async Task<Tuple<bool, FollowNotification>> AddFollowAsync(FollowRequestModel follow, QuranHubUser user)
     {
         try
         {
-             return await _followRepository.AddFollowAsync(follow, user);
+             return await _followRepository.AddFollowAsync(follow.FollowerId, follow.FollowedId, user);
         }
         catch (Exception ex)
         {
@@ -260,11 +261,11 @@ public class ProfileService : IProfileService
         }
     }
 
-    public async Task<bool> RemoveFollowAsync(Follow follow)
+    public async Task<bool> RemoveFollowAsync(FollowRequestModel follow)
     {
         try
         {
-                return await _followRepository.RemoveFollowAsync(follow);
+                return await _followRepository.RemoveFollowAsync(follow.FollowerId, follow.FollowedId);
         }
         catch (Exception ex)
         {

@@ -1,5 +1,4 @@
-﻿
-namespace QuranHub.Web.Controllers;
+﻿namespace QuranHub.Web.Controllers;
 
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -7,7 +6,7 @@ public partial class  AccountController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
     private IPostRepository _postRepository;
-    private IUserViewModelsFactory _userViewModelsFactory;
+    private IUserResponseModelsFactory _userResponseModelsFactory;
     private UserManager<QuranHubUser> _userManager;
     private SignInManager<QuranHubUser> _signInManager;
     private IEmailService _emailService;
@@ -22,29 +21,29 @@ public partial class  AccountController : ControllerBase
         IPostRepository postRepository,
         IPrivacySettingRepository privacySettingRepository,
         TokenUrlEncoderService tokenUrlEncoder,
-        IUserViewModelsFactory userViewModelsFactory)
+        IUserResponseModelsFactory userResponseModelsFactory)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger)); 
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         _tokenUrlEncoder = tokenUrlEncoder ?? throw new ArgumentNullException(nameof(tokenUrlEncoder));
-        _userViewModelsFactory = userViewModelsFactory ?? throw new ArgumentNullException(nameof(userViewModelsFactory));
+        _userResponseModelsFactory = userResponseModelsFactory ?? throw new ArgumentNullException(nameof(userResponseModelsFactory));
         _postRepository = postRepository ?? throw new ArgumentNullException(nameof(postRepository));
         _privacySettingRepository = privacySettingRepository ?? throw new ArgumentNullException(nameof(privacySettingRepository));
 
     }
 
     [HttpGet(Router.Account.UserInfo)]
-    public async Task<ActionResult<UserBasicInfoViewModel>> GetUserInfoAsync()
+    public async Task<ActionResult<UserBasicInfoResponseModel>> GetUserInfoAsync()
     {
         try
         {
 
             QuranHubUser user  = await _userManager.GetUserAsync(User);
-            UserBasicInfoViewModel userBasicInfoViewModel = _userViewModelsFactory.BuildUserBasicInfoViewModel(user);
+            UserBasicInfoResponseModel userBasicInfoResponseModel = _userResponseModelsFactory.BuildUserBasicInfoResponseModel(user);
 
-            return Ok(userBasicInfoViewModel);
+            return Ok(userBasicInfoResponseModel);
         }
         catch (Exception ex)
         {
@@ -54,7 +53,7 @@ public partial class  AccountController : ControllerBase
     }
 
     [HttpPost(Router.Account.EditUserInfo)]
-    public async Task<ActionResult> PostEditProfile([FromBody] EditProfileModel data)
+    public async Task<ActionResult> EditProfile([FromBody] EditProfileRequestModel data)
     {
         try
         {
@@ -71,7 +70,7 @@ public partial class  AccountController : ControllerBase
 
             if (user.Email != data.Email)
             {
-                await PostChangeEmail(user, data.Email);
+                await ChangeEmail(user, data.Email);
             }
 
             return Ok("true");
@@ -85,15 +84,15 @@ public partial class  AccountController : ControllerBase
 
    
     [HttpGet(Router.Account.AboutInfo)]
-    public async Task<ActionResult<AboutInfoViewModel>> GetAboutInfoAsync()
+    public async Task<ActionResult<AboutInfoRequestModel>> GetAboutInfoAsync()
     {
         try
         {
             QuranHubUser user  = await _userManager.GetUserAsync(User);
 
-            AboutInfoViewModel aboutInfoViewModel = _userViewModelsFactory.BuildAboutInfoViewModel(user);
+            AboutInfoRequestModel aboutInfoResponseModel = _userResponseModelsFactory.BuildAboutInfoResponseModel(user);
 
-            return Ok(aboutInfoViewModel);
+            return Ok(aboutInfoResponseModel);
         }
         catch (Exception ex)
         {
@@ -121,13 +120,13 @@ public partial class  AccountController : ControllerBase
     }
 
     [HttpPost(Router.Account.PrivacySetting)]
-    public async Task<ActionResult> PostEditAboutInfoAsync([FromBody] PrivacySetting privacySetting)
+    public async Task<ActionResult> EditPrivacySettingAsync([FromBody] EditPrivacySettingRequestModel privacySetting)
     {
         try
         {
             QuranHubUser user = await _userManager.GetUserAsync(User);
 
-            if (await this._privacySettingRepository.EditPrivacySettingByUserIdAsync(privacySetting, user.Id))
+            if (await this._privacySettingRepository.EditPrivacySettingByUserIdAsync(privacySetting.AllowFollow, privacySetting.AllowComment, privacySetting.AllowShare, privacySetting.AppearInSearch, user.Id))
             {
                 return Ok();
             }
@@ -141,7 +140,7 @@ public partial class  AccountController : ControllerBase
     }
 
     [HttpPost(Router.Account.EditAboutInfo)]
-    public async Task<ActionResult> PostEditAboutInfoAsync([FromBody] AboutInfoViewModel aboutInfo)
+    public async Task<ActionResult> EditAboutInfoAsync([FromBody] AboutInfoRequestModel aboutInfo)
     {
         try
         {
@@ -170,7 +169,7 @@ public partial class  AccountController : ControllerBase
     }
 
     [HttpPost(Router.Account.ChangeEmail)]
-    public async  Task<ActionResult> PostChangeEmail(QuranHubUser user, string Email)
+    public async  Task<ActionResult> ChangeEmail(QuranHubUser user, string Email)
     {
         try
         {
@@ -218,7 +217,7 @@ public partial class  AccountController : ControllerBase
     }
 
     [HttpPost(Router.Account.ChangePassword)]
-    public async Task<ActionResult> PostChangePasswordAsync([FromBody] PasswordChangeModel data)
+    public async Task<ActionResult> ChangePasswordAsync([FromBody] PasswordChangeRequestModel data)
     {
         try
         {
@@ -246,7 +245,7 @@ public partial class  AccountController : ControllerBase
     }
 
     [HttpPost(Router.Account.RecoverPassword)]
-    public async Task<ActionResult> PostRecoverPasswordAsync([FromBody] string email)
+    public async Task<ActionResult> RecoverPasswordAsync([FromBody] string email)
     {
         try
         {
@@ -275,7 +274,7 @@ public partial class  AccountController : ControllerBase
     }
 
     [HttpPost(Router.Account.RecoverPasswordConfirm)]
-    public async Task<ActionResult> PostRecoverPasswordConfirmAsync([FromBody] PasswordRecoverModel data)
+    public async Task<ActionResult> RecoverPasswordConfirmAsync([FromBody] PasswordRecoverRequestModel data)
     {
         try
         {
@@ -305,7 +304,7 @@ public partial class  AccountController : ControllerBase
     }
 
     [HttpPost(Router.Account.DeleteAccount)]
-    public async Task<ActionResult> PostDeleteAccountAsync()
+    public async Task<ActionResult> DeleteAccountAsync()
     {
         try
         {

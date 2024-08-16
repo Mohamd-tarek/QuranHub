@@ -23,13 +23,13 @@ public partial class  ExternalAuthenticationController : ControllerBase
     }
 
     [HttpGet(Router.ExternalAuthentication.ExternalSchemas)]
-    public async  Task<ActionResult<IEnumerable<ExternalProviderViewModel>>> GetExternalSchemasAsync()
+    public async  Task<ActionResult<IEnumerable<ExternalProviderResponseModel>>> GetExternalSchemasAsync()
     {
         try
         {
             IEnumerable<AuthenticationScheme> ExternalSchemes = await  _signInManager.GetExternalAuthenticationSchemesAsync();
 
-            return Ok(ExternalSchemes.Select(schema =>new ExternalProviderViewModel 
+            return Ok(ExternalSchemes.Select(schema =>new ExternalProviderResponseModel 
             {
                 name = schema.Name.ToLower(),
                 displayName = schema.DisplayName

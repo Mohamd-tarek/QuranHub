@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QuranHub.Core\QuranHub.Core.csproj" />
     <ProjectReference Include="..\QuranHub.DAL\QuranHub.DAL.csproj" />
   </ItemGroup>
 

@@ -72,8 +72,8 @@ export class QuranDataRepository extends QuranRepository {
    }
 
   insertNote(note : Note)  {
-    note.id = 0;
-    return this.http.post(restApiPaths.NoteUrl, note).subscribe(response=> {
+    note.noteId = 0;
+    return this.http.post(restApiPaths.CreateNoteUrl, note).subscribe(response=> {
     });
   }
    

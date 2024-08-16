@@ -10,9 +10,9 @@
                         (click)='removeAya()'>
                 </button>
         </div>
-        <div class="col text-center text-decoration-underline" (click)='transtalte()'>       
-                <span *ngIf="english" > Arabic </span>
-                <span *ngIf="!english" > English </span>             
+        <div class="col text-center text-decoration-underline" (click)='transtalte()' >       
+                <span *ngIf="english" [style.cursor]="'pointer'" > Arabic </span>
+                <span *ngIf="!english" [style.cursor]="'pointer'" > English </span>             
         </div>
         <div class="col">
             <aya-info *ngIf="!isHadith" [suraIndex]="aya.sura"  [ayaIndex]="aya.aya" ></aya-info>

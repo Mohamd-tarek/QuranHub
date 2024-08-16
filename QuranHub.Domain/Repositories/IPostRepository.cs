@@ -10,7 +10,7 @@ public interface IPostRepository
     /// </summary>
     /// <param name="post"></param>
     /// <returns></returns>
-    public Task<ShareablePost> CreatePostAsync(ShareablePost post);
+    public Task<ShareablePost> CreatePostAsync(PostPrivacy privacy, string text, int verseId, string quranHubUserId);
     /// <summary>
     /// get post by id 
     /// </summary>
@@ -121,7 +121,7 @@ public interface IPostRepository
     /// </summary>
     /// <param name="post"></param>
     /// <returns></returns>
-    public Task<Post> EditPostAsync(Post post);
+    public Task<Post> EditPostAsync(int postId, PostPrivacy privacy, string text, int verseId);
     /// <summary>
     /// delete post
     /// </summary>
@@ -134,7 +134,7 @@ public interface IPostRepository
     /// <param name="postReact"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public Task<Tuple<PostReact, PostReactNotification>> AddPostReactAsync(PostReact postReact, QuranHubUser user);
+    public Task<Tuple<PostReact, PostReactNotification>> AddPostReactAsync(int  postId, QuranHubUser user);
     /// <summary>
     /// remove post react
     /// </summary>
@@ -148,7 +148,7 @@ public interface IPostRepository
     /// <param name="comment"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public Task<Tuple<PostComment, PostCommentNotification>> AddPostCommentAsync(PostComment comment, QuranHubUser user);
+    public Task<Tuple<PostComment, PostCommentNotification>> AddPostCommentAsync(int postId,string text, int? verseId, QuranHubUser user);
     /// <summary>
     /// remove post comment
     /// </summary>
@@ -161,7 +161,7 @@ public interface IPostRepository
     /// <param name="commentReact"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public Task<Tuple<PostCommentReact, PostCommentReactNotification>> AddPostCommentReactAsync(PostCommentReact commentReact, QuranHubUser user); 
+    public Task<Tuple<PostCommentReact, PostCommentReactNotification>> AddPostCommentReactAsync(int commentId, QuranHubUser user); 
     /// <summary>
     /// remove post comment react
     /// </summary>
@@ -175,7 +175,7 @@ public interface IPostRepository
     /// <param name="sharedPost"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public Task<Tuple<PostShare, PostShareNotification>> SharePostAsync(SharedPost sharedPost, QuranHubUser user);
+    public Task<Tuple<PostShare, PostShareNotification>> SharePostAsync(PostPrivacy privacy, int postId, string text, int? verseId, QuranHubUser user);
     /// <summary>
     /// search shareable post 
     /// </summary>

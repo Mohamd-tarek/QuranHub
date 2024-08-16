@@ -77,7 +77,7 @@ public class PrivacySettingRepository : IPrivacySettingRepository
             return false;
         }
     }
-    public async Task<bool> EditPrivacySettingByUserIdAsync(PrivacySetting privacySetting, string userId)
+    public async Task<bool> EditPrivacySettingByUserIdAsync(bool AllowFollow, bool AllowComment, bool AllowShare, bool AppearInSearch, string userId)
     {
 
         try
@@ -89,10 +89,10 @@ public class PrivacySettingRepository : IPrivacySettingRepository
                 targetPrivacySetting = new();
             }
 
-            targetPrivacySetting.AllowFollow = privacySetting.AllowFollow;
-            targetPrivacySetting.AllowComment = privacySetting.AllowComment;
-            targetPrivacySetting.AllowShare = privacySetting.AllowShare;
-            targetPrivacySetting.AppearInSearch = privacySetting.AppearInSearch;
+            targetPrivacySetting.AllowFollow = AllowFollow;
+            targetPrivacySetting.AllowComment = AllowComment;
+            targetPrivacySetting.AllowShare = AllowShare;
+            targetPrivacySetting.AppearInSearch = AppearInSearch;
             targetPrivacySetting.QuranHubUserId = userId;
             if (targetPrivacySetting.PrivacySettingId == 0)
             {

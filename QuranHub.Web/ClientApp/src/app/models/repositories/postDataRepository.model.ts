@@ -94,14 +94,13 @@ export class PostDataRepository extends PostRepository  {
   }
 
   sharePost(verseId: number, QuranHubUserId: string, text: string, privacy: string, postId: number): Observable<Share> {
+    console.log(verseId + " - " + QuranHubUserId + " - "+  text + " -", privacy + " - "  + postId)
     return this.http.post<Share>(postPaths.SharePost, {
       verseId: verseId,
       quranHubUserId: QuranHubUserId,
       text: text,
       privacy: Number(privacy),
-      postShare: {
-        postId: postId,
-      }
+      postId: postId
     });
   }
 

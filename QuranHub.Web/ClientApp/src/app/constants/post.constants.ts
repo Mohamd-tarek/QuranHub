@@ -10,7 +10,7 @@ export const PostActions = {
    AddPostReact: `add-post-react`,
    RemovePostReact : `remove-post-react`,
    AddCommentReact : `add-comment-react`,
-   RemoveCommentReact : `add-comment-react`,
+   RemoveCommentReact : `remove-comment-react`,
    AddComment: `add-comment`,
    RemoveComment: `remove-comment`,
 };

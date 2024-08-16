@@ -35,13 +35,13 @@ public interface IFollowRepository
     /// <param name="follow"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public Task<Tuple<bool, FollowNotification>> AddFollowAsync(Follow follow, QuranHubUser user);
+    public Task<Tuple<bool, FollowNotification>> AddFollowAsync(string FollowerId , string followedId, QuranHubUser user);
     /// <summary>
     /// remove follow relationship
     /// </summary>
     /// <param name="follow"></param>
     /// <returns></returns>
-    public Task<bool> RemoveFollowAsync(Follow follow); 
+    public Task<bool> RemoveFollowAsync(string followerId, string followedId); 
     /// <summary>
     /// check if follow relationship exist
     /// </summary>

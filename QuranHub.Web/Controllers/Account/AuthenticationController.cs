@@ -31,7 +31,7 @@ public partial class  AuthenticationController : ControllerBase
     }
 
     [HttpPost(Router.Authenticate.LoginWithPassword)]
-    public async Task<ActionResult<object>> LoginWithPassword([FromBody] LoginModel creds)
+    public async Task<ActionResult<object>> LoginWithPassword([FromBody] LoginRequestModel creds)
     {
         try
         {
@@ -71,7 +71,7 @@ public partial class  AuthenticationController : ControllerBase
     }
           
     [HttpPost(Router.Authenticate.SignUp)]
-    public async Task<ActionResult> SignUp([FromBody] LoginModel creds)
+    public async Task<ActionResult> SignUp([FromBody] LoginRequestModel creds)
     {
         try
         {
@@ -125,7 +125,7 @@ public partial class  AuthenticationController : ControllerBase
     }
     
     [HttpPost(Router.Authenticate.SignUpConfirm)]
-    public async Task<ActionResult> SignUpConfirmAsync([FromBody]SignUpConfirmModel data) 
+    public async Task<ActionResult> SignUpConfirmAsync([FromBody]SignUpConfirmRequestModel data) 
     {
         try
         {

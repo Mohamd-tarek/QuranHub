@@ -6,7 +6,7 @@ public class SharedPost : Post
     public PostShare PostShare { get; set; }
     public SharedPost() : base()
     {}
-    public SharedPost(PostPrivacy privacy, string quranHubUserId, string text, int verseId) : this()
+    public SharedPost(PostPrivacy privacy, string quranHubUserId, string text, int? verseId) : this()
     {
         Privacy = privacy;
 
@@ -14,7 +14,7 @@ public class SharedPost : Post
 
         Text = text;
 
-        VerseId = verseId;
+        VerseId = verseId ?? 0;
 
         DateTime = DateTime.Now;
     }

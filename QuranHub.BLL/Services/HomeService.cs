@@ -1,5 +1,6 @@
 ﻿using FFmpeg.AutoGen;
 using Microsoft.Extensions.Logging;
+using QuranHub.Core.Dtos.Request;
 
 namespace QuranHub.BLL.Services;
 
@@ -22,11 +23,11 @@ public class HomeService : IHomeService
         _logger = logger;
     }
 
-    public async Task<ShareablePost> CreatePostAsync(ShareablePost post)
+    public async Task<ShareablePost> CreatePostAsync(AddPostRequestModel addPost)
     {
         try
         {
-            return await this._postRepository.CreatePostAsync(post);
+            return await this._postRepository.CreatePostAsync(addPost.Privacy, addPost.Text, addPost.VerseId, addPost.QuranHubUserId);
         }
         catch (Exception ex)
         {

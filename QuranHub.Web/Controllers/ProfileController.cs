@@ -1,5 +1,4 @@
-﻿
-namespace QuranHub.Web.Controllers;
+﻿namespace QuranHub.Web.Controllers;
 
 
 [ApiController]
@@ -9,10 +8,10 @@ public class ProfileController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
     private IProfileService _profileService;
-    private IUserViewModelsFactory _userViewModelsFactory;
+    private IUserResponseModelsFactory _userResponseModelsFactory;
     private IHubContext<NotificationHub> _notificationHubContext;
-    private INotificationViewModelsFactory _notificationViewModelsFactory;
-    private IViewModelsService _viewModelsService;
+    private INotificationResponseModelsFactory _notificationResponseModelsFactory;
+    private IResponseModelsService _responseModelsService;
     private UserManager<QuranHubUser> _userManager;
     private HttpContext _httpContext;
     private QuranHubUser _currentUser;
@@ -21,19 +20,19 @@ public class ProfileController : ControllerBase
         UserManager<QuranHubUser> userManager,
         Serilog.ILogger logger,
         IProfileService profileService,
-        IUserViewModelsFactory userViewModelsFactor,
+        IUserResponseModelsFactory userResponseModelsFactor,
         IHubContext<NotificationHub> notificationHubContext,
-        INotificationViewModelsFactory notificationViewModelsFactory,
-        IViewModelsService viewModelsService,
+        INotificationResponseModelsFactory notificationResponseModelsFactory,
+        IResponseModelsService responseModelsService,
         IHttpContextAccessor httpContextAccessor)
     {
        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
        _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
        _profileService = profileService ?? throw new ArgumentNullException(nameof(profileService));
-       _userViewModelsFactory = userViewModelsFactor ?? throw new ArgumentNullException(nameof(userViewModelsFactor));
+       _userResponseModelsFactory = userResponseModelsFactor ?? throw new ArgumentNullException(nameof(userResponseModelsFactor));
        _notificationHubContext = notificationHubContext ?? throw new ArgumentNullException(nameof(notificationHubContext));
-       _viewModelsService = viewModelsService ?? throw new ArgumentNullException(nameof(viewModelsService));
-       _notificationViewModelsFactory = notificationViewModelsFactory ?? throw new ArgumentNullException(nameof(notificationViewModelsFactory));
+       _responseModelsService = responseModelsService ?? throw new ArgumentNullException(nameof(responseModelsService));
+       _notificationResponseModelsFactory = notificationResponseModelsFactory ?? throw new ArgumentNullException(nameof(notificationResponseModelsFactory));
        _httpContext = httpContextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(httpContextAccessor));
 
        ClaimsPrincipal claimsPrincipal = this._httpContext.User;
@@ -53,7 +52,7 @@ public class ProfileController : ControllerBase
 
             List<SharedPost> sharedPosts = await _profileService.GetUserSharedPostsAsync(userId);
 
-            List<object> mergedPosts = await _viewModelsService.MergePostsAsync(posts, sharedPosts);
+            List<object> mergedPosts = await _responseModelsService.MergePostsAsync(posts, sharedPosts);
 
             return Ok(mergedPosts);
         }
@@ -65,15 +64,15 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet(Router.Profile.UserFollowers)]
-    public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowersAsync(string userId) 
+    public async Task<ActionResult<IEnumerable<UserBasicInfoResponseModel>>> GetUserFollowersAsync(string userId) 
     {
         try
         {
             List <QuranHubUser> users = await _profileService.GetUserFollowersAsync(userId);
 
-            List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
+            List<UserBasicInfoResponseModel> usersResponseModels = _userResponseModelsFactory.BuildUsersBasicInfoResponseModel(users);
 
-            return Ok(usersViewModels);
+            return Ok(usersResponseModels);
         }
         catch (Exception ex)
         {
@@ -83,15 +82,15 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet(Router.Profile.UserFollowings)]
-    public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowingsAsync(string userId)
+    public async Task<ActionResult<IEnumerable<UserBasicInfoResponseModel>>> GetUserFollowingsAsync(string userId)
     {
         try
         {
             List<QuranHubUser> users = await _profileService.GetUserFollowingsAsync(userId);
 
-            List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
+            List<UserBasicInfoResponseModel> usersResponseModels = _userResponseModelsFactory.BuildUsersBasicInfoResponseModel(users);
 
-            return Ok(usersViewModels);
+            return Ok(usersResponseModels);
         }
         catch (Exception ex)
         {
@@ -101,15 +100,15 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet(Router.Profile.SearchUserFollowers)]
-    public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowersAsync(string userId, string KeyWord) 
+    public async Task<ActionResult<IEnumerable<UserBasicInfoResponseModel>>> GetUserFollowersAsync(string userId, string KeyWord) 
     {
         try
         {
             List<QuranHubUser> users = await _profileService.GetUserFollowersAsync(userId, KeyWord);
 
-            List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
+            List<UserBasicInfoResponseModel> usersResponseModels = _userResponseModelsFactory.BuildUsersBasicInfoResponseModel(users);
 
-            return Ok(usersViewModels);
+            return Ok(usersResponseModels);
         }
         catch (Exception ex)
         {
@@ -119,15 +118,15 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet(Router.Profile.SearchUserFollowings)]
-    public async Task<ActionResult<IEnumerable<UserBasicInfoViewModel>>> GetUserFollowingsAsync(string userId, string KeyWord)
+    public async Task<ActionResult<IEnumerable<UserBasicInfoResponseModel>>> GetUserFollowingsAsync(string userId, string KeyWord)
     {
         try
         {
             List<QuranHubUser> users = await _profileService.GetUserFollowingsAsync(userId, KeyWord);
 
-            List<UserBasicInfoViewModel> usersViewModels = _userViewModelsFactory.BuildUsersBasicInfoViewModel(users);
+            List<UserBasicInfoResponseModel> usersResponseModels = _userResponseModelsFactory.BuildUsersBasicInfoResponseModel(users);
 
-            return Ok(usersViewModels);
+            return Ok(usersResponseModels);
         }
         catch (Exception ex)
         {
@@ -137,13 +136,13 @@ public class ProfileController : ControllerBase
     }      
 
     [HttpGet(Router.Profile.UserProfile)]
-    public async Task<ActionResult<ProfileViewModel>> GetUserProfileAsync(string userId)
+    public async Task<ActionResult<ProfileResponseModel>> GetUserProfileAsync(string userId)
     {
         try
         {
             QuranHubUser user = await _userManager.FindByIdAsync(userId);
 
-            ProfileViewModel profileModel = _userViewModelsFactory.BuildProfileViewModel(user);
+            ProfileResponseModel profileModel = _userResponseModelsFactory.BuildProfileResponseModel(user);
 
             return Ok(profileModel);
         }
@@ -155,13 +154,13 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPost(Router.Profile.EditCoverPicture)]
-    public async Task<ActionResult<byte[]>> PostEditCoverPicture([FromForm] CoverPictureModel coverPictureModel) 
+    public async Task<ActionResult<byte[]>> PostEditCoverPicture([FromForm] CoverPictureRequestModel coverPictureModel) 
     {
         try
         {
             IFormFile formFile = coverPictureModel.CoverPictureFile;
 
-            byte[] coverPicture = _viewModelsService.ReadFileIntoArray(formFile);
+            byte[] coverPicture = _responseModelsService.ReadFileIntoArray(formFile);
 
             return Ok(await _profileService.EditCoverPictureAsync(coverPicture, _currentUser));
         }
@@ -173,7 +172,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPost(Router.Profile.EditProfilePicture)]
-    public async Task<ActionResult<byte[]>> PostEditProfilePicture([FromForm] ProfilePictureModel profilePictureModel)
+    public async Task<ActionResult<byte[]>> PostEditProfilePicture([FromForm] ProfilePictureRequestModel profilePictureModel)
     {
         try
         {
@@ -181,7 +180,7 @@ public class ProfileController : ControllerBase
 
             IFormFile formFile = profilePictureModel.ProfilePictureFile;
 
-            byte[] profilePicture = _viewModelsService.ReadFileIntoArray(formFile);
+            byte[] profilePicture = _responseModelsService.ReadFileIntoArray(formFile);
 
             return Ok(await _profileService.EditProfilePictureAsync(profilePicture,_currentUser));
         }
@@ -208,7 +207,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPost(Router.Profile.FollowUser)]
-    public async Task<ActionResult<bool>> FollowUser([FromBody] Follow follow) 
+    public async Task<ActionResult<bool>> FollowUser([FromBody] FollowRequestModel follow) 
     {
         try
         {
@@ -220,7 +219,7 @@ public class ProfileController : ControllerBase
 
                 if (user.Online)
                 {
-                    FollowNotificationViewModel notification = this._notificationViewModelsFactory.BuildFollowNotificationViewModel(result.Item2);
+                    FollowNotificationResponseModel notification = this._notificationResponseModelsFactory.BuildFollowNotificationResponseModel(result.Item2);
 
                     await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
                 }
@@ -239,7 +238,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPost(Router.Profile.UnfollowUser)]
-    public async Task<ActionResult<bool>> UnfollowUser([FromBody] Follow follow) 
+    public async Task<ActionResult<bool>> UnfollowUser([FromBody] FollowRequestModel follow) 
     {
         try
         {
@@ -253,13 +252,13 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet(Router.Profile.AboutInfo)]
-    public async Task<ActionResult<AboutInfoViewModel>> GetAboutInfoAsync(string userId)
+    public async Task<ActionResult<AboutInfoRequestModel>> GetAboutInfoAsync(string userId)
     {
         try
         {
             QuranHubUser user =  await _userManager.FindByIdAsync(userId);
 
-            return Ok(_userViewModelsFactory.BuildAboutInfoViewModel(user));
+            return Ok(_userResponseModelsFactory.BuildAboutInfoResponseModel(user));
         }
         catch (Exception ex)
         {

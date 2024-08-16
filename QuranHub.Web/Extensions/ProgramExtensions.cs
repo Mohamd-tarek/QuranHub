@@ -125,15 +125,15 @@ public static class ProgramExtensions
 
         builder.Services.AddTransient<IProfileService, ProfileService>();
 
-        builder.Services.AddTransient<IUserViewModelsFactory, UserViewModelsFactory>();
+        builder.Services.AddTransient<IUserResponseModelsFactory, UserResponseModelsFactory>();
 
-        builder.Services.AddTransient<IPostViewModelsFactory, PostViewModelsFactory>();
+        builder.Services.AddTransient<IPostResponseModelsFactory, PostResponseModelsFactory>();
 
-        builder.Services.AddTransient<IVideoInfoViewModelsFactory, VideoInfoViewModelsFactory>();
+        builder.Services.AddTransient<IVideoInfoResponseModelsFactory, VideoInfoResponseModelsFactory>();
 
-        builder.Services.AddTransient<INotificationViewModelsFactory, NotificationViewModelsFactory>();
+        builder.Services.AddTransient<INotificationResponseModelsFactory, NotificationResponseModelsFactory>();
 
-        builder.Services.AddTransient<IViewModelsService, ViewModelsService>();
+        builder.Services.AddTransient<IResponseModelsService, ResponseModelsService>();
 
         builder.Services.AddScoped<TokenUrlEncoderService>();
 

@@ -74,11 +74,11 @@ public class QuranController : ControllerBase
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost(Router.Quran.CreateNote)]
-    public async  Task<ActionResult> CreateNote([FromBody] Note note)
+    public async  Task<ActionResult> CreateNote([FromBody] AddNoteRequestModel note)
     {
         try
         {
-            if ( await _quranRepository.AddNote(note, _currentUser))
+            if ( await _quranRepository.AddNote(note.NoteId, note.Index, note.Sura, note.Aya, note.Text, _currentUser))
             {
                 return Ok();
             }

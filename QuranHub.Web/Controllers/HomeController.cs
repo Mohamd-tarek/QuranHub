@@ -7,9 +7,9 @@ public class HomeController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
     private IHomeService _homeService;
-    private IUserViewModelsFactory _userViewModelsFactory;
-    private IPostViewModelsFactory _postViewModelsFactory;
-    private IViewModelsService _viewModelsService;
+    private IUserResponseModelsFactory _userResponseModelsFactory;
+    private IPostResponseModelsFactory _postResponseModelsFactory;
+    private IResponseModelsService _responseModelsService;
     private UserManager<QuranHubUser> _userManager;
     private HttpContext _httpContext;
     private QuranHubUser _currentUser;
@@ -17,17 +17,17 @@ public class HomeController : ControllerBase
     public  HomeController(
         Serilog.ILogger logger,
         IHomeService homeService,
-        IUserViewModelsFactory userViewModelsFactor,
-        IPostViewModelsFactory postViewModelsFactory,
-        IViewModelsService viewModelsService,
+        IUserResponseModelsFactory userResponseModelsFactor,
+        IPostResponseModelsFactory postResponseModelsFactory,
+        IResponseModelsService responseModelsService,
         UserManager<QuranHubUser> userManager,
         IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger)); 
        _homeService = homeService ?? throw new ArgumentNullException(nameof(homeService));
-       _userViewModelsFactory = userViewModelsFactor ?? throw new ArgumentNullException(nameof(userViewModelsFactor));
-       _postViewModelsFactory = postViewModelsFactory ?? throw new ArgumentNullException(nameof(postViewModelsFactory));
-       _viewModelsService = viewModelsService ?? throw new ArgumentNullException(nameof(viewModelsService));
+       _userResponseModelsFactory = userResponseModelsFactor ?? throw new ArgumentNullException(nameof(userResponseModelsFactor));
+       _postResponseModelsFactory = postResponseModelsFactory ?? throw new ArgumentNullException(nameof(postResponseModelsFactory));
+       _responseModelsService = responseModelsService ?? throw new ArgumentNullException(nameof(responseModelsService));
        _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
        _httpContext = httpContextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(httpContextAccessor));
 
@@ -46,7 +46,7 @@ public class HomeController : ControllerBase
     {
         try
         {
-            List<object> postViewModels = new List<object>();
+            List<object> postResponseModels = new List<object>();
 
            if (User.Identity.IsAuthenticated)
            {
@@ -55,10 +55,10 @@ public class HomeController : ControllerBase
 
                 List<SharedPost> sharedPosts = await _homeService.GetSharedPostsAsync(_currentUser.Id);
 
-                postViewModels = await _viewModelsService.MergePostsAsync(posts, sharedPosts);
+                postResponseModels = await _responseModelsService.MergePostsAsync(posts, sharedPosts);
            }
 
-            return Ok(postViewModels);
+            return Ok(postResponseModels);
         }
         catch (Exception ex)
         {
@@ -68,13 +68,13 @@ public class HomeController : ControllerBase
     }
 
     [HttpPost(Router.Home.AddPost)]
-    public async Task<ActionResult<ShareablePostViewModel>> AddPost([FromBody] ShareablePost post)
+    public async Task<ActionResult<ShareablePostResponseModel>> AddPost([FromBody] AddPostRequestModel addPost)
     {
         try
         {
-            ShareablePost insertedPost = await _homeService.CreatePostAsync(post);
+            ShareablePost insertedPost = await _homeService.CreatePostAsync(addPost);
 
-            return Ok(await _postViewModelsFactory.BuildShareablePostViewModelAsync(insertedPost));
+            return Ok(await _postResponseModelsFactory.BuildShareablePostResponseModelAsync(insertedPost));
         }
         catch (Exception ex)
         {
@@ -84,13 +84,13 @@ public class HomeController : ControllerBase
     }
 
     [HttpGet(Router.Home.FindUsersByName)]
-    public async Task<ActionResult<IEnumerable<UserViewModel>>> FindUsersByNameAsync(string name) 
+    public async Task<ActionResult<IEnumerable<UserResponseModel>>> FindUsersByNameAsync(string name) 
     {
         try
         {
             List<QuranHubUser> users = await _homeService.FindUsersByNameAsync(name);
 
-            List<UserViewModel> userModels = _userViewModelsFactory.BuildUsersViewModel(users);
+            List<UserResponseModel> userModels = _userResponseModelsFactory.BuildUsersResponseModel(users);
 
             return Ok(userModels);
         }
@@ -106,15 +106,15 @@ public class HomeController : ControllerBase
     {
         try
         {
-            List<object> postViewModels = new List<object>();
+            List<object> postResponseModels = new List<object>();
 
             List<ShareablePost> posts = await _homeService.SearchShareablePostsAsync(keyword);
 
             List<SharedPost> sharedPosts = await _homeService.SearchSharedPostsAsync(keyword);
 
-            postViewModels = await _viewModelsService.MergePostsAsync(posts, sharedPosts);
+            postResponseModels = await _responseModelsService.MergePostsAsync(posts, sharedPosts);
 
-            return Ok(postViewModels);
+            return Ok(postResponseModels);
         }
         catch (Exception ex)
         {

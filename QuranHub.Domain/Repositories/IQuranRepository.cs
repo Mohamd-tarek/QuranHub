@@ -52,7 +52,7 @@ public interface IQuranRepository
     /// <param name="note"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public  Task<bool> AddNote(Note note, QuranHubUser user);
+    public  Task<bool> AddNote(int NoteId,  int Index, int Sura, int Aya, string Text , QuranHubUser user);
     /// <summary>
     /// edit weight vector
     /// </summary>

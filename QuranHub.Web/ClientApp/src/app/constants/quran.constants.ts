@@ -21,6 +21,7 @@ interface RestApiPathsType  {
    readonly QuranInfoURLS:  QuranInfoPathsType,
    readonly MindMapURL: string,
    readonly NoteUrl: string,
+   readonly CreateNoteUrl: string,
    readonly AnalysisURL: string,
    }
 
@@ -40,6 +41,7 @@ export const restApiPaths: RestApiPathsType = {
    QuranInfoURLS: quranInfoURLS,
    MindMapURL: `${dataURL }/mindMap/`,
    NoteUrl : `${ dataURL }/note/`,
+   CreateNoteUrl : `${ dataURL }/create-note/`,
    AnalysisURL: `${RestApiUrl}/analysis/`
 }
 

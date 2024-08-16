@@ -3,6 +3,7 @@ namespace QuranHub.Domain.Models;
 
 public class Follow : IEquatable<Follow>
 {
+
     public int FollowId { get; set; }
     public DateTime DateTime {get; set;}
     public string FollowerId { get; set; }
@@ -13,6 +14,14 @@ public class Follow : IEquatable<Follow>
     public int Likes { get; set;}
     public int Comments { get; set;}
     public int Shares { get; set;}  
+
+    public Follow() { }
+
+    public Follow(string followerId, string followedId)
+    {
+        this.FollowerId = followerId;
+        this.FollowedId = followedId;
+    }
 
      public override bool Equals(object obj)
     {

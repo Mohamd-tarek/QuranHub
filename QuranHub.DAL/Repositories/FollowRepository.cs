@@ -88,10 +88,11 @@ public class FollowRepository : IFollowRepository
         }
     }
 
-     public async Task<Tuple<bool, FollowNotification>> AddFollowAsync(Follow follow, QuranHubUser user)
+     public async Task<Tuple<bool, FollowNotification>> AddFollowAsync(string followerId, string followedId, QuranHubUser user)
     {
         try
         {
+            Follow follow = new Follow(followerId, followedId);
             follow.DateTime = DateTime.Now;
 
             await this._identityDataContext.Follows.AddAsync(follow);
@@ -120,12 +121,12 @@ public class FollowRepository : IFollowRepository
         }
     }
 
-    public async Task<bool> RemoveFollowAsync(Follow _follow)
+    public async Task<bool> RemoveFollowAsync(string followerId, string followedId)
     {
         try
         {
             Follow follow = await this._identityDataContext.Follows
-                                                       .Where((follow) => follow.FollowerId ==  _follow.FollowerId && follow.FollowedId ==  _follow.FollowedId )
+                                                       .Where((follow) => follow.FollowerId ==  followerId && follow.FollowedId ==  followedId )
                                                        .FirstAsync();
 
             this._identityDataContext.Remove(follow); 

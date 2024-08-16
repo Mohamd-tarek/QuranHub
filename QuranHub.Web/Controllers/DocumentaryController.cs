@@ -8,8 +8,8 @@ public class DocumentaryController : ControllerBase
 {
     private readonly Serilog.ILogger _logger;
     private IDocumentaryRepository _documentaryRepository;
-    private IVideoInfoViewModelsFactory _videoInfoViewModelsFactory;
-    private INotificationViewModelsFactory _notificationViewModelsFactory;
+    private IVideoInfoResponseModelsFactory _videoInfoResponseModelsFactory;
+    private INotificationResponseModelsFactory _notificationResponseModelsFactory;
     private IHubContext<NotificationHub> _notificationHubContext;
     private UserManager<QuranHubUser> _userManager;
     private HttpContext _httpContext;
@@ -21,16 +21,16 @@ public class DocumentaryController : ControllerBase
         IDocumentaryRepository documentaryRepository,
         UserManager<QuranHubUser> userManager,
         IHubContext<NotificationHub> notificationHubContext,
-        INotificationViewModelsFactory notificationViewModelsFactory,
-        IVideoInfoViewModelsFactory videoInfoViewModelsFactory,
+        INotificationResponseModelsFactory notificationResponseModelsFactory,
+        IVideoInfoResponseModelsFactory videoInfoResponseModelsFactory,
         IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         _documentaryRepository = documentaryRepository ?? throw new ArgumentNullException(nameof(documentaryRepository));
         _httpContext = httpContextAccessor.HttpContext ?? throw new ArgumentNullException(nameof(httpContextAccessor)); ;
-        _videoInfoViewModelsFactory = videoInfoViewModelsFactory ?? throw new ArgumentNullException(nameof(videoInfoViewModelsFactory));
-        _notificationViewModelsFactory = notificationViewModelsFactory ?? throw new ArgumentNullException(nameof(notificationViewModelsFactory));
+        _videoInfoResponseModelsFactory = videoInfoResponseModelsFactory ?? throw new ArgumentNullException(nameof(videoInfoResponseModelsFactory));
+        _notificationResponseModelsFactory = notificationResponseModelsFactory ?? throw new ArgumentNullException(nameof(notificationResponseModelsFactory));
         _notificationHubContext = notificationHubContext ?? throw new ArgumentNullException(nameof(notificationHubContext));
 
         ClaimsPrincipal claimsPrincipal = this._httpContext.User;
@@ -84,13 +84,13 @@ public class DocumentaryController : ControllerBase
     }
 
     [HttpGet(Router.Documentary.VideoInfo)]
-    public async Task<ActionResult<VideoInfoViewModel>> GetVideoInfoAsync(string name) 
+    public async Task<ActionResult<VideoInfoResponseModel>> GetVideoInfoAsync(string name) 
     {
         try
         {
             VideoInfo videoInfo =  await  this._documentaryRepository.GetVideoInfoByNameAsync(name);
 
-            return Ok( await this._videoInfoViewModelsFactory.BuildVideoInfoViewModelAsync(videoInfo));
+            return Ok( await this._videoInfoResponseModelsFactory.BuildVideoInfoResponseModelAsync(videoInfo));
         }
         catch (Exception ex)
         {
@@ -101,13 +101,13 @@ public class DocumentaryController : ControllerBase
 
 
     [HttpGet(Router.Documentary.LoadMoreReacts)]
-    public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMoreVideoInfoReacts(int VideoInfoId, int Offset, int Size)
+    public async Task<ActionResult<IEnumerable<ReactResponseModel>>> LoadMoreVideoInfoReacts(int VideoInfoId, int Offset, int Size)
     {
         try
         {
             List<VideoInfoReact> videoInfoReacts = await _documentaryRepository.GetMoreVideoInfoReactsAsync(VideoInfoId, Offset, Size);
 
-            List<ReactViewModel> videoInfoReactsModels = _videoInfoViewModelsFactory.BuildVideoInfoReactsViewModel(videoInfoReacts);
+            List<ReactResponseModel> videoInfoReactsModels = _videoInfoResponseModelsFactory.BuildVideoInfoReactsResponseModel(videoInfoReacts);
 
             return Ok(videoInfoReactsModels);
         }
@@ -119,15 +119,15 @@ public class DocumentaryController : ControllerBase
     }
 
     [HttpGet(Router.Documentary.LoadMoreComments)]
-    public async Task<ActionResult<IEnumerable<CommentViewModel>>> LoadMoreCommentsAsync(int VideoInfoId, int Offset, int Size)
+    public async Task<ActionResult<IEnumerable<CommentResponseModel>>> LoadMoreCommentsAsync(int VideoInfoId, int Offset, int Size)
     {
         try
         {
             List<VideoInfoComment> comments = await _documentaryRepository.GetMoreVideoInfoCommentsAsync(VideoInfoId, Offset, Size);
 
-            List<CommentViewModel> commentViewModels = await _videoInfoViewModelsFactory.BuildCommentsViewModelAsync(comments);
+            List<CommentResponseModel> commentResponseModels = await _videoInfoResponseModelsFactory.BuildCommentsResponseModelAsync(comments);
 
-            return Ok(commentViewModels);
+            return Ok(commentResponseModels);
         }
         catch (Exception ex)
         {
@@ -137,15 +137,15 @@ public class DocumentaryController : ControllerBase
     }
 
     [HttpGet(Router.Documentary.LoadMoreCommentReacts)]
-    public async Task<ActionResult<IEnumerable<ReactViewModel>>> LoadMoreCommentReactsAsync(int VideoInfoId, int Offset, int Size)
+    public async Task<ActionResult<IEnumerable<ReactResponseModel>>> LoadMoreCommentReactsAsync(int VideoInfoId, int Offset, int Size)
     {
         try
         {
             List<VideoInfoCommentReact> comments = await _documentaryRepository.GetMoreVideoInfoCommentReactsAsync(VideoInfoId, Offset, Size);
 
-            List<ReactViewModel> commentReactViewModels = _videoInfoViewModelsFactory.BuildCommentReactsViewModel(comments);
+            List<ReactResponseModel> commentReactResponseModels = _videoInfoResponseModelsFactory.BuildCommentReactsResponseModel(comments);
 
-            return Ok(commentReactViewModels);
+            return Ok(commentReactResponseModels);
         }
         catch (Exception ex)
         {
@@ -157,13 +157,13 @@ public class DocumentaryController : ControllerBase
   
 
     [HttpPost(Router.Documentary.AddReact)]
-    public async Task<ActionResult<ReactViewModel>> AddVideoInfoReactAsync([FromBody] VideoInfoReact videoInfoReact)
+    public async Task<ActionResult<ReactResponseModel>> AddVideoInfoReactAsync([FromBody] VideoInfoReact videoInfoReact)
     {
         try
         {
             VideoInfoReact VideoInfoReact = await _documentaryRepository.AddVideoInfoReactAsync(videoInfoReact, _currentUser);
 
-            return Ok(_videoInfoViewModelsFactory.BuildVideoInfoReactViewModel(VideoInfoReact));
+            return Ok(_videoInfoResponseModelsFactory.BuildVideoInfoReactResponseModel(VideoInfoReact));
         }
         catch (Exception ex)
         {
@@ -191,13 +191,13 @@ public class DocumentaryController : ControllerBase
     }
 
     [HttpPost(Router.Documentary.AddComment)]
-    public async Task<ActionResult<CommentViewModel>> AddCommentAsync([FromBody] VideoInfoComment comment)
+    public async Task<ActionResult<CommentResponseModel>> AddCommentAsync([FromBody] VideoInfoComment comment)
     {
         try
         {
             VideoInfoComment VideoInfoComment = await _documentaryRepository.AddVideoInfoCommentAsync(comment, _currentUser);
 
-            return Ok( await _videoInfoViewModelsFactory.BuildCommentViewModelAsync(VideoInfoComment));
+            return Ok( await _videoInfoResponseModelsFactory.BuildCommentResponseModelAsync(VideoInfoComment));
         }
         catch (Exception ex)
         {
@@ -221,7 +221,7 @@ public class DocumentaryController : ControllerBase
     }
 
     [HttpPost(Router.Documentary.AddCommentReact)]
-    public async Task<ActionResult<ReactViewModel>> AddCommentReactAsync([FromBody] VideoInfoCommentReact commentReact)
+    public async Task<ActionResult<ReactResponseModel>> AddCommentReactAsync([FromBody] VideoInfoCommentReact commentReact)
     {
         try
         {
@@ -231,12 +231,12 @@ public class DocumentaryController : ControllerBase
 
             if (result.Item2.TargetUserId != null && result.Item2.TargetUserId != this._currentUser.Id && user.Online)
             {
-                CommentReactNotificationViewModel notification = this._notificationViewModelsFactory.BuildCommentReactNotificationViewModel(result.Item2);
+                CommentReactNotificationResponseModel notification = this._notificationResponseModelsFactory.BuildCommentReactNotificationResponseModel(result.Item2);
 
                 await this._notificationHubContext.Clients.Client(user.ConnectionId).SendAsync("RecieveNotification", notification);
             }
 
-            return Ok( _videoInfoViewModelsFactory.BuildCommentReactViewModel(result.Item1));
+            return Ok( _videoInfoResponseModelsFactory.BuildCommentReactResponseModel(result.Item1));
         }
         catch (Exception ex)
         {

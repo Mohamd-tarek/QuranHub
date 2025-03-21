@@ -11,6 +11,8 @@ export class StateDataService extends StateService  {
 
     super({
       "overviewMode" : false,
+      "seperateVerses" : false,
+      "disableWrap" : false,
       "currentLanguage": "arabic",
       "currentQuranSura" :1,
       "currentRecitalSura" :1,

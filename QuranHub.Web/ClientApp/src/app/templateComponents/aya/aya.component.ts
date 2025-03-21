@@ -13,10 +13,18 @@ export class AyaComponent implements OnChanges, OnInit {
   @Input()
   highLightText!: string;
 
+  @Input()
+  disableWrap:boolean = false;
+
   wrap:boolean = false;
 
   ngOnChanges(){
+    if(this.disableWrap == false)
     this.wrap = this.text.length > 250;
+    else
+    {
+      this.wrap = false
+    }
   }
 
   ngOnInit() {

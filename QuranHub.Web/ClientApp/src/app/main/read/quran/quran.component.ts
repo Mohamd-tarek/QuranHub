@@ -1,4 +1,4 @@
-import { AfterViewInit, Renderer2, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Renderer2, Component, OnDestroy, Input } from '@angular/core';
 import { QuranRepository } from "../../../abstractions/repositories/quranRepository";
 import { Quran } from "../../../models/quran/quran.model";
 import { StateService } from '../../../abstractions/services/stateService';
@@ -21,6 +21,10 @@ export class QuranComponent implements OnDestroy , AfterViewInit {
   subscription: Subscription;
   qurans!: any;
   ayaIndex!:number;
+  @Input()
+  seperateVerses: boolean = false;
+  @Input()
+  disableWrap: boolean = false;
   
   constructor(
     private repo: QuranRepository,

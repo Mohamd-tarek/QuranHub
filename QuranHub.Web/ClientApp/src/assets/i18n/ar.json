@@ -80,6 +80,9 @@
     "LOGIN_INFO" : "بيانات الدخول",
     "EDIT_LOGIN_INFO" : "تعديل بيانات الدخول",
     "EDIT_PRIVACY" : "تعديل الخصوصية ",
-    "LANGUAGE_SETTING" : "اعدادات اللغة"
+    "LANGUAGE_SETTING" : "اعدادات اللغة",
+    "SEPERATE_VERSES":"ايات منفصلة",
+    "DISABLE_WRAP":"الغاء التفاف النص"
+    
   }
   

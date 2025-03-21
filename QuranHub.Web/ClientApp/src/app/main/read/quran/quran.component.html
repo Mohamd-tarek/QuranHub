@@ -14,11 +14,14 @@
       </div> 
       <div class="row align-items-start mt-2" id="1000">
         <div class="col m-2">
-            <p 
+            <p *ngIf="!seperateVerses"
             [ngClass]=" (currentLanguage == 'arabic' ? 'text-end' : '') + ' rounded lh-lg p-2 contents '"
             (scroll)="savePosition()" style="overflow: auto; height: 69vh; background-color: #0dcaf099;" >
-                <inline-aya  *ngFor="let aya of sura" [aya]="aya" [focused]="aya.aya == ayaIndex" ></inline-aya>
+                <inline-aya   *ngFor="let aya of sura" [aya]="aya" [focused]="aya.aya == ayaIndex" ></inline-aya>
             </p>
+            <div  *ngIf="seperateVerses">
+              <aya-card  *ngFor="let aya of sura"  [aya]="aya" [disableWrap]="disableWrap"></aya-card>
+            </div>
         </div>
       </div>
       <div class="row">

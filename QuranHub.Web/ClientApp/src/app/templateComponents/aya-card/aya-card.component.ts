@@ -33,6 +33,9 @@ export class AyaCardComponent  {
   @Input()
   highLightText!: string;
 
+  @Input()
+  disableWrap: boolean = false;
+
   @Output() removeAyaEvent = new EventEmitter();
 
   removeAya(): void{

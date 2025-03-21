@@ -3,6 +3,14 @@
         <input id="word" type="checkbox" [formControl]="overviewMode">
         <label for="word" class="ms-2"> {{'OVERVIEW_MODE' | translate}} </label> 
       </div >
+      <div class="col m-2">
+        <input id="word" type="checkbox" [formControl]="seperateVerses">
+        <label for="word" class="ms-2"> {{'SEPERATE_VERSES' | translate}} </label> 
+      </div >
+      <div class="col m-2">
+        <input id="word" type="checkbox" [formControl]="disableWrap">
+        <label for="word" class="ms-2"> {{'DISABLE_WRAP' | translate}} </label> 
+      </div >
       <select class="col p-2 form-select ms-4 me-2 "  aria-label="Default select example" [(ngModel)]="curLanguage" >
         <option  *ngFor="let language of languages" value={{language}} > {{language}} </option>
       </select> 
@@ -14,7 +22,7 @@
         <tafseer-and-trans ></tafseer-and-trans>
       </div>
       <div class="col-12  col-md border  border-3 rounded-3 mt-2  p-2 " [style.background-color]="'papayawhip'">
-        <quran></quran>
+        <quran [seperateVerses]="seperateVerses.value" [disableWrap]="disableWrap.value"></quran>
       </div>
     </div>
 

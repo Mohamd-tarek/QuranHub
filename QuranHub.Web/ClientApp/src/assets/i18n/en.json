@@ -80,5 +80,7 @@
   "LOGIN_INFO" : "Login info",
   "EDIT_LOGIN_INFO" : "Edit Login Info",
   "EDIT_PRIVACY" : "Edit Privacy",
-  "LANGUAGE_SETTING" : "Language Setting"
+  "LANGUAGE_SETTING" : "Language Setting",
+  "SEPERATE_VERSES" : "Seperate Verses",
+  "DISABLE_WRAP" :"Disable Wrap"
 }
